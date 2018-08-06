@@ -16,18 +16,6 @@ def init_ff_libs():
         for cmd in cmds:
             p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
-def get_best_30_fps_stream(streams):
-    chosen_stream = None
-    chosen_resolution = 0
-    for stream in streams:
-        if 'p60' in stream or 'p' not in stream:
-            continue
-        resolution = int(stream[:-1])
-        if chosen_stream is None or resolution > chosen_resolution:
-            chosen_stream = stream
-            chosen_resolution = resolution
-    return chosen_stream
-
 def analyze_duration(media_filename):
     metadata = FFProbe(media_filename)
     for stream in metadata.streams:
