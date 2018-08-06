@@ -1,0 +1,34 @@
+log:
+  level: INFO
+
+twitch:
+  url: http://twitch.tv
+
+aws:
+  dynamodb:
+    streams:
+      name: ts-streams
+    stream-segments:
+      name: ts-stream-segments
+    clips:
+      name: ts-clips
+    clip-segments:
+      name: ts-clip-segments
+    montages:
+      name: ts-montages
+    montage-clips:
+      name: ts-montage-clips
+  s3:
+    main:
+      name: twitch-stitch-main
+      region: us-west-1
+    exported:
+      name: twitch-stitch-exported
+  sqs:
+    stream-download:
+      name: ts-stream-download
+    stream-clip:
+      name: ts-stream-clip
+    clips-montage:
+      name: ts-clips-montage
+

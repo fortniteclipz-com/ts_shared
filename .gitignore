@@ -1,0 +1,4 @@
+__pycache__
+venv/
+*freeze.txt
+*.egg-info
