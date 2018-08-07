@@ -86,7 +86,7 @@ def get_clips(clip_ids):
                 }
             }
         )
-        return list(map(lambda cs: Clip(**cs), _replace_decimals(response['Responses']['clip'])))
+        return list(map(lambda cs: Clip(**cs), _replace_decimals(response['Responses']['ts-clips'])))
     except Exception as e:
         logger.warn("get_clips error", error=e)
         return []
