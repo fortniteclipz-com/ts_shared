@@ -85,3 +85,18 @@ def get_montage_clips(montage_id):
     except Exception as e:
         logger.warn("get_montage_clips error", error=e)
         return []
+
+def get_montages_clips(montage_ids):
+    try:
+        response = table_montage_clips.scan(
+            ScanFilter={
+                'montage_id': {
+                    'AttributeValueList': montage_ids,
+                    'ComparisonOperator': 'IN',
+                }
+            }
+        )
+        return list(map(lambda mc: MontageClip(**mc), _replace_decimals(response['Items'])))
+    except Exception as e:
+        logger.warn("get_montages_clips error", error=e)
+        return []
