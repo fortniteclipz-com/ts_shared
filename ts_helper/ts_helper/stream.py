@@ -83,7 +83,7 @@ def create_m3u8(segments, filename_master, filename_video, filename_audio):
             f.write(f"#EXT-X-MEDIA-SEQUENCE:0\n")
             f.write(f"\n")
         for segment in segments:
-            if hasattr(segment, 'discontinuity'):
+            if segment.discontinuity and segment.discontinuity is not None:
                 for f in [fv, fa]:
                     f.write(f"\n")
                     f.write(f"#EXT-X-DISCONTINUITY\n")
@@ -91,10 +91,10 @@ def create_m3u8(segments, filename_master, filename_video, filename_audio):
             duration_audio = float('%.2f'%(segment.audio_time_duration))
             fv.write(f"#EXTINF:{duration_video},\n")
             fa.write(f"#EXTINF:{duration_audio},\n")
-            if hasattr(segment, 'video_packets_byterange') and hasattr(segment, 'video_packets_pos'):
+            if segment.video_packets_byterange and segment.video_packets_byterange is not None and segment.video_packets_pos and segment.video_packets_pos is not None:
                 fv.write(f"#EXT-X-BYTERANGE:{segment.video_packets_byterange}@{segment.video_packets_pos}\n")
-            if hasattr(segment, 'audio_packets_byterange') and hasattr(segment, 'audio_packets_pos'):
-                fa.write(f"#EXT-X-BYTERANGE:{segment.audio_packets_byterange}@{segment.audio_packets_pos}\n")
+            # if segment.audio_packets_byterange and segment.audio_packets_byterange is not None and segment.audio_packets_pos and segment.audio_packets_pos is not None:
+                # fa.write(f"#EXT-X-BYTERANGE:{segment.audio_packets_byterange}@{segment.audio_packets_pos}\n")
             fv.write(f"{segment.video_url_media}\n")
             fa.write(f"{segment.audio_url_media}\n")
         for f in [fv, fa]:

@@ -49,6 +49,8 @@ class ClipSegment():
         self.video_time_in = kwargs.get('video_time_in')
         self.video_url_media = kwargs.get('video_url_media')
 
+        self.discontinuity = kwargs.get('discontinuity')
+
     def is_init(self):
         init_keys = [
             'audio_time_duration',
