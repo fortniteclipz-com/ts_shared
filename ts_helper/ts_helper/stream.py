@@ -93,8 +93,8 @@ def create_m3u8(segments, filename_master, filename_video, filename_audio):
             fa.write(f"#EXTINF:{duration_audio},\n")
             if segment.video_packets_byterange and segment.video_packets_byterange is not None and segment.video_packets_pos and segment.video_packets_pos is not None:
                 fv.write(f"#EXT-X-BYTERANGE:{segment.video_packets_byterange}@{segment.video_packets_pos}\n")
-            # if segment.audio_packets_byterange and segment.audio_packets_byterange is not None and segment.audio_packets_pos and segment.audio_packets_pos is not None:
-                # fa.write(f"#EXT-X-BYTERANGE:{segment.audio_packets_byterange}@{segment.audio_packets_pos}\n")
+            if segment.audio_packets_byterange and segment.audio_packets_byterange is not None and segment.audio_packets_pos and segment.audio_packets_pos is not None:
+                fa.write(f"#EXT-X-BYTERANGE:{segment.audio_packets_byterange}@{segment.audio_packets_pos}\n")
             fv.write(f"{segment.video_url_media}\n")
             fa.write(f"{segment.audio_url_media}\n")
         for f in [fv, fa]:

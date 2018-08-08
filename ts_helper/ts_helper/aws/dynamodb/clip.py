@@ -106,9 +106,7 @@ def save_clip_segments(clip_segments):
     with table_clip_segments.batch_writer() as batch:
         for cs in clip_segments:
             batch.put_item(Item=_replace_floats(cs.__dict__))
-    for cs in clip_segments:
-        _replace_decimals(cs.__dict__)
-    return clip_segments
+    return list(map(lambda cs: ClipSegment(**_replace_decimals(cs.__dict__)), clip_segments))
 
 def get_clip_segments(clip_id):
     try:

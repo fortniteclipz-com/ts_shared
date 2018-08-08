@@ -94,9 +94,7 @@ def save_stream_segments(stream_segments):
     with table_stream_segments.batch_writer() as batch:
         for ss in stream_segments:
             batch.put_item(Item=_replace_floats(ss.__dict__))
-    for ss in stream_segments:
-        _replace_decimals(ss.__dict__)
-    return stream_segments
+    return list(map(lambda ss: StreamSegment(**_replace_decimals(ss.__dict__)), stream_segments))
 
 def get_stream_segments(stream_id):
     try:

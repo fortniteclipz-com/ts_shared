@@ -67,9 +67,7 @@ def save_montage_clips(montage_clips):
     with table_montage_clips.batch_writer() as batch:
         for mc in montage_clips:
             batch.put_item(Item=_replace_floats(mc.__dict__))
-    for mc in montage_clips:
-        _replace_decimals(mc.__dict__)
-    return montage_clips
+    return list(map(lambda mc: MontageClip(**_replace_decimals(mc.__dict__)), montage_clips))
 
 def get_montage_clips(montage_id):
     try:
