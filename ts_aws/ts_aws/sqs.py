@@ -6,27 +6,27 @@ import json
 client = boto3.client('sqs')
 resource = boto3.resource('sqs')
 
-stream_download_name = ts_config.get('aws.sqs.stream-download.name')
-response = client.get_queue_url(QueueName=stream_download_name)
-queue_stream_download_url = response['QueueUrl']
-queue_stream_download = resource.Queue(queue_stream_download_url)
+stream_segment_queue_name = ts_config.get('aws.sqs.stream-segment.name')
+response = client.get_queue_url(QueueName=stream_segment_queue_name)
+stream_segment_queue_url = response['QueueUrl']
+stream_segment_queue = resource.Queue(stream_segment_queue_url)
 
-stream_clip_name = ts_config.get('aws.sqs.stream-clip.name')
-response = client.get_queue_url(QueueName=stream_clip_name)
-queue_stream_clip_url = response['QueueUrl']
-queue_stream_clip = resource.Queue(queue_stream_clip_url)
+clip_queue_name = ts_config.get('aws.sqs.clip.name')
+response = client.get_queue_url(QueueName=clip_queue_name)
+clip_queue_url = response['QueueUrl']
+clip_queue = resource.Queue(clip_queue_url)
 
-clips_montage_name = ts_config.get('aws.sqs.clips-montage.name')
-response = client.get_queue_url(QueueName=clips_montage_name)
-queue_clips_montage_url = response['QueueUrl']
-queue_clips_montage = resource.Queue(queue_clips_montage_url)
+montage_queue_name = ts_config.get('aws.sqs.montage.name')
+response = client.get_queue_url(QueueName=montage_queue_name)
+montage_queue_url = response['QueueUrl']
+montage_queue = resource.Queue(montage_queue_url)
 
 def send_stream_download(payload):
-    queue_stream_download.send_message(MessageBody=json.dumps(payload))
+    stream_segment_queue.send_message(MessageBody=json.dumps(payload))
 
 def send_stream_clip(payload):
-    queue_stream_clip.send_message(MessageBody=json.dumps(payload))
+    clip_queue.send_message(MessageBody=json.dumps(payload))
 
 def send_clips_montage(payload):
-    queue_clips_montage.send_message(MessageBody=json.dumps(payload))
+    montage_queue.send_message(MessageBody=json.dumps(payload))
 
