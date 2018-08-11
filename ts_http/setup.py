@@ -7,6 +7,8 @@ setup(
     author='Ahuja',
     license='',
     packages=find_packages(),
-    install_requires=[],
+    install_requires=[
+    	"requests==2.19.1"
+    ],
     zip_safe=False
 )

@@ -13,7 +13,7 @@ setup(
         ]
     },
     install_requires=[
-        'PyYAML',
+        'PyYAML==3.13',
     ],
     zip_safe=False
 )
