@@ -8,7 +8,9 @@ setup(
     license='',
     packages=find_packages(),
     package_data={
-        'ts_config': ['ts_config.yml']
+        'ts_config': [
+            'ts_config.yml',
+        ]
     },
     install_requires=[
         'PyYAML',
