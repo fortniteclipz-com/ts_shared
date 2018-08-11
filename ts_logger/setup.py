@@ -8,9 +8,12 @@ setup(
     license='',
     packages=find_packages(),
     install_requires=[
-        "git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_config&subdirectory=ts_config",
+        "ts_config",
         "daiquiri==1.5.0",
         # "python-json-logger==0.1.9",
+    ],
+    dependency_links=[
+        "git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_config&subdirectory=ts_config",
     ],
     zip_safe=False
 )
