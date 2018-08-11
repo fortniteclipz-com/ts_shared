@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ts_stream',
+    name='ts_media',
     version='0.1',
-    description='ts_stream',
+    description='ts_media',
     author='Ahuja',
     license='',
     packages=find_packages(),
