@@ -8,7 +8,7 @@ setup(
     license='',
     packages=find_packages(),
     install_requires=[
-        "ts_config",
+        "ts_config==0.1",
         "daiquiri==1.5.0",
         # "python-json-logger==0.1.9",
     ],

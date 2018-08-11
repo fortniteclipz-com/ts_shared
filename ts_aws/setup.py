@@ -8,7 +8,7 @@ setup(
     license='',
     packages=find_packages(),
     install_requires=[
-        "ts_config",
+        "ts_config==0.1",
         "boto3==1.7.75",
         "ffprobe3==0.1.2",
         "shortuuid==0.5.0",
