@@ -1,17 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ts_config',
+    name='ts_stream',
     version='0.1',
-    description='ts_config',
+    description='ts_stream',
     author='Ahuja',
     license='',
     packages=find_packages(),
-    package_data={
-        'ts_config': ['ts_config.yml']
-    },
     install_requires=[
-        'PyYAML',
+        "ffprobe3==0.1.2",
     ],
     zip_safe=False
 )

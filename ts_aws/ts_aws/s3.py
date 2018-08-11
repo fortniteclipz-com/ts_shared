@@ -1,11 +1,9 @@
 import ts_config
-import ts_logger
 
 import boto3
 import json
 import os
 
-logger = ts_logger.get(__name__)
 resource = boto3.resource('s3')
 bucket_main = resource.Bucket(ts_config.get('aws.s3.main.name'))
 

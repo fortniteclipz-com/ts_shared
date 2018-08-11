@@ -1,10 +1,8 @@
 import ts_config
-import ts_logger
 from ts_helper.aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
 
-logger = ts_logger.get(__name__)
 resource = boto3.resource('dynamodb')
 table_streams_name = ts_config.get('aws.dynamodb.streams.name')
 table_stream_segments_name = ts_config.get('aws.dynamodb.stream-segments.name')
