@@ -24,6 +24,8 @@ aws:
       region: us-west-1
     exported:
       name: twitch-stitch-exported
+    thumbnails:
+      name: twitch-stitch-thumbnails
   sqs:
     stream-segment:
       name: ts-stream-segment
