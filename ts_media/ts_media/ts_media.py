@@ -63,7 +63,7 @@ def probe_media_audio(media_filename, packets_filename):
 
 def thumbnail_media_video(media_filename, thumbnail_filename_pattern):
     os.makedirs(os.path.dirname(thumbnail_filename_pattern), exist_ok=True)
-    cmd = f"ffmpeg -i {media_filename} -qmin 1 -q:v 1 {thumbnail_filename_pattern}"
+    cmd = f"ffmpeg -i {media_filename} -vf fps=2 -qmin 1 -q:v 1 {thumbnail_filename_pattern}"
     p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 def create_m3u8(segments, filename_master, filename_video, filename_audio):
