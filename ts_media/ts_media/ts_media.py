@@ -61,6 +61,11 @@ def probe_media_audio(media_filename, packets_filename):
         cmd = f"ffprobe -v 0 -select_streams a -show_packets -of json -i {media_filename}"
         p = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL, shell=True)
 
+def thumbnail_media_video(media_filename, thumbnail_filename_pattern):
+    os.makedirs(os.path.dirname(thumbnail_filename_pattern), exist_ok=True)
+    cmd = f"ffmpeg -i {media_filename} -qmin 1 -q:v 1 {thumbnail_filename_pattern}"
+    p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+
 def create_m3u8(segments, filename_master, filename_video, filename_audio):
     target_duration = max(segment.video_time_duration for segment in segments)
     target_duration = math.ceil(target_duration)

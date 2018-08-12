@@ -6,6 +6,7 @@ import os
 
 resource = boto3.resource('s3')
 bucket_main = resource.Bucket(ts_config.get('aws.s3.main.name'))
+bucket_thumbnails = resource.Bucket(ts_config.get('aws.s3.thumbnails.name'))
 
 def upload_file(filename, s3_key):
     bucket_main.upload_file(filename, s3_key)
@@ -13,3 +14,6 @@ def upload_file(filename, s3_key):
 def download_file(s3_key, filename):
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     body = bucket_main.download_file(s3_key, filename)
+
+def upload_file_thumbnails(filename, s3_key):
+    bucket_thumbnails.upload_file(filename, s3_key)
