@@ -1,5 +1,5 @@
 import ts_config
-from ts_helper.aws.dynamodb import _replace_decimals, _replace_floats
+from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
 
