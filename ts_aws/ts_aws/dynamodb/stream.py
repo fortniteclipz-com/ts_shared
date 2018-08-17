@@ -98,6 +98,7 @@ def save_stream_segments(stream_segments):
             batch.put_item(Item=_replace_floats(ss.__dict__))
     return list(map(lambda ss: StreamSegment(**_replace_decimals(ss.__dict__)), stream_segments))
 
+# TODO: new syntax
 def get_stream_segments(stream_id):
     try:
         response = table_stream_segments.query(

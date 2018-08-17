@@ -65,7 +65,7 @@ class ClipSegment():
             'video_url_media',
         ]
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
-# clip
+
 def save_clip(clip):
     if not clip.clip_id:
         clip.clip_id = f"c-{shortuuid.uuid()}"
@@ -95,6 +95,7 @@ def get_clips(clip_ids):
         logger.warn("get_clips error", error=e)
         return []
 
+# TODO: limit and sort
 def get_all_clips():
     try:
         response = table_clips.scan()
@@ -103,13 +104,13 @@ def get_all_clips():
         logger.warn("get_all_clips error", error=e)
         return []
 
-# clip segments
 def save_clip_segments(clip_segments):
     with table_clip_segments.batch_writer() as batch:
         for cs in clip_segments:
             batch.put_item(Item=_replace_floats(cs.__dict__))
     return list(map(lambda cs: ClipSegment(**_replace_decimals(cs.__dict__)), clip_segments))
 
+# TODO: new syntax
 def get_clip_segments(clip_id):
     try:
         response = table_clip_segments.query(
@@ -125,6 +126,7 @@ def get_clip_segments(clip_id):
         logger.warn("get_clip_segments error", error=e)
         return []
 
+# TODO: batch get
 def get_clips_segments(clip_ids):
     try:
         response = table_clip_segments.scan(

@@ -57,6 +57,7 @@ def get_montage(montage_id):
         logger.warn("get_montage error", error=e)
         return None
 
+# TODO: limit and sort
 def get_all_montages():
     try:
         response = table_montages.scan()
@@ -71,6 +72,7 @@ def save_montage_clips(montage_clips):
             batch.put_item(Item=_replace_floats(mc.__dict__))
     return list(map(lambda mc: MontageClip(**_replace_decimals(mc.__dict__)), montage_clips))
 
+# TODO: new syntax
 def get_montage_clips(montage_id):
     try:
         response = table_montage_clips.query(
@@ -86,6 +88,7 @@ def get_montage_clips(montage_id):
         logger.warn("get_montage_clips error", error=e)
         return []
 
+# TODO: query
 def get_montages_clips(montage_ids):
     try:
         response = table_montage_clips.scan(
