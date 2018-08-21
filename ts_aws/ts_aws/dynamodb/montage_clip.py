@@ -32,7 +32,7 @@ def save_montage_clips(montage_clips):
 # TODO: new syntax
 def get_montage_clips(montage_id):
     try:
-        response = table_montage_clips.query(
+        r = table_montage_clips.query(
             KeyConditions={
                 'montage_id': {
                     'AttributeValueList': [montage_id],
@@ -40,7 +40,7 @@ def get_montage_clips(montage_id):
                 }
             }
         )
-        return list(map(lambda mc: MontageClip(**mc), _replace_decimals(response['Items'])))
+        return list(map(lambda mc: MontageClip(**mc), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_montage_clips error", error=e)
         return []
@@ -48,7 +48,7 @@ def get_montage_clips(montage_id):
 # TODO: query
 def get_montages_clips(montage_ids):
     try:
-        response = table_montage_clips.scan(
+        r = table_montage_clips.scan(
             ScanFilter={
                 'montage_id': {
                     'AttributeValueList': montage_ids,
@@ -56,7 +56,7 @@ def get_montages_clips(montage_ids):
                 }
             }
         )
-        return list(map(lambda mc: MontageClip(**mc), _replace_decimals(response['Items'])))
+        return list(map(lambda mc: MontageClip(**mc), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_montages_clips error", error=e)
         return []

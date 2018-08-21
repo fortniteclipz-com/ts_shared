@@ -1,4 +1,5 @@
 import ts_aws.dynamodb.stream
+import ts_aws.dynamodb.stream_segment
 import ts_file
 import ts_http
 import ts_media
@@ -8,7 +9,7 @@ import streamlink
 
 def initialize_stream(stream_id):
     # get raw m3u8 url from twitch stream url
-    twitch_stream_url = f"http://twitch.tv/videos/{stream_id}"
+    twitch_stream_url = f"https://twitch.tv/videos/{stream_id}"
     twitch_streams = streamlink.streams(twitch_stream_url)
     if 'best' not in twitch_streams:
         return (None, None)
@@ -19,7 +20,7 @@ def initialize_stream(stream_id):
     playlist_filename = f"/tmp/playlist-raw.m3u8"
     ts_http.download_file(twitch_stream.url, playlist_filename)
     stream_segments = []
-    ss = ts_aws.dynamodb.stream.StreamSegment()
+    ss = ts_aws.dynamodb.stream_segment.StreamSegment()
     with open(playlist_filename, 'r') as f:
         for line in f:
             if "EXTINF" in line:
@@ -36,7 +37,7 @@ def initialize_stream(stream_id):
                 ss.url_media_raw = url_media_raw
             if ss.time_duration is not None and ss.segment is not None:
                 stream_segments.append(ss)
-                ss = ts_aws.dynamodb.stream.StreamSegment()
+                ss = ts_aws.dynamodb.stream_segment.StreamSegment()
 
     # download first segment, probe, and get stream_time_offset
     first_ss = stream_segments[0]

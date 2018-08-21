@@ -1,9 +1,9 @@
 import ts_config
 import ts_logger
-
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+from boto3.dynamodb.conditions import Key, Attr
 
 logger = ts_logger.get(__name__)
 
@@ -44,24 +44,26 @@ class ClipSegment():
         ]
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
+# good
 def save_clip_segments(clip_segments):
-    with table_clip_segments.batch_writer() as batch:
-        for cs in clip_segments:
-            batch.put_item(Item=_replace_floats(cs.__dict__))
-    return list(map(lambda cs: ClipSegment(**_replace_decimals(cs.__dict__)), clip_segments))
+    # try:
+        with table_clip_segments.batch_writer() as batch:
+            for i, cs in enumerate(clip_segments):
+                r = batch.put_item(
+                    Item=_replace_floats(cs.__dict__)
+                )
+                logger.info("save_clip_segments", current=i, total=len(clip_segments) - 1)
+    # except Exception as e:
+    #     logger.warn("save_clip_segments error", error=e)
 
 # TODO: new syntax
 def get_clip_segments(clip_id):
     try:
-        response = table_clip_segments.query(
-            KeyConditions={
-                'clip_id': {
-                    'AttributeValueList': [clip_id],
-                    'ComparisonOperator': 'EQ',
-                }
-            }
+        r = table_clip_segments.query(
+            KeyConditionExpression=Key('clip_id').eq(clip_id),
+            ReturnConsumedCapacity="TOTAL"
         )
-        return list(map(lambda cs: ClipSegment(**cs), _replace_decimals(response['Items'])))
+        return list(map(lambda cs: ClipSegment(**cs), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_clip_segments error", error=e)
         return []
@@ -69,7 +71,7 @@ def get_clip_segments(clip_id):
 # TODO: batch get
 def get_clips_segments(clip_ids):
     try:
-        response = table_clip_segments.scan(
+        r = table_clip_segments.scan(
             ScanFilter={
                 'clip_id': {
                     'AttributeValueList': clip_ids,
@@ -77,7 +79,7 @@ def get_clips_segments(clip_ids):
                 }
             }
         )
-        return list(map(lambda cs: ClipSegment(**cs), _replace_decimals(response['Items'])))
+        return list(map(lambda cs: ClipSegment(**cs), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_clips_segments error", error=e)
         return []

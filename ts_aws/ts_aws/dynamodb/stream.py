@@ -1,11 +1,8 @@
 import ts_config
 import ts_logger
-
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
-
-from boto3.dynamodb.conditions import Key, Attr
 
 logger = ts_logger.get(__name__)
 
@@ -26,14 +23,17 @@ class Stream():
         ]
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
+# good
 def save_stream(stream):
-    r = table_streams.put_item(
-        Item=_replace_floats(stream.__dict__.copy()),
-        ReturnConsumedCapacity="TOTAL"
-    )
-    logger.info("save_stream", response=r)
-    return stream
-
+    try:
+        r = table_streams.put_item(
+            Item=_replace_floats(stream.__dict__),
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("save_stream", response=r)
+    except Exception as e:
+        logger.warn("save_stream error", error=e)
+# good
 def get_stream(stream_id):
     try:
         r = table_streams.get_item(

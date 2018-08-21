@@ -19,10 +19,12 @@ def _replace_decimals(obj):
 
 def _replace_floats(obj):
     if isinstance(obj, list):
+        obj = obj.copy()
         for i in range(len(obj)):
             obj[i] = _replace_floats(obj[i])
         return obj
     elif isinstance(obj, dict):
+        obj = obj.copy()
         for k in list(obj.keys()):
             obj[k] = _replace_floats(obj[k])
             if obj[k] is None:

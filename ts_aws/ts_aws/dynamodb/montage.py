@@ -34,8 +34,8 @@ def save_montage(montage):
 
 def get_montage(montage_id):
     try:
-        response = table_montages.get_item(Key={'montage_id': montage_id})
-        return Montage(**_replace_decimals(response['Item']))
+        r = table_montages.get_item(Key={'montage_id': montage_id})
+        return Montage(**_replace_decimals(r['Item']))
     except Exception as e:
         logger.warn("get_montage error", error=e)
         return None
@@ -43,8 +43,8 @@ def get_montage(montage_id):
 # TODO: limit and sort
 def get_all_montages():
     try:
-        response = table_montages.scan()
-        return list(map(lambda c: Montage(**c), _replace_decimals(response['Items'])))
+        r = table_montages.scan()
+        return list(map(lambda c: Montage(**c), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_all_montages error", error=e)
         return []

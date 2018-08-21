@@ -30,36 +30,44 @@ class Clip():
         ]
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
+# good
 def save_clip(clip):
-    table_clips.put_item(
-        Item=_replace_floats(clip.__dict__.copy()),
-        ReturnConsumedCapacity="TOTAL"
-    )
-    return clip
+    try:
+        table_clips.put_item(
+            Item=_replace_floats(clip.__dict__),
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("save_clip", response=r)
+    except Exception as e:
+        logger.warn("save_clip error", error=e)
 
+# good
 def get_clip(clip_id):
     try:
-        response = table_clips.get_item(
+        r = table_clips.get_item(
             Key={
                 'clip_id': clip_id
             },
             ReturnConsumedCapacity="TOTAL"
         )
-        return Clip(**_replace_decimals(response['Item']))
+        logger.info("get_clip", response=r)
+        return Clip(**_replace_decimals(r['Item']))
     except Exception as e:
         logger.warn("get_clip error", error=e)
         return None
 
+# good
 def get_clips(clip_ids):
     try:
-        response = resource.batch_get_item(
+        r = resource.batch_get_item(
             RequestItems={
                 'ts-clips': {
                     'Keys': list(map(lambda c_id: {'clip_id': c_id}, clip_ids))
                 }
             }
         )
-        return list(map(lambda cs: Clip(**cs), _replace_decimals(response['Responses']['ts-clips'])))
+        logger.info("get_clips", response=r)
+        return list(map(lambda cs: Clip(**cs), _replace_decimals(r['Responses']['ts-clips'])))
     except Exception as e:
         logger.warn("get_clips error", error=e)
         return []
@@ -67,8 +75,8 @@ def get_clips(clip_ids):
 # TODO: limit and sort
 def get_all_clips():
     try:
-        response = table_clips.scan()
-        return list(map(lambda c: Clip(**c), _replace_decimals(response['Items'])))
+        r = table_clips.scan()
+        return list(map(lambda c: Clip(**c), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_all_clips error", error=e)
         return []
