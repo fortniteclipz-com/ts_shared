@@ -1,9 +1,6 @@
 log:
   level: INFO
 
-twitch:
-  url: http://twitch.tv
-
 aws:
   dynamodb:
     streams:
@@ -28,9 +25,7 @@ aws:
       name: twitch-stitch-thumbnails
   sqs:
     stream-segment:
-      name: ts-stream-segment
+      name: ts-stream-segment-download
     clip:
       name: ts-clip
-    montage:
-      name: ts-montage
 

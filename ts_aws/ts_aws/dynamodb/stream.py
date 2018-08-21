@@ -5,6 +5,8 @@ from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
 
+from boto3.dynamodb.conditions import Key, Attr
+
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('dynamodb')
@@ -64,30 +66,44 @@ class StreamSegment():
         return all(fk in self.__dict__ and self.__dict__[fk] is not None for fk in fresh_keys)
 
 def save_stream(stream):
-    table_streams.put_item(Item=_replace_floats(stream.__dict__))
+    table_streams.put_item(
+        Item=_replace_floats(stream.__dict__),
+        ReturnConsumedCapacity="TOTAL"
+    )
     _replace_decimals(stream.__dict__)
     return stream
 
 def get_stream(stream_id):
     try:
-        response = table_streams.get_item(Key={'stream_id': stream_id})
-        return Stream(**_replace_decimals(response['Item']))
+        r = table_streams.get_item(
+            Key={
+                'stream_id': stream_id
+            },
+            ReturnConsumedCapacity="TOTAL"
+        )
+        return Stream(**_replace_decimals(r['Item']))
     except Exception as e:
         logger.warn("get_stream error", error=e)
         return None
 
 def save_stream_segment(stream_segment):
-    table_stream_segments.put_item(Item=_replace_floats(stream_segment.__dict__))
+    table_stream_segments.put_item(
+        Item=_replace_floats(stream_segment.__dict__),
+        ReturnConsumedCapacity="TOTAL"
+    )
     _replace_decimals(stream_segment.__dict__)
     return stream_segment
 
 def get_stream_segment(stream_id, segment):
     try:
-        response = table_stream_segments.get_item(Key={
-            'stream_id': stream_id,
-            'segment': segment,
-        })
-        return StreamSegment(**_replace_decimals(response['Item']))
+        r = table_stream_segments.get_item(
+            Key={
+                'stream_id': stream_id,
+                'segment': segment,
+            },
+            ReturnConsumedCapacity="TOTAL"
+        )
+        return StreamSegment(**_replace_decimals(r['Item']))
     except Exception as e:
         logger.warn("get_stream_segment error", error=e)
         return None
@@ -95,21 +111,22 @@ def get_stream_segment(stream_id, segment):
 def save_stream_segments(stream_segments):
     with table_stream_segments.batch_writer() as batch:
         for ss in stream_segments:
-            batch.put_item(Item=_replace_floats(ss.__dict__))
+            batch.put_item(
+                Item=_replace_floats(ss.__dict__),
+                ReturnConsumedCapacity="TOTAL"
+            )
     return list(map(lambda ss: StreamSegment(**_replace_decimals(ss.__dict__)), stream_segments))
 
 # TODO: new syntax
 def get_stream_segments(stream_id):
     try:
-        response = table_stream_segments.query(
-            KeyConditions={
-                'stream_id': {
-                    'AttributeValueList': [stream_id],
-                    'ComparisonOperator': 'EQ',
-                }
-            }
+        r = table_stream_segments.query(
+            KeyConditionExpression=Key('stream_id').eq(stream_id),
+            Limit=10,
+            ReturnConsumedCapacity="TOTAL"
         )
-        return list(map(lambda ss: StreamSegment(**ss), _replace_decimals(response['Items'])))
+        print(f"\n{r}\n")
+        return list(map(lambda ss: StreamSegment(**ss), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_stream_segments error", error=e)
         return []
