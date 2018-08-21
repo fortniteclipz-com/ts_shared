@@ -56,7 +56,7 @@ def get_clip(clip_id):
         logger.warn("get_clip error", error=e)
         return None
 
-# good
+# returnconsumedcapacity
 def get_clips(clip_ids):
     try:
         r = resource.batch_get_item(
@@ -72,7 +72,7 @@ def get_clips(clip_ids):
         logger.warn("get_clips error", error=e)
         return []
 
-# TODO: limit and sort
+# TODO: limit and sort, returnconsumedcapacity
 def get_all_clips():
     try:
         r = table_clips.scan()

@@ -48,13 +48,16 @@ class StreamSegment():
         ]
         return all(fk in self.__dict__ and self.__dict__[fk] is not None for fk in fresh_keys)
 
+# good
 def save_stream_segment(stream_segment):
-    table_stream_segments.put_item(
-        Item=_replace_floats(stream_segment.__dict__),
-        ReturnConsumedCapacity="TOTAL"
-    )
-    return stream_segment
-
+    try:
+        r = table_stream_segments.put_item(
+            Item=_replace_floats(stream_segment.__dict__),
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("save_stream_segment", response=r)
+    except Exception as e:
+            logger.warn("save_stream_segment error", error=e)
 # good
 def get_stream_segment(stream_id, segment):
     try:
@@ -71,6 +74,7 @@ def get_stream_segment(stream_id, segment):
         logger.warn("get_stream_segment error", error=e)
         return None
 
+# good
 def save_stream_segments(stream_segments):
     try:
         with table_stream_segments.batch_writer() as batch:
@@ -82,13 +86,14 @@ def save_stream_segments(stream_segments):
     except Exception as e:
         logger.warn("save_stream_segments error", error=e)
 
-# TODO: new syntax
+# good
 def get_stream_segments(stream_id):
     try:
         r = table_stream_segments.query(
             KeyConditionExpression=Key('stream_id').eq(stream_id),
             ReturnConsumedCapacity="TOTAL"
         )
+        logger.info("get_stream_segments", response=r)
         return list(map(lambda ss: StreamSegment(**ss), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_stream_segments error", error=e)

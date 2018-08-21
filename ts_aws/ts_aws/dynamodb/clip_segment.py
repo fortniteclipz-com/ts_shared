@@ -46,29 +46,30 @@ class ClipSegment():
 
 # good
 def save_clip_segments(clip_segments):
-    # try:
+    try:
         with table_clip_segments.batch_writer() as batch:
             for i, cs in enumerate(clip_segments):
-                r = batch.put_item(
+                batch.put_item(
                     Item=_replace_floats(cs.__dict__)
                 )
                 logger.info("save_clip_segments", current=i, total=len(clip_segments) - 1)
-    # except Exception as e:
-    #     logger.warn("save_clip_segments error", error=e)
+    except Exception as e:
+        logger.warn("save_clip_segments error", error=e)
 
-# TODO: new syntax
+# good
 def get_clip_segments(clip_id):
     try:
         r = table_clip_segments.query(
             KeyConditionExpression=Key('clip_id').eq(clip_id),
             ReturnConsumedCapacity="TOTAL"
         )
+        logger.info("get_clip_segments", response=r)
         return list(map(lambda cs: ClipSegment(**cs), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_clip_segments error", error=e)
         return []
 
-# TODO: batch get
+# TODO: batch get, returnconsumedcapacity
 def get_clips_segments(clip_ids):
     try:
         r = table_clip_segments.scan(
