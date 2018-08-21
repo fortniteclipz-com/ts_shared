@@ -32,7 +32,7 @@ class StreamSegment():
         self._status = kwargs.get('_status')
 
 class StreamSegmentStatus(enum.IntEnum):
-    CREATED = 0
+    INITIALIZED = 0
     DOWNLOADING = 1
     DOWNLOADED = 2
     FRESHING = 3

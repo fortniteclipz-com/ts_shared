@@ -25,8 +25,8 @@ class Clip():
         self._status = kwargs.get('_status')
 
 class ClipStatus(enum.IntEnum):
-    CREATING = 0
-    CREATED = 0
+    INITIALIZED = 0
+    READY = 0
     def __repr__(self):
         return self.name
 

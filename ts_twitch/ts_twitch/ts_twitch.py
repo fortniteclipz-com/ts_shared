@@ -36,6 +36,7 @@ def initialize_stream(stream_id):
                 ss.padded = segment_padded
                 ss.url_media_raw = url_media_raw
             if ss.time_duration is not None and ss.segment is not None:
+                ss._status = ts_aws.dynamodb.stream_segment.StreamSegmentStatus.INITIALIZED
                 stream_segments.append(ss)
                 ss = ts_aws.dynamodb.stream_segment.StreamSegment()
 
