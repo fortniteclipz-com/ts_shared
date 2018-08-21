@@ -1,6 +1,5 @@
 import ts_config
 import ts_logger
-
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
@@ -28,22 +27,35 @@ class Montage():
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
 def save_montage(montage):
-    table_montages.put_item(Item=_replace_floats(montage.__dict__))
-    _replace_decimals(montage.__dict__)
-    return montage
+    try:
+        r = table_montages.put_item(
+            Item=_replace_floats(montage.__dict__),
+            ReturnConsumedCapacity="TOTAL"
+        )
+        _replace_decimals(montage.__dict__)
+        logger.info("save_montage", response=r)
+    except Exception as e:
+        logger.warn("save_montage error", error=e)
 
 def get_montage(montage_id):
     try:
-        r = table_montages.get_item(Key={'montage_id': montage_id})
+        r = table_montages.get_item(
+            Key={'montage_id': montage_id},
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("get_montage", response=r)
         return Montage(**_replace_decimals(r['Item']))
     except Exception as e:
         logger.warn("get_montage error", error=e)
         return None
 
-# TODO: limit and sort
 def get_all_montages():
     try:
-        r = table_montages.scan()
+        r = table_montages.scan(
+            Limit=23,
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("get_all_montages", response=r)
         return list(map(lambda c: Montage(**c), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_all_montages error", error=e)

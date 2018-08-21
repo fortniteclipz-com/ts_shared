@@ -44,7 +44,6 @@ class ClipSegment():
         ]
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
-# good
 def save_clip_segments(clip_segments):
     try:
         with table_clip_segments.batch_writer() as batch:
@@ -52,11 +51,10 @@ def save_clip_segments(clip_segments):
                 batch.put_item(
                     Item=_replace_floats(cs.__dict__)
                 )
-                logger.info("save_clip_segments", current=i, total=len(clip_segments) - 1)
+                logger.info("save_clip_segments", current=i+1, total=len(clip_segments))
     except Exception as e:
         logger.warn("save_clip_segments error", error=e)
 
-# good
 def get_clip_segments(clip_id):
     try:
         r = table_clip_segments.query(
@@ -69,18 +67,17 @@ def get_clip_segments(clip_id):
         logger.warn("get_clip_segments error", error=e)
         return []
 
-# TODO: batch get, returnconsumedcapacity
 def get_clips_segments(clip_ids):
+    clip_segments = []
     try:
-        r = table_clip_segments.scan(
-            ScanFilter={
-                'clip_id': {
-                    'AttributeValueList': clip_ids,
-                    'ComparisonOperator': 'IN',
-                }
-            }
-        )
-        return list(map(lambda cs: ClipSegment(**cs), _replace_decimals(r['Items'])))
+        for c_id in clip_ids:
+            r = table_clip_segments.query(
+                KeyConditionExpression=Key('clip_id').eq(c_id),
+                ReturnConsumedCapacity="TOTAL"
+            )
+            logger.info("get_clips_segments", clip_id=c_id, response=r)
+            clip_segments += list(map(lambda cs: ClipSegment(**cs), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_clips_segments error", error=e)
-        return []
+    finally:
+        return clip_segments

@@ -1,6 +1,5 @@
 import ts_config
 import ts_logger
-
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
@@ -30,10 +29,9 @@ class Clip():
         ]
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
-# good
 def save_clip(clip):
     try:
-        table_clips.put_item(
+        r = table_clips.put_item(
             Item=_replace_floats(clip.__dict__),
             ReturnConsumedCapacity="TOTAL"
         )
@@ -41,7 +39,6 @@ def save_clip(clip):
     except Exception as e:
         logger.warn("save_clip error", error=e)
 
-# good
 def get_clip(clip_id):
     try:
         r = table_clips.get_item(
@@ -56,26 +53,29 @@ def get_clip(clip_id):
         logger.warn("get_clip error", error=e)
         return None
 
-# returnconsumedcapacity
 def get_clips(clip_ids):
     try:
         r = resource.batch_get_item(
             RequestItems={
-                'ts-clips': {
+                table_clips_name: {
                     'Keys': list(map(lambda c_id: {'clip_id': c_id}, clip_ids))
                 }
-            }
+            },
+            ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_clips", response=r)
-        return list(map(lambda cs: Clip(**cs), _replace_decimals(r['Responses']['ts-clips'])))
+        return list(map(lambda cs: Clip(**cs), _replace_decimals(r['Responses'][table_clips_name])))
     except Exception as e:
         logger.warn("get_clips error", error=e)
         return []
 
-# TODO: limit and sort, returnconsumedcapacity
 def get_all_clips():
     try:
-        r = table_clips.scan()
+        r = table_clips.scan(
+            Limit=23,
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("get_all_clips", response=r)
         return list(map(lambda c: Clip(**c), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_all_clips error", error=e)

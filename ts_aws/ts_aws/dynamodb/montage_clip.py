@@ -1,9 +1,9 @@
 import ts_config
 import ts_logger
-
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+from boto3.dynamodb.conditions import Key, Attr
 
 logger = ts_logger.get(__name__)
 
@@ -24,39 +24,25 @@ class MontageClip():
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
 def save_montage_clips(montage_clips):
-    with table_montage_clips.batch_writer() as batch:
-        for mc in montage_clips:
-            batch.put_item(Item=_replace_floats(mc.__dict__))
-    return list(map(lambda mc: MontageClip(**_replace_decimals(mc.__dict__)), montage_clips))
+    try:
+        with table_montage_clips.batch_writer() as batch:
+            for i, mc in enumerate(montage_clips):
+                batch.put_item(
+                    Item=_replace_floats(mc.__dict__)
+                )
+                logger.info("save_montage_clips", current=i+1, total=len(montage_clips))
+        return list(map(lambda mc: MontageClip(**_replace_decimals(mc.__dict__)), montage_clips))
+    except Exception as e:
+        logger.warn("save_montage_clips error", error=e)
 
-# TODO: new syntax
 def get_montage_clips(montage_id):
     try:
         r = table_montage_clips.query(
-            KeyConditions={
-                'montage_id': {
-                    'AttributeValueList': [montage_id],
-                    'ComparisonOperator': 'EQ',
-                }
-            }
+            KeyConditionExpression=Key('montage_id').eq(montage_id),
+            ReturnConsumedCapacity="TOTAL"
         )
+        logger.info("get_montage_clips", response=r)
         return list(map(lambda mc: MontageClip(**mc), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_montage_clips error", error=e)
-        return []
-
-# TODO: query
-def get_montages_clips(montage_ids):
-    try:
-        r = table_montage_clips.scan(
-            ScanFilter={
-                'montage_id': {
-                    'AttributeValueList': montage_ids,
-                    'ComparisonOperator': 'IN',
-                }
-            }
-        )
-        return list(map(lambda mc: MontageClip(**mc), _replace_decimals(r['Items'])))
-    except Exception as e:
-        logger.warn("get_montages_clips error", error=e)
         return []

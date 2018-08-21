@@ -23,7 +23,6 @@ class Stream():
         ]
         return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
 
-# good
 def save_stream(stream):
     try:
         r = table_streams.put_item(
@@ -33,7 +32,7 @@ def save_stream(stream):
         logger.info("save_stream", response=r)
     except Exception as e:
         logger.warn("save_stream error", error=e)
-# good
+
 def get_stream(stream_id):
     try:
         r = table_streams.get_item(
