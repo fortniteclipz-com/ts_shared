@@ -16,13 +16,6 @@ class Stream():
         self.time_offset = kwargs.get('time_offset')
         self.url_playlist_raw = kwargs.get('url_playlist_raw')
 
-    def is_init(self):
-        init_keys = [
-            'time_offset',
-            'url_playlist_raw',
-        ]
-        return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
-
 def save_stream(stream):
     try:
         r = table_streams.put_item(

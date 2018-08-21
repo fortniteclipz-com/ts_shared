@@ -3,6 +3,7 @@ import ts_logger
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+import enum
 
 logger = ts_logger.get(__name__)
 
@@ -21,13 +22,13 @@ class Clip():
         self.key_playlist_master = kwargs.get('key_playlist_master')
         self.key_playlist_video = kwargs.get('key_playlist_video')
 
-    def is_init(self):
-        init_keys = [
-            'key_playlist_audio',
-            'key_playlist_master',
-            'key_playlist_video',
-        ]
-        return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
+        self._status = kwargs.get('_status')
+
+class ClipStatus(enum.IntEnum):
+    CREATING = 0
+    CREATED = 0
+    def __repr__(self):
+        return self.name
 
 def save_clip(clip):
     try:

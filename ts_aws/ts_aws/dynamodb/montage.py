@@ -18,14 +18,6 @@ class Montage():
         self.key_playlist_master = kwargs.get('key_playlist_master')
         self.key_playlist_video = kwargs.get('key_playlist_video')
 
-    def is_init(self):
-        init_keys = [
-            'key_playlist_audio',
-            'key_playlist_master',
-            'key_playlist_video',
-        ]
-        return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
-
 def save_montage(montage):
     try:
         r = table_montages.put_item(

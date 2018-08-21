@@ -17,12 +17,6 @@ class MontageClip():
         self.clip_id = kwargs.get('clip_id')
         self.clip_order = kwargs.get('clip_order')
 
-    def is_init(self):
-        init_keys = [
-            'clip_order',
-        ]
-        return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
-
 def save_montage_clips(montage_clips):
     try:
         with table_montage_clips.batch_writer() as batch:

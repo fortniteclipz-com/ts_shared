@@ -31,19 +31,6 @@ class ClipSegment():
 
         self.discontinuity = kwargs.get('discontinuity')
 
-    def is_init(self):
-        init_keys = [
-            'audio_time_duration',
-            'audio_time_out',
-            'audio_time_in',
-            'audio_url_media',
-            'video_time_duration',
-            'video_time_out',
-            'video_time_in',
-            'video_url_media',
-        ]
-        return all(ik in self.__dict__ and self.__dict__[ik] is not None for ik in init_keys)
-
 def save_clip_segments(clip_segments):
     try:
         with table_clip_segments.batch_writer() as batch:

@@ -3,6 +3,7 @@ import ts_logger
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+import enum
 from boto3.dynamodb.conditions import Key, Attr
 
 logger = ts_logger.get(__name__)
@@ -17,8 +18,8 @@ class StreamSegment():
         self.segment = kwargs.get('segment')
         self.padded = kwargs.get('padded')
         self.time_duration = kwargs.get('time_duration')
-        self.time_out = kwargs.get('time_out')
         self.time_in = kwargs.get('time_in')
+        self.time_out = kwargs.get('time_out')
         self.url_media_raw = kwargs.get('url_media_raw')
 
         self.key_media_video = kwargs.get('key_media_video')
@@ -28,25 +29,18 @@ class StreamSegment():
         self.key_media_video_fresh = kwargs.get('key_media_video_fresh')
         self.key_packets_video_fresh = kwargs.get('key_packets_video_fresh')
 
-    def is_init_raw(self):
-        raw_keys = [
-            'key_media_video',
-            'key_packets_video',
-            'key_media_audio',
-            'key_packets_audio',
-        ]
-        return all(rk in self.__dict__ and self.__dict__[rk] is not None for rk in raw_keys)
+        self._status = kwargs.get('_status')
 
-    def is_init_fresh(self):
-        fresh_keys = [
-            'key_media_video',
-            'key_packets_video',
-            'key_media_audio',
-            'key_packets_audio',
-            'key_media_video_fresh',
-            'key_packets_video_fresh',
-        ]
-        return all(fk in self.__dict__ and self.__dict__[fk] is not None for fk in fresh_keys)
+class StreamSegmentStatus(enum.IntEnum):
+    CREATED = 0
+    DOWNLOADING = 1
+    DOWNLOADED = 2
+    FRESHING = 3
+    FRESHED = 4
+    ANALYZING = 5
+    ANALYZED = 6
+    def __repr__(self):
+        return self.name
 
 def save_stream_segment(stream_segment):
     try:
