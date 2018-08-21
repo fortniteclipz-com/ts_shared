@@ -16,17 +16,8 @@ response = client.get_queue_url(QueueName=clip_queue_name)
 clip_queue_url = response['QueueUrl']
 clip_queue = resource.Queue(clip_queue_url)
 
-montage_queue_name = ts_config.get('aws.sqs.montage.name')
-response = client.get_queue_url(QueueName=montage_queue_name)
-montage_queue_url = response['QueueUrl']
-montage_queue = resource.Queue(montage_queue_url)
-
 def send_stream_download(payload):
     stream_segment_queue.send_message(MessageBody=json.dumps(payload))
 
 def send_stream_clip(payload):
     clip_queue.send_message(MessageBody=json.dumps(payload))
-
-def send_clips_montage(payload):
-    montage_queue.send_message(MessageBody=json.dumps(payload))
-
