@@ -1,3 +1,4 @@
+import ts_aws.dynamodb.stream_segment
 import ts_config
 import ts_logger
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
@@ -10,6 +11,8 @@ logger = ts_logger.get(__name__)
 resource = boto3.resource('dynamodb')
 table_clips_name = ts_config.get('aws.dynamodb.clips.name')
 table_clips = resource.Table(table_clips_name)
+table_stream_segments_name = ts_config.get('aws.dynamodb.stream-segments.name')
+table_stream_segments = resource.Table(table_stream_segments_name)
 
 class Clip():
     def __init__(self, **kwargs):
@@ -25,8 +28,8 @@ class Clip():
         self._status = kwargs.get('_status')
 
 class ClipStatus(enum.IntEnum):
-    INITIALIZED = 0
-    READY = 0
+    INITIALIZING = 0
+    READY = 1
     def __repr__(self):
         return self.name
 
@@ -80,4 +83,46 @@ def get_all_clips():
         return list(map(lambda c: Clip(**c), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.warn("get_all_clips error", error=e)
+        return []
+
+def get_clip_stream_segments(stream, clip):
+    try:
+        r = table_stream_segments.query(
+            IndexName="stream_id-time_out-index",
+            KeyConditionExpression="stream_id = :stream_id AND time_out <= :time_in",
+            ExpressionAttributeValues=_replace_floats({
+                ':stream_id': clip.stream_id,
+                ':time_in': clip.time_in + stream.time_offset,
+            }),
+            ScanIndexForward=False,
+            Limit=1,
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("get_clip_stream_segments | stream_id-time_out-index", response=r)
+
+        if len(r['Items']) == 1:
+            last_css = ts_aws.dynamodb.stream_segment.StreamSegment(**_replace_decimals(r['Items'][0]))
+            exclusiveStartKey = _replace_floats({
+                'stream_id': last_css.stream_id,
+                'time_in': last_css.time_in,
+                'segment': last_css.segment,
+            })
+        else:
+            exclusiveStartKey = None
+
+        r = table_stream_segments.query(
+            IndexName="stream_id-time_in-index",
+            KeyConditionExpression="stream_id = :stream_id AND time_in < :time_out",
+            ExpressionAttributeValues=_replace_floats({
+                ':stream_id': clip.stream_id,
+                ':time_out': clip.time_out + stream.time_offset,
+            }),
+            ExclusiveStartKey=exclusiveStartKey,
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("get_clip_stream_segments | stream_id-time_in-index", response=r)
+        return list(map(lambda ss: ts_aws.dynamodb.stream_segment.StreamSegment(**ss), _replace_decimals(r['Items'])))
+
+    except Exception as e:
+        logger.warn("get_clip_stream_segments error", error=e)
         return []
