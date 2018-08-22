@@ -27,12 +27,6 @@ class Clip():
 
         self._status = kwargs.get('_status')
 
-class ClipStatus(enum.IntEnum):
-    INITIALIZING = 0
-    READY = 1
-    def __repr__(self):
-        return self.name
-
 def save_clip(clip):
     try:
         r = table_clips.put_item(

@@ -3,7 +3,6 @@ import ts_logger
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
 
 logger = ts_logger.get(__name__)
 
@@ -32,7 +31,10 @@ def save_montage_clips(montage_clips):
 def get_montage_clips(montage_id):
     try:
         r = table_montage_clips.query(
-            KeyConditionExpression=Key('montage_id').eq(montage_id),
+            KeyConditionExpression="montage_id = :montage_id",
+            ExpressionAttributeValues=_replace_floats({
+                ':montage_id': montage_id,
+            }),
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_montage_clips", response=r)

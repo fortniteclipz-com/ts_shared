@@ -4,7 +4,6 @@ from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
 import enum
-from boto3.dynamodb.conditions import Key, Attr
 
 logger = ts_logger.get(__name__)
 
@@ -29,18 +28,9 @@ class StreamSegment():
         self.key_media_video_fresh = kwargs.get('key_media_video_fresh')
         self.key_packets_video_fresh = kwargs.get('key_packets_video_fresh')
 
-        self._status = kwargs.get('_status')
-
-class StreamSegmentStatus(enum.IntEnum):
-    INITIALIZED = 0
-    DOWNLOADING = 1
-    DOWNLOADED = 2
-    FRESHING = 3
-    FRESHED = 4
-    ANALYZING = 5
-    ANALYZED = 6
-    def __repr__(self):
-        return self.name
+        self._status_download = kwargs.get('_status_download')
+        self._status_fresh = kwargs.get('_status_fresh')
+        self._status_analyze = kwargs.get('_status_analyze')
 
 def save_stream_segment(stream_segment):
     try:
@@ -81,7 +71,10 @@ def save_stream_segments(stream_segments):
 def get_stream_segments(stream_id):
     try:
         r = table_stream_segments.query(
-            KeyConditionExpression=Key('stream_id').eq(stream_id),
+            KeyConditionExpression="stream_id = :stream_id",
+            ExpressionAttributeValues=_replace_floats({
+                ':stream_id': stream_id,
+            }),
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_stream_segments", response=r)

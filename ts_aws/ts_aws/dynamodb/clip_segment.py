@@ -3,7 +3,6 @@ import ts_logger
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
 
 logger = ts_logger.get(__name__)
 
@@ -45,7 +44,10 @@ def save_clip_segments(clip_segments):
 def get_clip_segments(clip_id):
     try:
         r = table_clip_segments.query(
-            KeyConditionExpression=Key('clip_id').eq(clip_id),
+            KeyConditionExpression="clip_id = :clip_id",
+            ExpressionAttributeValues=_replace_floats({
+                ':clip_id': clip_id,
+            }),
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_clip_segments", response=r)
@@ -59,7 +61,10 @@ def get_clips_segments(clip_ids):
     try:
         for c_id in clip_ids:
             r = table_clip_segments.query(
-                KeyConditionExpression=Key('clip_id').eq(c_id),
+                KeyConditionExpression="clip_id = :clip_id",
+                ExpressionAttributeValues=_replace_floats({
+                    ':clip_id': clip_id,
+                }),
                 ReturnConsumedCapacity="TOTAL"
             )
             logger.info("get_clips_segments", clip_id=c_id, response=r)

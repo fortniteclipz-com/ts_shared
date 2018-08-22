@@ -1,5 +1,11 @@
 import decimal
 
+class Status(enum.IntEnum):
+    INITIALIZING = 0
+    READY = 1
+    def __repr__(self):
+        return self.name
+
 def _replace_decimals(obj):
     if isinstance(obj, list):
         for i in range(len(obj)):
