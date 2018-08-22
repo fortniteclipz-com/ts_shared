@@ -63,7 +63,7 @@ def get_clips_segments(clip_ids):
             r = table_clip_segments.query(
                 KeyConditionExpression="clip_id = :clip_id",
                 ExpressionAttributeValues=_replace_floats({
-                    ':clip_id': clip_id,
+                    ':clip_id': c_id,
                 }),
                 ReturnConsumedCapacity="TOTAL"
             )
