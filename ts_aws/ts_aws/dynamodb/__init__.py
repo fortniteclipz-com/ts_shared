@@ -1,8 +1,10 @@
 import decimal
+import enum
 
 class Status(enum.IntEnum):
-    INITIALIZING = 0
-    READY = 1
+    NONE = 0
+    INITIALIZING = 1
+    READY = 3
     def __repr__(self):
         return self.name
 

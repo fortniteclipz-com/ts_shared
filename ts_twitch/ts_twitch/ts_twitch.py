@@ -1,3 +1,4 @@
+import ts_aws.dynamodb
 import ts_aws.dynamodb.stream
 import ts_aws.dynamodb.stream_segment
 import ts_file
@@ -36,7 +37,9 @@ def initialize_stream(stream_id):
                 ss.padded = segment_padded
                 ss.url_media_raw = url_media_raw
             if ss.time_duration is not None and ss.segment is not None:
-                ss._status = ts_aws.dynamodb.stream_segment.StreamSegmentStatus.INITIALIZED
+                ss._status_download = ts_aws.dynamodb.Status.NONE
+                ss._status_fresh = ts_aws.dynamodb.Status.NONE
+                ss._status_analyze = ts_aws.dynamodb.Status.NONE
                 stream_segments.append(ss)
                 ss = ts_aws.dynamodb.stream_segment.StreamSegment()
 
