@@ -88,27 +88,29 @@ def get_all_clips():
 def get_clip_stream_segments(stream, clip):
     try:
         r = table_stream_segments.query(
-            IndexName="stream_id-time_out-index",
-            KeyConditionExpression="stream_id = :stream_id AND time_out <= :time_in",
+            IndexName="stream_id-time_in-index",
+            KeyConditionExpression="stream_id = :stream_id AND time_in <= :time_in",
             ExpressionAttributeValues=_replace_floats({
                 ':stream_id': clip.stream_id,
                 ':time_in': clip.time_in + stream.time_offset,
             }),
             ScanIndexForward=False,
-            Limit=1,
+            Limit=2,
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_clip_stream_segments | stream_id-time_out-index", response=r)
+        logger.info("get_clip_stream_segments | first", response=r)
 
-        if len(r['Items']) == 1:
-            last_css = ts_aws.dynamodb.stream_segment.StreamSegment(**_replace_decimals(r['Items'][0]))
-            exclusiveStartKey = _replace_floats({
-                'stream_id': last_css.stream_id,
-                'time_in': last_css.time_in,
-                'segment': last_css.segment,
-            })
+        if len(r['Items']) == 2:
+            last_css = ts_aws.dynamodb.stream_segment.StreamSegment(**_replace_decimals(r['Items'][1]))
+            exclusiveStartKey = {
+                'ExclusiveStartKey': _replace_floats({
+                    'stream_id': last_css.stream_id,
+                    'time_in': last_css.time_in,
+                    'segment': last_css.segment,
+                })
+            }
         else:
-            exclusiveStartKey = None
+            exclusiveStartKey = {}
 
         r = table_stream_segments.query(
             IndexName="stream_id-time_in-index",
@@ -117,10 +119,10 @@ def get_clip_stream_segments(stream, clip):
                 ':stream_id': clip.stream_id,
                 ':time_out': clip.time_out + stream.time_offset,
             }),
-            ExclusiveStartKey=exclusiveStartKey,
-            ReturnConsumedCapacity="TOTAL"
+            ReturnConsumedCapacity="TOTAL",
+            **exclusiveStartKey
         )
-        logger.info("get_clip_stream_segments | stream_id-time_in-index", response=r)
+        logger.info("get_clip_stream_segments | final", response=r)
         return list(map(lambda ss: ts_aws.dynamodb.stream_segment.StreamSegment(**ss), _replace_decimals(r['Items'])))
 
     except Exception as e:
