@@ -24,8 +24,10 @@ aws:
     thumbnails:
       name: twitch-stitch-thumbnails
   sqs:
-    stream-segment:
-      name: ts-stream-segment-download
     clip:
       name: ts-clip
+    stream-initialize:
+      name: ts-stream-initialize
+    stream-segment-download:
+      name: ts-stream-segment-download
 
