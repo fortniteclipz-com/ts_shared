@@ -1,5 +1,6 @@
 import ts_config
 import ts_logger
+import ts_model.Montage
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
@@ -9,14 +10,6 @@ logger = ts_logger.get(__name__)
 resource = boto3.resource('dynamodb')
 table_montages_name = ts_config.get('aws.dynamodb.montages.name')
 table_montages = resource.Table(table_montages_name)
-
-class Montage():
-    def __init__(self, **kwargs):
-        self.montage_id = kwargs.get('montage_id')
-
-        self.key_playlist_audio = kwargs.get('key_playlist_audio')
-        self.key_playlist_master = kwargs.get('key_playlist_master')
-        self.key_playlist_video = kwargs.get('key_playlist_video')
 
 def save_montage(montage):
     try:
@@ -38,7 +31,7 @@ def get_montage(montage_id):
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_montage | success", response=r)
-        return Montage(**_replace_decimals(r['Item']))
+        return ts_model.Montage(**_replace_decimals(r['Item']))
     except Exception as e:
         logger.error("get_montage | error", error=e)
         return None
@@ -51,7 +44,7 @@ def get_all_montages():
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_all_montages | success", response=r)
-        return list(map(lambda c: Montage(**c), _replace_decimals(r['Items'])))
+        return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))
     except Exception as e:
         logger.error("get_all_montages | error", error=e)
         return []
