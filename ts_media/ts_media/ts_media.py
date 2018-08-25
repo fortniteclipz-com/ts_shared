@@ -1,10 +1,15 @@
+import ts_logger
+
 import math
 import os
 import subprocess
 
 from ffprobe3 import FFProbe
 
+logger = ts_logger.get(__name__)
+
 def init_ff_libs():
+    logger.info("init_ff_libs | start")
     if 'LAMBDA_TASK_ROOT' in os.environ:
         os.environ['PATH'] = f"{os.environ['PATH']}:/tmp/"
         cmds = [
@@ -17,6 +22,7 @@ def init_ff_libs():
             p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 def analyze_duration(media_filename):
+    logger.info("analyze_duration | start", media_filename=media_filename)
     metadata = FFProbe(media_filename)
     for stream in metadata.streams:
         if stream.is_video() or stream.is_audio():
@@ -24,6 +30,7 @@ def analyze_duration(media_filename):
     return 0
 
 def calculate_gop(media_filename):
+    logger.info("calculate_gop | start", media_filename=media_filename)
     fps = 0
     metadata = FFProbe(media_filename)
     def parse(r_frame_rate):
@@ -35,38 +42,45 @@ def calculate_gop(media_filename):
     return math.ceil(fps / 2)
 
 def split_media_video(media_filename, media_filename_video):
+    logger.info("split_media_video | start", media_filename=media_filename, media_filename_video=media_filename_video)
     os.makedirs(os.path.dirname(media_filename_video), exist_ok=True)
     cmd = f"ffmpeg -i {media_filename} -muxdelay 0 -an -vcodec copy -copyts -y {media_filename_video} < /dev/null"
     p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 def split_media_audio(media_filename, media_filename_audio):
+    logger.info("split_media_audio | start", media_filename=media_filename, media_filename_audio=media_filename_audio)
     os.makedirs(os.path.dirname(media_filename_audio), exist_ok=True)
     cmd = f"ffmpeg -i {media_filename} -muxdelay 0 -vn -acodec copy -copyts -y {media_filename_audio} < /dev/null"
     p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 def fresh_media_video(gop, media_filename_raw, media_filename_fresh):
+    logger.info("fresh_media_video | start", gop=gop, media_filename_raw=media_filename_raw, media_filename_fresh=media_filename_fresh)
     os.makedirs(os.path.dirname(media_filename_fresh), exist_ok=True)
     cmd = f"ffmpeg -i {media_filename_raw} -muxdelay 0 -an -vcodec libx264 -profile:v main -level 3.1 -refs 1 -g {gop} -x264opts scenecut=0:bframes=0:b-pyramid=0 -copyts -y {media_filename_fresh} < /dev/null"
     p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 def probe_media_video(media_filename, packets_filename):
+    logger.info("probe_media_video | start", media_filename=media_filename, packets_filename=packets_filename)
     os.makedirs(os.path.dirname(packets_filename), exist_ok=True)
     with open(packets_filename, 'w') as f:
         cmd = f"ffprobe -v 0 -select_streams v -show_packets -of json -i {media_filename}"
         p = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL, shell=True)
 
 def probe_media_audio(media_filename, packets_filename):
+    logger.info("probe_media_audio | start", media_filename=media_filename, packets_filename=packets_filename)
     os.makedirs(os.path.dirname(packets_filename), exist_ok=True)
     with open(packets_filename, 'w') as f:
         cmd = f"ffprobe -v 0 -select_streams a -show_packets -of json -i {media_filename}"
         p = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL, shell=True)
 
 def thumbnail_media_video(media_filename, thumbnail_filename_pattern):
+    logger.info("thumbnail_media_video | start", media_filename=media_filename, thumbnail_filename_pattern=thumbnail_filename_pattern)
     os.makedirs(os.path.dirname(thumbnail_filename_pattern), exist_ok=True)
     cmd = f"ffmpeg -i {media_filename} -vf fps=2 -q:v 1 {thumbnail_filename_pattern}"
     p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 def create_m3u8(segments, filename_master, filename_video, filename_audio):
+    logger.info("create_m3u8 | start", segments_length=len(segments), filename_master=filename_master, filename_video=filename_video, filename_audio=filename_audio)
     target_duration = max(segment.video_time_duration for segment in segments)
     target_duration = math.ceil(target_duration)
 
