@@ -2,6 +2,7 @@ log:
   level: INFO
 
 aws:
+  account-id: 589344262905
   dynamodb:
     streams:
       name: ts-streams
