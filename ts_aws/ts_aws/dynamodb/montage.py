@@ -20,7 +20,7 @@ class Montage():
 
 def save_montage(montage):
     try:
-        logger.info("save_montage | start", montage=montage)
+        logger.info("save_montage | start", montage=montage.__dict__    )
         r = table_montages.put_item(
             Item=_replace_floats(montage.__dict__),
             ReturnConsumedCapacity="TOTAL"

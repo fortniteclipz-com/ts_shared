@@ -12,10 +12,10 @@ def save_json(data, json_filename):
         json.dump(data, f)
 
 def get_json(filename):
-    logger.info("get_json | start", filename=filename)
+    logger.info("get_json | start", filename_=filename)
     with open(filename, 'r') as f:
         return json.load(f)
 
 def delete(filename):
-    logger.info("delete | start", filename=filename)
+    logger.info("delete | start", filename_=filename)
     os.remove(filename)

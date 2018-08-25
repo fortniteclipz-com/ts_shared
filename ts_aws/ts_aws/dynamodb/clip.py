@@ -27,7 +27,7 @@ class Clip():
         self._status = kwargs.get('_status')
 
 def save_clip(clip):
-    logger.info("save_clip | start", clip=clip)
+    logger.info("save_clip | start", clip=clip.__dict__)
     try:
         r = table_clips.put_item(
             Item=_replace_floats(clip.__dict__),
