@@ -20,35 +20,38 @@ class Montage():
 
 def save_montage(montage):
     try:
+        logger.info("save_montage | start", montage=montage)
         r = table_montages.put_item(
             Item=_replace_floats(montage.__dict__),
             ReturnConsumedCapacity="TOTAL"
         )
         _replace_decimals(montage.__dict__)
-        logger.info("save_montage", response=r)
+        logger.info("save_montage | success", response=r)
     except Exception as e:
-        logger.warn("save_montage error", error=e)
+        logger.error("save_montage | error", error=e)
 
 def get_montage(montage_id):
     try:
+        logger.info("get_montage | start", montage_id=montage_id)
         r = table_montages.get_item(
             Key={'montage_id': montage_id},
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_montage", response=r)
+        logger.info("get_montage | success", response=r)
         return Montage(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.warn("get_montage error", error=e)
+        logger.error("get_montage | error", error=e)
         return None
 
 def get_all_montages():
     try:
+        logger.info("get_all_montages | start")
         r = table_montages.scan(
             Limit=23,
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_all_montages", response=r)
+        logger.info("get_all_montages | success", response=r)
         return list(map(lambda c: Montage(**c), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.warn("get_all_montages error", error=e)
+        logger.error("get_all_montages | error", error=e)
         return []

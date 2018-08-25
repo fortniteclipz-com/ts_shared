@@ -27,16 +27,18 @@ class Clip():
         self._status = kwargs.get('_status')
 
 def save_clip(clip):
+    logger.info("save_clip | start", clip=clip)
     try:
         r = table_clips.put_item(
             Item=_replace_floats(clip.__dict__),
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("save_clip", response=r)
+        logger.info("save_clip | success", response=r)
     except Exception as e:
-        logger.warn("save_clip error", error=e)
+        logger.error("save_clip | error", error=e)
 
 def get_clip(clip_id):
+    logger.info("get_clip | start", clip_id=clip_id)
     try:
         r = table_clips.get_item(
             Key={
@@ -44,13 +46,14 @@ def get_clip(clip_id):
             },
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_clip", response=r)
+        logger.info("get_clip | success", response=r)
         return Clip(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.warn("get_clip error", error=e)
+        logger.error("get_clip | error", error=e)
         return None
 
 def get_clips(clip_ids):
+    logger.info("get_clips | start", clip_ids=clip_ids)
     try:
         r = resource.batch_get_item(
             RequestItems={
@@ -60,26 +63,29 @@ def get_clips(clip_ids):
             },
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_clips", response=r)
+        logger.info("get_clips | success", response=r)
         return list(map(lambda cs: Clip(**cs), _replace_decimals(r['Responses'][table_clips_name])))
     except Exception as e:
-        logger.warn("get_clips error", error=e)
+        logger.error("get_clips | error", error=e)
         return []
 
 def get_all_clips():
+    logger.info("get_all_clips | start")
     try:
         r = table_clips.scan(
             Limit=23,
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_all_clips", response=r)
+        logger.info("get_all_clips | success", response=r)
         return list(map(lambda c: Clip(**c), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.warn("get_all_clips error", error=e)
+        logger.error("get_all_clips | error", error=e)
         return []
 
 def get_clip_stream_segments(stream, clip):
+    logger.info("get_clip_stream_segments | start", stream=stream, clip=clip)
     try:
+        logger.info("get_clip_stream_segments | start uno", stream=stream, clip=clip)
         r = table_stream_segments.query(
             IndexName="stream_id-time_in-index",
             KeyConditionExpression="stream_id = :stream_id AND time_in <= :time_in",
@@ -91,7 +97,7 @@ def get_clip_stream_segments(stream, clip):
             Limit=2,
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_clip_stream_segments | first", response=r)
+        logger.info("get_clip_stream_segments | success uno", response=r)
 
         if len(r['Items']) == 2:
             last_css = ts_aws.dynamodb.stream_segment.StreamSegment(**_replace_decimals(r['Items'][1]))
@@ -105,6 +111,7 @@ def get_clip_stream_segments(stream, clip):
         else:
             exclusiveStartKey = {}
 
+        logger.info("get_clip_stream_segments | start duo", stream=stream, clip=clip, exclusiveStartKey=exclusiveStartKey)
         r = table_stream_segments.query(
             IndexName="stream_id-time_in-index",
             KeyConditionExpression="stream_id = :stream_id AND time_in < :time_out",
@@ -115,9 +122,9 @@ def get_clip_stream_segments(stream, clip):
             ReturnConsumedCapacity="TOTAL",
             **exclusiveStartKey
         )
-        logger.info("get_clip_stream_segments | final", response=r)
+        logger.info("get_clip_stream_segments | success duo", response=r)
         return list(map(lambda ss: ts_aws.dynamodb.stream_segment.StreamSegment(**ss), _replace_decimals(r['Items'])))
 
     except Exception as e:
-        logger.warn("get_clip_stream_segments error", error=e)
+        logger.error("get_clip_stream_segments | error", error=e)
         return []

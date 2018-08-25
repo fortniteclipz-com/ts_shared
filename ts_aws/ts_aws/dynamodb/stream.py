@@ -19,16 +19,18 @@ class Stream():
         self._status = kwargs.get('_status')
 
 def save_stream(stream):
+    logger.info("save_stream | start", stream=stream.__dict__)
     try:
         r = table_streams.put_item(
             Item=_replace_floats(stream.__dict__),
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("save_stream", response=r)
+        logger.info("save_stream | success", response=r)
     except Exception as e:
-        logger.warn("save_stream error", error=e)
+        logger.error("save_stream | error", error=e)
 
 def get_stream(stream_id):
+    logger.info("get_stream | start", stream_id=stream_id)
     try:
         r = table_streams.get_item(
             Key={
@@ -36,8 +38,8 @@ def get_stream(stream_id):
             },
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_stream", response=r)
+        logger.info("get_stream | success", response=r)
         return Stream(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.warn("get_stream error", error=e)
+        logger.warn("get_stream | warn", warn=e)
         return None

@@ -17,18 +17,20 @@ class MontageClip():
         self.clip_order = kwargs.get('clip_order')
 
 def save_montage_clips(montage_clips):
+    logger.info("save_montage_clips | start", montage_clips_length=len(montage_clips))
     try:
         with table_montage_clips.batch_writer() as batch:
             for i, mc in enumerate(montage_clips):
                 batch.put_item(
                     Item=_replace_floats(mc.__dict__)
                 )
-                logger.info("save_montage_clips", current=i+1, total=len(montage_clips))
+                logger.info("save_montage_clips | success", current=i+1, total=len(montage_clips))
         return list(map(lambda mc: MontageClip(**_replace_decimals(mc.__dict__)), montage_clips))
     except Exception as e:
-        logger.warn("save_montage_clips error", error=e)
+        logger.error("save_montage_clips | error", error=e)
 
 def get_montage_clips(montage_id):
+    logger.info("get_montage_clips | start", montage_id=montage_id)
     try:
         r = table_montage_clips.query(
             KeyConditionExpression="montage_id = :montage_id",
@@ -37,8 +39,8 @@ def get_montage_clips(montage_id):
             }),
             ReturnConsumedCapacity="TOTAL"
         )
-        logger.info("get_montage_clips", response=r)
+        logger.info("get_montage_clips | success", response=r)
         return list(map(lambda mc: MontageClip(**mc), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.warn("get_montage_clips error", error=e)
+        logger.error("get_montage_clips | error", error=e)
         return []
