@@ -83,9 +83,9 @@ def get_all_clips():
         return []
 
 def get_clip_stream_segments(stream, clip):
-    logger.info("get_clip_stream_segments | start", stream=stream, clip=clip)
+    logger.info("get_clip_stream_segments | start", stream=stream.__dict__, clip=clip.__dict__)
     try:
-        logger.info("get_clip_stream_segments | start uno", stream=stream, clip=clip)
+        logger.info("get_clip_stream_segments | start uno", stream=stream.__dict__, clip=clip.__dict__)
         r = table_stream_segments.query(
             IndexName="stream_id-time_in-index",
             KeyConditionExpression="stream_id = :stream_id AND time_in <= :time_in",
@@ -111,7 +111,7 @@ def get_clip_stream_segments(stream, clip):
         else:
             exclusiveStartKey = {}
 
-        logger.info("get_clip_stream_segments | start duo", stream=stream, clip=clip, exclusiveStartKey=exclusiveStartKey)
+        logger.info("get_clip_stream_segments | start duo", stream=stream.__dict__, clip=clip.__dict__, exclusiveStartKey=exclusiveStartKey)
         r = table_stream_segments.query(
             IndexName="stream_id-time_in-index",
             KeyConditionExpression="stream_id = :stream_id AND time_in < :time_out",
