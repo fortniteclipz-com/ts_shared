@@ -64,14 +64,14 @@ def probe_media_video(media_filename, packets_filename):
     os.makedirs(os.path.dirname(packets_filename), exist_ok=True)
     with open(packets_filename, 'w') as f:
         cmd = f"ffprobe -v 0 -select_streams v -show_packets -of json -i {media_filename}"
-        p = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL)
+        p = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL, shell=True)
 
 def probe_media_audio(media_filename, packets_filename):
     logger.info("probe_media_audio | start", media_filename=media_filename, packets_filename=packets_filename)
     os.makedirs(os.path.dirname(packets_filename), exist_ok=True)
     with open(packets_filename, 'w') as f:
         cmd = f"ffprobe -v 0 -select_streams a -show_packets -of json -i {media_filename}"
-        p = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL)
+        p = subprocess.call(cmd, stdout=f, stderr=subprocess.DEVNULL, shell=True)
 
 def thumbnail_media_video(media_filename, thumbnail_filename_pattern):
     logger.info("thumbnail_media_video | start", media_filename=media_filename, thumbnail_filename_pattern=thumbnail_filename_pattern)
