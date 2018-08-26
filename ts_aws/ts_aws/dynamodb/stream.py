@@ -14,10 +14,10 @@ table_streams_name = ts_config.get('aws.dynamodb.streams.name')
 table_streams = resource.Table(table_streams_name)
 
 def save_stream(stream):
-    logger.info("save_stream | start", stream=stream.__dict__)
+    logger.info("save_stream | start", stream=stream)
     try:
         r = table_streams.put_item(
-            Item=_replace_floats(stream.__dict__),
+            Item=_replace_floats(stream),
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("save_stream | success", response=r)

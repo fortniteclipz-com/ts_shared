@@ -1,5 +1,7 @@
-class ClipSegment():
+class ClipSegment(dict):
     def __init__(self, **kwargs):
+        super(ClipSegment, self).__init__(**kwargs)
+
         self.clip_id = kwargs.get('clip_id')
         self.segment = kwargs.get('segment')
 
@@ -17,3 +19,9 @@ class ClipSegment():
         self.video_url_media = kwargs.get('video_url_media')
 
         self.discontinuity = kwargs.get('discontinuity')
+
+    def __getattr__(self, attr):
+        return self.get(attr)
+
+    def __setattr__(self, key, value):
+        self.__setitem__(key, value)

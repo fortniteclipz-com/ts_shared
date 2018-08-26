@@ -16,10 +16,10 @@ table_stream_segments_name = ts_config.get('aws.dynamodb.stream-segments.name')
 table_stream_segments = resource.Table(table_stream_segments_name)
 
 def save_clip(clip):
-    logger.info("save_clip | start", clip=clip.__dict__)
+    logger.info("save_clip | start", clip=clip)
     try:
         r = table_clips.put_item(
-            Item=_replace_floats(clip.__dict__),
+            Item=_replace_floats(clip),
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("save_clip | success", response=r)
@@ -72,9 +72,9 @@ def get_all_clips():
         return []
 
 def get_clip_stream_segments(stream, clip):
-    logger.info("get_clip_stream_segments | start", stream=stream.__dict__, clip=clip.__dict__)
+    logger.info("get_clip_stream_segments | start", stream=stream, clip=clip)
     try:
-        logger.info("get_clip_stream_segments | start uno", stream=stream.__dict__, clip=clip.__dict__)
+        logger.info("get_clip_stream_segments | start uno", stream=stream, clip=clip)
         r = table_stream_segments.query(
             IndexName="stream_id-time_in-index",
             KeyConditionExpression="stream_id = :stream_id AND time_in <= :time_in",
@@ -100,7 +100,7 @@ def get_clip_stream_segments(stream, clip):
         else:
             exclusiveStartKey = {}
 
-        logger.info("get_clip_stream_segments | start duo", stream=stream.__dict__, clip=clip.__dict__, exclusiveStartKey=exclusiveStartKey)
+        logger.info("get_clip_stream_segments | start duo", stream=stream, clip=clip, exclusiveStartKey=exclusiveStartKey)
         r = table_stream_segments.query(
             IndexName="stream_id-time_in-index",
             KeyConditionExpression="stream_id = :stream_id AND time_in < :time_out",

@@ -18,7 +18,7 @@ def save_clip_segments(clip_segments):
         with table_clip_segments.batch_writer() as batch:
             for i, cs in enumerate(clip_segments):
                 batch.put_item(
-                    Item=_replace_floats(cs.__dict__)
+                    Item=_replace_floats(cs)
                 )
                 logger.info("save_clip_segments | success", current=i+1, total=len(clip_segments))
     except Exception as e:

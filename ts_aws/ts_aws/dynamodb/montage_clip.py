@@ -18,10 +18,10 @@ def save_montage_clips(montage_clips):
         with table_montage_clips.batch_writer() as batch:
             for i, mc in enumerate(montage_clips):
                 batch.put_item(
-                    Item=_replace_floats(mc.__dict__)
+                    Item=_replace_floats(mc)
                 )
                 logger.info("save_montage_clips | success", current=i+1, total=len(montage_clips))
-        return list(map(lambda mc: ts_model.MontageClip(**_replace_decimals(mc.__dict__)), montage_clips))
+        return list(map(lambda mc: ts_model.MontageClip(**_replace_decimals(mc)), montage_clips))
     except Exception as e:
         logger.error("save_montage_clips | error", traceback=''.join(traceback.format_exc()))
 

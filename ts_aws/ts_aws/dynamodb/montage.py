@@ -14,12 +14,12 @@ table_montages = resource.Table(table_montages_name)
 
 def save_montage(montage):
     try:
-        logger.info("save_montage | start", montage=montage.__dict__)
+        logger.info("save_montage | start", montage=montage)
         r = table_montages.put_item(
-            Item=_replace_floats(montage.__dict__),
+            Item=_replace_floats(montage),
             ReturnConsumedCapacity="TOTAL"
         )
-        _replace_decimals(montage.__dict__)
+        _replace_decimals(montage)
         logger.info("save_montage | success", response=r)
     except Exception as e:
         logger.error("save_montage | error", traceback=''.join(traceback.format_exc()))
