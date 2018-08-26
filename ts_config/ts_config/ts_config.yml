@@ -3,6 +3,7 @@ log:
 
 aws:
   account-id: 589344262905
+  region: us-west-1
   dynamodb:
     streams:
       name: ts-streams
