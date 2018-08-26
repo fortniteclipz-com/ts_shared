@@ -1,5 +1,6 @@
 import ts_config
 import ts_logger
+import ts_model.Exception
 import ts_model.Stream
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
@@ -33,9 +34,11 @@ def get_stream(stream_id):
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_stream | success", response=r)
+        if 'Item' not in r:
+            raise ts_model.Exception(ts_model.Exception.STREAM_NOT_EXISTS)
         return ts_model.Stream(**_replace_decimals(r['Item']))
-    except KeyError as e:
-        logger.warn("get_stream | warn", traceback=''.join(traceback.format_tb(e.__traceback__)))
+    except ts_model.Exception as e:
+        logger.warn("get_stream | warn", code=e.code)
         return None
     except Exception as e:
         logger.error("get_stream | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
