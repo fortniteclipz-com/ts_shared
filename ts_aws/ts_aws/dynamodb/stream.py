@@ -1,4 +1,4 @@
-    import ts_config
+import ts_config
 import ts_logger
 import ts_model.Exception
 import ts_model.Stream
@@ -38,7 +38,7 @@ def get_stream(stream_id):
             raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
         return ts_model.Stream(**_replace_decimals(r['Item']))
     except ts_model.Exception as e:
-        logger.warn("get_stream | warn", code=e.code)
+        logger.warn("get_stream | warn", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return None
     except Exception as e:
         logger.error("get_stream | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
