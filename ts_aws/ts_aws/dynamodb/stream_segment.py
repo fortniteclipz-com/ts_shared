@@ -47,7 +47,7 @@ def save_stream_segments(stream_segments):
                 batch.put_item(
                     Item=_replace_floats(ss)
                 )
-                logger.info("save_stream_segments | success", current=i+1, total=len(stream_segments))
+        logger.info("save_stream_segments | success")
     except Exception as e:
         logger.error("save_stream_segments | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
 

@@ -20,7 +20,7 @@ def save_clip_segments(clip_segments):
                 batch.put_item(
                     Item=_replace_floats(cs)
                 )
-                logger.info("save_clip_segments | success", current=i+1, total=len(clip_segments))
+        logger.info("save_clip_segments | success")
     except Exception as e:
         logger.error("save_clip_segments | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
 

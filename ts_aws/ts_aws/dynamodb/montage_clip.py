@@ -20,7 +20,7 @@ def save_montage_clips(montage_clips):
                 batch.put_item(
                     Item=_replace_floats(mc)
                 )
-                logger.info("save_montage_clips | success", current=i+1, total=len(montage_clips))
+        logger.info("save_montage_clips | success")
         return list(map(lambda mc: ts_model.MontageClip(**_replace_decimals(mc)), montage_clips))
     except Exception as e:
         logger.error("save_montage_clips | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
