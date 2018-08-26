@@ -22,7 +22,7 @@ def save_stream(stream):
         )
         logger.info("save_stream | success", response=r)
     except Exception as e:
-        logger.error("save_stream | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
+        logger.error("save_stream | error", traceback=''.join(traceback.format_exc()))
 
 def get_stream(stream_id):
     logger.info("get_stream | start", stream_id=stream_id)
@@ -41,5 +41,5 @@ def get_stream(stream_id):
         logger.warn("get_stream | warn", code=e.code)
         return None
     except Exception as e:
-        logger.error("get_stream | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
+        logger.error("get_stream | error", traceback=''.join(traceback.format_exc()))
         return None

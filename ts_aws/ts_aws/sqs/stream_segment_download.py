@@ -17,7 +17,8 @@ def send_message(payload):
     queue.send_message(MessageBody=json.dumps(payload))
 
 def change_visibility(receipt_handle):
-    logger.info("change_visibility", receipt_handle=receipt_handle)
-    message = queue.Message(receipt_handle)
-    message.change_visibility(VisibilityTimeout=15)
+    if receipt_handle is not None:
+        logger.info("change_visibility", receipt_handle=receipt_handle)
+        message = queue.Message(receipt_handle)
+        message.change_visibility(VisibilityTimeout=15)
 
