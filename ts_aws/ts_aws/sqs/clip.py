@@ -18,8 +18,6 @@ def send_message(payload):
 
 def change_visibility(receipt_handle):
     logger.info("change_visibility | start", receipt_handle=receipt_handle)
-    # if check for local testing purposes
-    if receipt_handle is not None:
-        message = queue.Message(receipt_handle)
-        message.change_visibility(VisibilityTimeout=15)
+    message = queue.Message(receipt_handle)
+    message.change_visibility(VisibilityTimeout=15)
 
