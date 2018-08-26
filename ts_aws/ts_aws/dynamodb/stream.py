@@ -35,7 +35,7 @@ def get_stream(stream_id):
         )
         logger.info("get_stream | success", response=r)
         if 'Item' not in r:
-            raise ts_model.Exception(ts_model.Exception.STREAM_NOT_EXIST)
+            raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
         return ts_model.Stream(**_replace_decimals(r['Item']))
     except ts_model.Exception as e:
         logger.warn("get_stream | warn", code=e.code)
