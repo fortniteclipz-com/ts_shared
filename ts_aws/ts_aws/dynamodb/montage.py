@@ -37,11 +37,11 @@ def get_montage(montage_id):
         logger.error("get_montage | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return None
 
-def get_all_montages():
+def get_all_montages(limit):
     try:
         logger.info("get_all_montages | start")
         r = table_montages.scan(
-            Limit=23,
+            Limit=limit,
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_all_montages | success", response=r)

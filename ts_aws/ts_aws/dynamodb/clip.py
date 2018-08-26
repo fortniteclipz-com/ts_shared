@@ -58,11 +58,11 @@ def get_clips(clip_ids):
         logger.error("get_clips | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return []
 
-def get_all_clips():
+def get_all_clips(limit):
     logger.info("get_all_clips | start")
     try:
         r = table_clips.scan(
-            Limit=23,
+            Limit=limit,
             ReturnConsumedCapacity="TOTAL"
         )
         logger.info("get_all_clips | success", response=r)
