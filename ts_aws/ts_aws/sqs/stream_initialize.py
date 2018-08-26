@@ -13,5 +13,11 @@ queue_url = client.get_queue_url(QueueName=ts_config.get('aws.sqs.stream-initial
 queue = resource.Queue(queue_url)
 
 def send_message(payload):
-    logger.info("send_message | start", payload=payload)
+    logger.info("send_message", payload=payload)
     queue.send_message(MessageBody=json.dumps(payload))
+
+def change_visibility(receipt_handle):
+    logger.info("change_visibility", receipt_handle=receipt_handle)
+    message = queue.Message(receipt_handle)
+    message.change_visibility(VisibilityTimeout=15)
+
