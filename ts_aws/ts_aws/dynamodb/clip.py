@@ -5,6 +5,7 @@ import ts_model.StreamSegment
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+import traceback
 
 logger = ts_logger.get(__name__)
 
@@ -23,7 +24,7 @@ def save_clip(clip):
         )
         logger.info("save_clip | success", response=r)
     except Exception as e:
-        logger.error("save_clip | error", error=e)
+        logger.error("save_clip | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
 
 def get_clip(clip_id):
     logger.info("get_clip | start", clip_id=clip_id)
@@ -37,7 +38,7 @@ def get_clip(clip_id):
         logger.info("get_clip | success", response=r)
         return ts_model.Clip(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.error("get_clip | error", error=e)
+        logger.error("get_clip | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return None
 
 def get_clips(clip_ids):
@@ -54,7 +55,7 @@ def get_clips(clip_ids):
         logger.info("get_clips | success", response=r)
         return list(map(lambda cs: ts_model.Clip(**cs), _replace_decimals(r['Responses'][table_clips_name])))
     except Exception as e:
-        logger.error("get_clips | error", error=e)
+        logger.error("get_clips | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return []
 
 def get_all_clips():
@@ -67,7 +68,7 @@ def get_all_clips():
         logger.info("get_all_clips | success", response=r)
         return list(map(lambda c: ts_model.Clip(**c), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.error("get_all_clips | error", error=e)
+        logger.error("get_all_clips | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return []
 
 def get_clip_stream_segments(stream, clip):
@@ -114,5 +115,5 @@ def get_clip_stream_segments(stream, clip):
         return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))
 
     except Exception as e:
-        logger.error("get_clip_stream_segments | error", error=e)
+        logger.error("get_clip_stream_segments | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return []

@@ -4,6 +4,7 @@ import ts_model.Stream
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+import traceback
 
 logger = ts_logger.get(__name__)
 
@@ -20,7 +21,7 @@ def save_stream(stream):
         )
         logger.info("save_stream | success", response=r)
     except Exception as e:
-        logger.error("save_stream | error", error=e)
+        logger.error("save_stream | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
 
 def get_stream(stream_id):
     logger.info("get_stream | start", stream_id=stream_id)
@@ -33,6 +34,9 @@ def get_stream(stream_id):
         )
         logger.info("get_stream | success", response=r)
         return ts_model.Stream(**_replace_decimals(r['Item']))
+    except KeyError as e:
+        logger.warn("get_stream | warn", traceback=''.join(traceback.format_tb(e.__traceback__)))
+        return None
     except Exception as e:
-        logger.warn("get_stream | warn", warn=e)
+        logger.error("get_stream | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return None

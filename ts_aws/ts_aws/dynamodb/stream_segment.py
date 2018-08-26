@@ -3,6 +3,7 @@ import ts_logger
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+import traceback
 
 logger = ts_logger.get(__name__)
 
@@ -19,7 +20,7 @@ def save_stream_segment(stream_segment):
         )
         logger.info("save_stream_segment | success", response=r)
     except Exception as e:
-            logger.error("save_stream_segment | error", error=e)
+            logger.error("save_stream_segment | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
 
 def get_stream_segment(stream_id, segment):
     logger.info("get_stream_segment | start", stream_id=stream_id, segment=segment)
@@ -34,7 +35,7 @@ def get_stream_segment(stream_id, segment):
         logger.info("get_stream_segment | success", response=r)
         return ts_model.StreamSegment(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.error("get_stream_segment | error", error=e)
+        logger.error("get_stream_segment | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return None
 
 def save_stream_segments(stream_segments):
@@ -47,7 +48,7 @@ def save_stream_segments(stream_segments):
                 )
                 logger.info("save_stream_segments | success", current=i+1, total=len(stream_segments))
     except Exception as e:
-        logger.error("save_stream_segments | error", error=e)
+        logger.error("save_stream_segments | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
 
 def get_stream_segments(stream_id):
     logger.info("get_stream_segments | start", stream_id=stream_id)
@@ -62,5 +63,5 @@ def get_stream_segments(stream_id):
         logger.info("get_stream_segments | success", response=r)
         return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.error("get_stream_segments | error", error=e)
+        logger.error("get_stream_segments | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return []

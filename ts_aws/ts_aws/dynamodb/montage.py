@@ -4,6 +4,7 @@ import ts_model.Montage
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+import traceback
 
 logger = ts_logger.get(__name__)
 
@@ -21,7 +22,7 @@ def save_montage(montage):
         _replace_decimals(montage.__dict__)
         logger.info("save_montage | success", response=r)
     except Exception as e:
-        logger.error("save_montage | error", error=e)
+        logger.error("save_montage | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
 
 def get_montage(montage_id):
     try:
@@ -33,7 +34,7 @@ def get_montage(montage_id):
         logger.info("get_montage | success", response=r)
         return ts_model.Montage(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.error("get_montage | error", error=e)
+        logger.error("get_montage | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return None
 
 def get_all_montages():
@@ -46,5 +47,5 @@ def get_all_montages():
         logger.info("get_all_montages | success", response=r)
         return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.error("get_all_montages | error", error=e)
+        logger.error("get_all_montages | error", traceback=''.join(traceback.format_tb(e.__traceback__)))
         return []
