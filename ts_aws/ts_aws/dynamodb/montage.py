@@ -39,7 +39,7 @@ def get_montage(montage_id):
 
 def get_all_montages(limit):
     try:
-        logger.info("get_all_montages | start")
+        logger.info("get_all_montages | start", limit=limit)
         r = table_montages.scan(
             Limit=limit,
             ReturnConsumedCapacity="TOTAL"

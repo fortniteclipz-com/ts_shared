@@ -59,7 +59,7 @@ def get_clips(clip_ids):
         return []
 
 def get_all_clips(limit):
-    logger.info("get_all_clips | start")
+    logger.info("get_all_clips | start", limit=limit)
     try:
         r = table_clips.scan(
             Limit=limit,
