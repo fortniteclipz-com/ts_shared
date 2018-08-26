@@ -22,7 +22,7 @@ def save_clip_segments(clip_segments):
                 )
                 logger.info("save_clip_segments | success", current=i+1, total=len(clip_segments))
     except Exception as e:
-        logger.error("save_clip_segments | error", traceback=''.join(traceback.format_exc()))
+        logger.error("save_clip_segments | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
 
 def get_clip_segments(clip_id):
     logger.info("get_clip_segments | start", clip_id=clip_id)
@@ -37,7 +37,7 @@ def get_clip_segments(clip_id):
         logger.info("get_clip_segments | success", response=r)
         return list(map(lambda cs: ts_model.ClipSegment(**cs), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.error("get_clip_segments | error", traceback=''.join(traceback.format_exc()))
+        logger.error("get_clip_segments | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return []
 
 def get_clips_segments(clip_ids):
@@ -56,5 +56,5 @@ def get_clips_segments(clip_ids):
             clip_segments += list(map(lambda cs: ts_model.ClipSegment(**cs), _replace_decimals(r['Items'])))
         return clip_segments
     except Exception as e:
-        logger.error("get_clips_segments | error", traceback=''.join(traceback.format_exc()))
+        logger.error("get_clips_segments | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return []

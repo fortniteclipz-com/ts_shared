@@ -22,7 +22,7 @@ def save_montage(montage):
         _replace_decimals(montage)
         logger.info("save_montage | success", response=r)
     except Exception as e:
-        logger.error("save_montage | error", traceback=''.join(traceback.format_exc()))
+        logger.error("save_montage | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
 
 def get_montage(montage_id):
     try:
@@ -34,7 +34,7 @@ def get_montage(montage_id):
         logger.info("get_montage | success", response=r)
         return ts_model.Montage(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.error("get_montage | error", traceback=''.join(traceback.format_exc()))
+        logger.error("get_montage | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return None
 
 def get_all_montages():
@@ -47,5 +47,5 @@ def get_all_montages():
         logger.info("get_all_montages | success", response=r)
         return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.error("get_all_montages | error", traceback=''.join(traceback.format_exc()))
+        logger.error("get_all_montages | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return []

@@ -21,7 +21,7 @@ def save_stream_segment(stream_segment):
         )
         logger.info("save_stream_segment | success", response=r)
     except Exception as e:
-            logger.error("save_stream_segment | error", traceback=''.join(traceback.format_exc()))
+            logger.error("save_stream_segment | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
 
 def get_stream_segment(stream_id, segment):
     logger.info("get_stream_segment | start", stream_id=stream_id, segment=segment)
@@ -36,7 +36,7 @@ def get_stream_segment(stream_id, segment):
         logger.info("get_stream_segment | success", response=r)
         return ts_model.StreamSegment(**_replace_decimals(r['Item']))
     except Exception as e:
-        logger.error("get_stream_segment | error", traceback=''.join(traceback.format_exc()))
+        logger.error("get_stream_segment | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return None
 
 def save_stream_segments(stream_segments):
@@ -49,7 +49,7 @@ def save_stream_segments(stream_segments):
                 )
                 logger.info("save_stream_segments | success", current=i+1, total=len(stream_segments))
     except Exception as e:
-        logger.error("save_stream_segments | error", traceback=''.join(traceback.format_exc()))
+        logger.error("save_stream_segments | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
 
 def get_stream_segments(stream_id):
     logger.info("get_stream_segments | start", stream_id=stream_id)
@@ -64,5 +64,5 @@ def get_stream_segments(stream_id):
         logger.info("get_stream_segments | success", response=r)
         return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))
     except Exception as e:
-        logger.error("get_stream_segments | error", traceback=''.join(traceback.format_exc()))
+        logger.error("get_stream_segments | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return []

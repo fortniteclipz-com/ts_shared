@@ -1,4 +1,4 @@
-import ts_config
+    import ts_config
 import ts_logger
 import ts_model.Exception
 import ts_model.Stream
@@ -22,7 +22,7 @@ def save_stream(stream):
         )
         logger.info("save_stream | success", response=r)
     except Exception as e:
-        logger.error("save_stream | error", traceback=''.join(traceback.format_exc()))
+        logger.error("save_stream | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
 
 def get_stream(stream_id):
     logger.info("get_stream | start", stream_id=stream_id)
@@ -41,5 +41,5 @@ def get_stream(stream_id):
         logger.warn("get_stream | warn", code=e.code)
         return None
     except Exception as e:
-        logger.error("get_stream | error", traceback=''.join(traceback.format_exc()))
+        logger.error("get_stream | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return None
