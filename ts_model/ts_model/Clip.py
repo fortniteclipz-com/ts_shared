@@ -11,6 +11,8 @@ class Clip(dict):
         self.key_playlist_master = kwargs.get('key_playlist_master')
         self.key_playlist_video = kwargs.get('key_playlist_video')
 
+        self.key_media_export = kwargs.get('key_media_export')
+
         self._status = kwargs.get('_status')
         self._status_export = kwargs.get('_status_export')
 

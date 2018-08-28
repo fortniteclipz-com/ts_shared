@@ -58,19 +58,19 @@ aws:
           - sqs:ChangeMessageVisibility
         Resource: arn:aws:sqs:${self:custom.config.aws.region}:${self:custom.config.aws.account-id}:*
 
-    s3:
-      main:
-        name: twitch-stitch-main
-        region: us-west-1
-      exported:
-        name: twitch-stitch-exported
-      thumbnails:
-        name: twitch-stitch-thumbnails
+  s3:
+    main:
+      name: twitch-stitch-main
+      region: us-west-1
+    exported:
+      name: twitch-stitch-exported
+    thumbnails:
+      name: twitch-stitch-thumbnails
 
-    sqs:
-      clip:
-        name: ts-clip
-      stream-initialize:
-        name: ts-stream-initialize
-      stream-segment-download:
-        name: ts-stream-segment-download
+  sqs:
+    clip:
+      name: ts-clip
+    stream-initialize:
+      name: ts-stream-initialize
+    stream-segment-download:
+      name: ts-stream-segment-download
