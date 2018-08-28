@@ -16,6 +16,8 @@ table_clips_name = ts_config.get('aws.dynamodb.clips.name')
 table_clips = resource.Table(table_clips_name)
 table_stream_segments_name = ts_config.get('aws.dynamodb.stream-segments.name')
 table_stream_segments = resource.Table(table_stream_segments_name)
+table_clip_segments_name = ts_config.get('aws.dynamodb.clip-segments.name')
+table_clip_segments = resource.Table(table_clip_segments_name)
 
 def save_clip(clip):
     logger.info("save_clip | start", clip=clip)
