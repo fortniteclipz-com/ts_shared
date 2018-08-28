@@ -38,7 +38,7 @@ def create_media_export(media_type, media_id):
                             'Codec': "H_264",
                             'H264Settings': {
                                 'InterlaceMode': "PROGRESSIVE",
-                                'NumberReferenceFrames': 3,
+                                'NumberReferenceFrames': 1,
                                 'Syntax': "DEFAULT",
                                 'Softness': 0,
                                 'GopClosedCadence': 1,
@@ -62,13 +62,13 @@ def create_media_export(media_type, media_id):
                                 'AdaptiveQuantization': "HIGH",
                                 'CodecLevel': "AUTO",
                                 'FieldEncoding': "PAFF",
-                                'SceneChangeDetect': "ENABLED",
+                                'SceneChangeDetect': "DISABLED",
                                 'QualityTuningLevel': "SINGLE_PASS",
                                 'FramerateConversionAlgorithm': "DUPLICATE_DROP",
                                 'UnregisteredSeiTimecode': "DISABLED",
                                 'GopSizeUnits': "FRAMES",
                                 'ParControl': "INITIALIZE_FROM_SOURCE",
-                                'NumberBFramesBetweenReferenceFrames': 2,
+                                'NumberBFramesBetweenReferenceFrames': 0,
                                 'RepeatPps': "DISABLED",
                                 'DynamicSubGop': "STATIC"
                             }
