@@ -5,6 +5,7 @@ class Exception(Exception):
     def __str__(self):
         return str(self.code)
 
+    CLIP__ALREADY_PROCESSED = "CLIP__ALREADY_PROCESSED"
     CLIP__CLIP_SEGMENTS_NOT_EXIST = "CLIP__CLIP_SEGMENTS_NOT_EXIST"
     CLIP__NOT_EXIST = "CLIP__NOT_EXIST"
     CLIP__STREAM_SEGMENTS_NOT_EXIST = "CLIP__STREAM_SEGMENTS_NOT_EXIST"

@@ -13,13 +13,13 @@ def save_json(data, json_filename):
     logger.info("save_json | success")
 
 def get_json(filename):
-    logger.info("get_json | start", filename_=filename)
+    logger.info("get_json | start", _filename=filename)
     with open(filename, 'r') as f:
         data =  json.load(f)
         logger.info("get_json | success", data=data)
-        return
+        return data
 
 def delete(filename):
-    logger.info("delete | start", filename_=filename)
+    logger.info("delete | start", _filename=filename)
     os.remove(filename)
     logger.info("delete | success")
