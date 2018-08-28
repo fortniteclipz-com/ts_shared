@@ -9,6 +9,8 @@ client = boto3.client('mediaconvert', endpoint_url=ts_config.get("aws.mediaconve
 
 def create_media_export(media_type, media_id):
     logger.info("create_media_export | start", media_type=media_type, media_id=media_id)
+    bucket = ts_config.get('aws.s3.main.name')
+    url_prefix = f"s3://{bucket}/{media_type}s/{media_id}"
     r = client.create_job(
         UserMetadata={
           'media_type': f"{media_type}",
@@ -99,7 +101,7 @@ def create_media_export(media_type, media_id):
                 'OutputGroupSettings': {
                     'Type': "FILE_GROUP_SETTINGS",
                     'FileGroupSettings': {
-                        'Destination': f"s3://twitch-stitch-main/{media_type}s/{media_id}/{media_type}"
+                        'Destination': f"{url_prefix}/{media_type}"
                     }
                 }
             }],
@@ -109,7 +111,7 @@ def create_media_export(media_type, media_id):
                     'Audio Selector 1': {
                         'Offset': 0,
                         'DefaultSelection': "DEFAULT",
-                        'ExternalAudioFileInput': f"s3://twitch-stitch-main/{media_type}s/{media_id}/playlist-audio.m3u8",
+                        'ExternalAudioFileInput': f"{url_prefix}/playlist-audio.m3u8",
                         'ProgramSelection': 1
                     }
                 },
@@ -122,7 +124,7 @@ def create_media_export(media_type, media_id):
                 'DeblockFilter': "DISABLED",
                 'DenoiseFilter': "DISABLED",
                 'TimecodeSource': "EMBEDDED",
-                'FileInput': f"s3://twitch-stitch-main/{media_type}s/{media_id}/playlist-video.m3u8"
+                'FileInput': f"{url_prefix}/playlist-video.m3u8"
             }]
         }
     )
