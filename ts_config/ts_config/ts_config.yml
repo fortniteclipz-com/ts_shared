@@ -17,6 +17,9 @@ aws:
       name: ts-montages
     montage-clips:
       name: ts-montage-clips
+  mediaconvert:
+    endpoint_url: https://2atsycqh.mediaconvert.us-west-1.amazonaws.com
+    role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
   s3:
     main:
       name: twitch-stitch-main
