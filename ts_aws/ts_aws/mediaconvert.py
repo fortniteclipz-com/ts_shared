@@ -99,7 +99,7 @@ def create_media_export(media_type, media_id):
                 'OutputGroupSettings': {
                     'Type': "FILE_GROUP_SETTINGS",
                     'FileGroupSettings': {
-                        'Destination': f"s3://twitch-stitch-main/clips/{media_id}/{media_type}"
+                        'Destination': f"s3://twitch-stitch-main/{media_type}s/{media_id}/{media_type}"
                     }
                 }
             }],
@@ -109,7 +109,7 @@ def create_media_export(media_type, media_id):
                     'Audio Selector 1': {
                         'Offset': 0,
                         'DefaultSelection': "DEFAULT",
-                        'ExternalAudioFileInput': f"s3://twitch-stitch-main/clips/{media_id}/playlist-audio.m3u8",
+                        'ExternalAudioFileInput': f"s3://twitch-stitch-main/{media_type}s/{media_id}/playlist-audio.m3u8",
                         'ProgramSelection': 1
                     }
                 },
@@ -122,7 +122,7 @@ def create_media_export(media_type, media_id):
                 'DeblockFilter': "DISABLED",
                 'DenoiseFilter': "DISABLED",
                 'TimecodeSource': "EMBEDDED",
-                'FileInput': f"s3://twitch-stitch-main/clips/{media_id}/playlist-video.m3u8"
+                'FileInput': f"s3://twitch-stitch-main/{media_type}s/{media_id}/playlist-video.m3u8"
             }]
         }
     )
