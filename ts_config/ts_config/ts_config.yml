@@ -4,6 +4,7 @@ log:
 aws:
   account-id: 589344262905
   region: us-west-1
+
   dynamodb:
     streams:
       name: ts-streams
@@ -20,19 +21,56 @@ aws:
   mediaconvert:
     endpoint_url: https://2atsycqh.mediaconvert.us-west-1.amazonaws.com
     role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
-  s3:
-    main:
-      name: twitch-stitch-main
-      region: us-west-1
-    exported:
-      name: twitch-stitch-exported
-    thumbnails:
-      name: twitch-stitch-thumbnails
-  sqs:
-    clip:
-      name: ts-clip
-    stream-initialize:
-      name: ts-stream-initialize
-    stream-segment-download:
-      name: ts-stream-segment-download
 
+  iam:
+    role-statement:
+      - Effect: Allow
+        Action:
+          - dynamodb:DescribeTable
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+          - dynamodb:BatchGetItem
+          - dynamodb:BatchWriteItem
+        Resource: arn:aws:dynamodb:${self:custom.config.aws.region}:${self:custom.config.aws.account-id}:*
+      - Effect: Allow
+        Action:
+          - iam:PassRole
+        Resource: arn:aws:iam::${self:custom.config.aws.account-id}:*
+      - Effect: Allow
+        Action:
+          - mediaconvert:CreateJob
+        Resource: arn:aws:mediaconvert:${self:custom.config.aws.region}:${self:custom.config.aws.account-id}:*
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::*
+      - Effect: Allow
+        Action:
+          - sqs:GetQueueUrl
+          - sqs:SendMessage
+          - sqs:ReceiveMessage
+          - sqs:DeleteMessage
+          - sqs:ChangeMessageVisibility
+        Resource: arn:aws:sqs:${self:custom.config.aws.region}:${self:custom.config.aws.account-id}:*
+
+    s3:
+      main:
+        name: twitch-stitch-main
+        region: us-west-1
+      exported:
+        name: twitch-stitch-exported
+      thumbnails:
+        name: twitch-stitch-thumbnails
+
+    sqs:
+      clip:
+        name: ts-clip
+      stream-initialize:
+        name: ts-stream-initialize
+      stream-segment-download:
+        name: ts-stream-segment-download
