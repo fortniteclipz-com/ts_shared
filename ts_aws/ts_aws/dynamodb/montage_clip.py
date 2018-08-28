@@ -32,4 +32,6 @@ def get_montage_clips(montage_id):
         ReturnConsumedCapacity="TOTAL"
     )
     logger.info("get_montage_clips | success", response=r)
+    if len(r['Items']) == 0:
+        raise ts_model.Exception(ts_model.Exception.MONTAGE_CLIPS__NOT_EXIST)
     return list(map(lambda mc: ts_model.MontageClip(**mc), _replace_decimals(r['Items'])))

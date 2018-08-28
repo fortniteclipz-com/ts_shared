@@ -1,5 +1,6 @@
 import ts_config
 import ts_logger
+import ts_model.Exception
 import ts_model.Montage
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
@@ -28,6 +29,8 @@ def get_montage(montage_id):
         ReturnConsumedCapacity="TOTAL"
     )
     logger.info("get_montage | success", response=r)
+    if 'Item' not in r:
+        raise ts_model.Exception(ts_model.Exception.MONTAGE__NOT_EXIST)
     return ts_model.Montage(**_replace_decimals(r['Item']))
 
 def get_all_montages(limit):

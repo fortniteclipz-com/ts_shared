@@ -30,6 +30,8 @@ def get_stream_segment(stream_id, segment):
         ReturnConsumedCapacity="TOTAL"
     )
     logger.info("get_stream_segment | success", response=r)
+    if 'Item' not in r:
+        raise ts_model.Exception(ts_model.Exception.STREAM_SEGMENT__NOT_EXIST)
     return ts_model.StreamSegment(**_replace_decimals(r['Item']))
 
 def save_stream_segments(stream_segments):
@@ -51,4 +53,6 @@ def get_stream_segments(stream_id):
         ReturnConsumedCapacity="TOTAL"
     )
     logger.info("get_stream_segments | success", response=r)
+    if len(r['Items']) == 0:
+        raise ts_model.Exception(ts_model.Exception.STREAM_SEGMENTS__NOT_EXIST)
     return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))

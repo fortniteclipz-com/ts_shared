@@ -1,6 +1,8 @@
 import ts_config
 import ts_logger
 import ts_model.Clip
+import ts_model.ClipSegment
+import ts_model.Exception
 import ts_model.StreamSegment
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
@@ -32,6 +34,8 @@ def get_clip(clip_id):
         ReturnConsumedCapacity="TOTAL"
     )
     logger.info("get_clip | success", response=r)
+    if 'Item' not in r:
+        raise ts_model.Exception(ts_model.Exception.CLIP__NOT_EXIST)
     return ts_model.Clip(**_replace_decimals(r['Item']))
 
 def get_clips(clip_ids):
@@ -45,6 +49,8 @@ def get_clips(clip_ids):
         ReturnConsumedCapacity="TOTAL"
     )
     logger.info("get_clips | success", response=r)
+    if len(r['Responses'][table_clips_name]) == 0:
+            raise ts_model.Exception(ts_model.Exception.CLIPS__NOT_EXIST)
     return list(map(lambda cs: ts_model.Clip(**cs), _replace_decimals(r['Responses'][table_clips_name])))
 
 def get_all_clips(limit):
@@ -95,4 +101,24 @@ def get_clip_stream_segments(stream, clip):
         **exclusiveStartKey
     )
     logger.info("get_clip_stream_segments | success duo", response=r)
+
+    if len(r['Items']) == 0:
+        raise ts_model.Exception(ts_model.Exception.CLIP__STREAM_SEGMENTS_NOT_EXIST)
     return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))
+
+def get_clips_clip_segments(clip_ids):
+    logger.info("get_clips_clip_segments | start", clip_ids=clip_ids)
+    clip_segments = []
+    for c_id in clip_ids:
+        r = table_clip_segments.query(
+            KeyConditionExpression="clip_id = :clip_id",
+            ExpressionAttributeValues=_replace_floats({
+                ':clip_id': c_id,
+            }),
+            ReturnConsumedCapacity="TOTAL"
+        )
+        logger.info("get_clips_clip_segments | success", clip_id=c_id, response=r)
+        if len(r['Items']) == 0:
+            raise ts_model.Exception(ts_model.Exception.CLIP__CLIP_SEGMENTS_NOT_EXIST)
+        clip_segments += list(map(lambda cs: ts_model.ClipSegment(**cs), _replace_decimals(r['Items'])))
+    return clip_segments

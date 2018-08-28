@@ -21,5 +21,5 @@ def change_visibility(receipt_handle):
     if receipt_handle is not None:
         logger.info("change_visibility | start", receipt_handle=receipt_handle)
         message = queue.Message(receipt_handle)
-        message.change_visibility(VisibilityTimeout=15)
+        r = message.change_visibility(VisibilityTimeout=15)
         logger.info("change_visibility | success", response=r)

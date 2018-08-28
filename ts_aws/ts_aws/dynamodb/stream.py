@@ -23,17 +23,13 @@ def save_stream(stream):
 
 def get_stream(stream_id):
     logger.info("get_stream | start", stream_id=stream_id)
-    try:
-        r = table_streams.get_item(
-            Key={
-                'stream_id': stream_id
-            },
-            ReturnConsumedCapacity="TOTAL"
-        )
-        logger.info("get_stream | success", response=r)
-        if 'Item' not in r:
-            raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
-        return ts_model.Stream(**_replace_decimals(r['Item']))
-    except ts_model.Exception as e:
-        logger.warn("get_stream | warn", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
-        return None
+    r = table_streams.get_item(
+        Key={
+            'stream_id': stream_id
+        },
+        ReturnConsumedCapacity="TOTAL"
+    )
+    logger.info("get_stream | success", response=r)
+    if 'Item' not in r:
+        raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
+    return ts_model.Stream(**_replace_decimals(r['Item']))
