@@ -15,14 +15,11 @@ table_streams = resource.Table(table_streams_name)
 
 def save_stream(stream):
     logger.info("save_stream | start", stream=stream)
-    try:
-        r = table_streams.put_item(
-            Item=_replace_floats(stream),
-            ReturnConsumedCapacity="TOTAL"
-        )
-        logger.info("save_stream | success", response=r)
-    except Exception as e:
-        logger.error("save_stream | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
+    r = table_streams.put_item(
+        Item=_replace_floats(stream),
+        ReturnConsumedCapacity="TOTAL"
+    )
+    logger.info("save_stream | success", response=r)
 
 def get_stream(stream_id):
     logger.info("get_stream | start", stream_id=stream_id)
@@ -39,7 +36,4 @@ def get_stream(stream_id):
         return ts_model.Stream(**_replace_decimals(r['Item']))
     except ts_model.Exception as e:
         logger.warn("get_stream | warn", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
-        return None
-    except Exception as e:
-        logger.error("get_stream | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
         return None

@@ -12,6 +12,7 @@ class Clip(dict):
         self.key_playlist_video = kwargs.get('key_playlist_video')
 
         self._status = kwargs.get('_status')
+        self._status_export = kwargs.get('_status_export')
 
     def __getattr__(self, attr):
         return self.get(attr)

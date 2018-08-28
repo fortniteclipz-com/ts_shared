@@ -8,12 +8,13 @@ logger = ts_logger.get(__name__)
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get("aws.mediaconvert.endpoint_url"))
 
 def create_media_export(media_type, media_id):
-    response = client.create_job(
+    logger.info("create_media_export | start", media_type=media_type, media_id=media_id)
+    r = client.create_job(
         UserMetadata={
-          'media_type': "clip",
-          'media_id': "c-rdMaVaUnwWJ9xHgSnA9EJK"
+          'media_type': f"{media_type}",
+          'media_id': f"{media_id}"
         },
-        Role="arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert",
+        Role=ts_config.get("aws.mediaconvert.role"),
         Settings={
             'OutputGroups': [{
                   'Name': "File Group",
@@ -98,7 +99,7 @@ def create_media_export(media_type, media_id):
                 'OutputGroupSettings': {
                     'Type': "FILE_GROUP_SETTINGS",
                     'FileGroupSettings': {
-                        'Destination': "s3://twitch-stitch-main/clips/c-rdMaVaUnwWJ9xHgSnA9EJK/media2"
+                        'Destination': f"s3://twitch-stitch-main/clips/{media_id}/{media_type}"
                     }
                 }
             }],
@@ -108,7 +109,7 @@ def create_media_export(media_type, media_id):
                     'Audio Selector 1': {
                         'Offset': 0,
                         'DefaultSelection': "DEFAULT",
-                        'ExternalAudioFileInput': "s3://twitch-stitch-main/clips/c-rdMaVaUnwWJ9xHgSnA9EJK/playlist-audio.m3u8",
+                        'ExternalAudioFileInput': f"s3://twitch-stitch-main/clips/{media_id}/playlist-audio.m3u8",
                         'ProgramSelection': 1
                     }
                 },
@@ -121,7 +122,8 @@ def create_media_export(media_type, media_id):
                 'DeblockFilter': "DISABLED",
                 'DenoiseFilter': "DISABLED",
                 'TimecodeSource': "EMBEDDED",
-                'FileInput': "s3://twitch-stitch-main/clips/c-rdMaVaUnwWJ9xHgSnA9EJK/playlist-video.m3u8"
+                'FileInput': f"s3://twitch-stitch-main/clips/{media_id}/playlist-video.m3u8"
             }]
         }
     )
+    logger.info("create_media_export | success", response=r)

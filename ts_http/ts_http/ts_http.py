@@ -6,10 +6,11 @@ import requests
 logger = ts_logger.get(__name__)
 
 def download_file(url, filename):
-    logger.info("download_file", url=url, filename_=filename)
+    logger.info("download_file | start", url=url, filename_=filename)
     r = requests.get(url)
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, 'wb') as f:
         f.write(r.content)
+    logger.info("download_file | success", response=r)
 
 

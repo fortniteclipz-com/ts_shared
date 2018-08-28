@@ -8,6 +8,8 @@ class Montage(dict):
         self.key_playlist_master = kwargs.get('key_playlist_master')
         self.key_playlist_video = kwargs.get('key_playlist_video')
 
+        self._status_export = kwargs.get('_status_export')
+
     def __getattr__(self, attr):
         return self.get(attr)
 

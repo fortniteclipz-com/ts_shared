@@ -13,39 +13,28 @@ table_montages_name = ts_config.get('aws.dynamodb.montages.name')
 table_montages = resource.Table(table_montages_name)
 
 def save_montage(montage):
-    try:
-        logger.info("save_montage | start", montage=montage)
-        r = table_montages.put_item(
-            Item=_replace_floats(montage),
-            ReturnConsumedCapacity="TOTAL"
-        )
-        _replace_decimals(montage)
-        logger.info("save_montage | success", response=r)
-    except Exception as e:
-        logger.error("save_montage | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
+    logger.info("save_montage | start", montage=montage)
+    r = table_montages.put_item(
+        Item=_replace_floats(montage),
+        ReturnConsumedCapacity="TOTAL"
+    )
+    _replace_decimals(montage)
+    logger.info("save_montage | success", response=r)
 
 def get_montage(montage_id):
-    try:
-        logger.info("get_montage | start", montage_id=montage_id)
-        r = table_montages.get_item(
-            Key={'montage_id': montage_id},
-            ReturnConsumedCapacity="TOTAL"
-        )
-        logger.info("get_montage | success", response=r)
-        return ts_model.Montage(**_replace_decimals(r['Item']))
-    except Exception as e:
-        logger.error("get_montage | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
-        return None
+    logger.info("get_montage | start", montage_id=montage_id)
+    r = table_montages.get_item(
+        Key={'montage_id': montage_id},
+        ReturnConsumedCapacity="TOTAL"
+    )
+    logger.info("get_montage | success", response=r)
+    return ts_model.Montage(**_replace_decimals(r['Item']))
 
 def get_all_montages(limit):
-    try:
-        logger.info("get_all_montages | start", limit=limit)
-        r = table_montages.scan(
-            Limit=limit,
-            ReturnConsumedCapacity="TOTAL"
-        )
-        logger.info("get_all_montages | success", response=r)
-        return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))
-    except Exception as e:
-        logger.error("get_all_montages | error", _module=f"{e.__class__.__module__}", _class=f"{e.__class__.__name__}", _message=str(e), traceback=''.join(traceback.format_exc()))
-        return []
+    logger.info("get_all_montages | start", limit=limit)
+    r = table_montages.scan(
+        Limit=limit,
+        ReturnConsumedCapacity="TOTAL"
+    )
+    logger.info("get_all_montages | success", response=r)
+    return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))
