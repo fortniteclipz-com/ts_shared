@@ -17,9 +17,9 @@ class StreamSegment(dict):
         self.key_media_video_fresh = kwargs.get('key_media_video_fresh')
         self.key_packets_video_fresh = kwargs.get('key_packets_video_fresh')
 
-        self._status_download = kwargs.get('_status_download')
-        self._status_fresh = kwargs.get('_status_fresh')
-        self._status_analyze = kwargs.get('_status_analyze')
+        self._status_download = kwargs.get('_status_download', 0)
+        self._status_fresh = kwargs.get('_status_fresh', 0)
+        self._status_analyze = kwargs.get('_status_analyze', 0)
 
     def __getattr__(self, attr):
         return self.get(attr)
