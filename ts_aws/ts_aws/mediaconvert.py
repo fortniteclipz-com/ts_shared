@@ -2,12 +2,15 @@ import ts_config
 import ts_logger
 
 import boto3
+import botocore
 
 logger = ts_logger.get(__name__)
 
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get("aws.mediaconvert.endpoint_url"))
 
 def create_media_export(media_type, media_id):
+    print("boto3 version:"+boto3.__version__)
+    print("botocore version:"+botocore.__version__)
     logger.info("create_media_export | start", media_type=media_type, media_id=media_id)
     r = client.create_job(
         UserMetadata={
