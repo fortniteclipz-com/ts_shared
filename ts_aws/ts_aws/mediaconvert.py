@@ -17,24 +17,29 @@ def create_media_export(media_type, media_id):
         Role=ts_config.get("aws.mediaconvert.role"),
         Settings={
             'OutputGroups': [{
-                  'Name': "File Group",
-                  'Outputs': [{
-                    'ContainerSettings': {
+                'Name': "File Group",
+                'Outputs': [{
+                    'ContainerSettings':
+                    {
                         'Container': "MP4",
-                        'Mp4Settings': {
-                          'CslgAtom': "INCLUDE",
-                          'FreeSpaceBox': "EXCLUDE",
-                          'MoovPlacement': "PROGRESSIVE_DOWNLOAD"
+                        'Mp4Settings':
+                        {
+                            'CslgAtom': "INCLUDE",
+                            'FreeSpaceBox': "EXCLUDE",
+                            'MoovPlacement': "PROGRESSIVE_DOWNLOAD"
                         }
-                      },
-                      'VideoDescription': {
+                    },
+                    'VideoDescription':
+                    {
                         'ScalingBehavior': "DEFAULT",
                         'TimecodeInsertion': "DISABLED",
                         'AntiAlias': "ENABLED",
                         'Sharpness': 50,
-                        'CodecSettings': {
+                        'CodecSettings':
+                        {
                             'Codec': "H_264",
-                            'H264Settings': {
+                            'H264Settings':
+                            {
                                 'InterlaceMode': "PROGRESSIVE",
                                 'NumberReferenceFrames': 3,
                                 'Syntax': "DEFAULT",
@@ -43,17 +48,14 @@ def create_media_export(media_type, media_id):
                                 'GopSize': 90,
                                 'Slices': 1,
                                 'GopBReference': "DISABLED",
-                                'MaxBitrate': 10000000,
                                 'SlowPal': "DISABLED",
                                 'SpatialAdaptiveQuantization': "ENABLED",
                                 'TemporalAdaptiveQuantization': "ENABLED",
                                 'FlickerAdaptiveQuantization': "DISABLED",
                                 'EntropyEncoding': "CABAC",
+                                'Bitrate': 10000000,
                                 'FramerateControl': "INITIALIZE_FROM_SOURCE",
-                                'RateControlMode': "QVBR",
-                                'QvbrSettings': {
-                                    'QvbrQualityLevel': 7
-                                },
+                                'RateControlMode': "CBR",
                                 'CodecProfile': "MAIN",
                                 'Telecine': "NONE",
                                 'MinIInterval': 0,
@@ -77,43 +79,50 @@ def create_media_export(media_type, media_id):
                         'ColorMetadata': "INSERT"
                     },
                     'AudioDescriptions': [{
-                      'AudioTypeControl': "FOLLOW_INPUT",
-                      'AudioSourceName': "Audio Selector 1",
-                      'CodecSettings': {
-                        'Codec': "AAC",
-                        'AacSettings': {
-                          'AudioDescriptionBroadcasterMix': "NORMAL",
-                          'Bitrate': 96000,
-                          'RateControlMode': "CBR",
-                          'CodecProfile': "LC",
-                          'CodingMode': "CODING_MODE_2_0",
-                          'RawFormat': "NONE",
-                          'SampleRate': 48000,
-                          'Specification': "MPEG4"
-                        }
-                      },
-                      'LanguageCodeControl': "FOLLOW_INPUT"
+                        'AudioTypeControl': "FOLLOW_INPUT",
+                        'AudioSourceName': "Audio Selector 1",
+                        'CodecSettings':
+                        {
+                            'Codec': "AAC",
+                            'AacSettings':
+                            {
+                                'AudioDescriptionBroadcasterMix': "NORMAL",
+                                'Bitrate': 96000,
+                                'RateControlMode': "CBR",
+                                'CodecProfile': "LC",
+                                'CodingMode': "CODING_MODE_2_0",
+                                'RawFormat': "NONE",
+                                'SampleRate': 48000,
+                                'Specification': "MPEG4"
+                            }
+                        },
+                        'LanguageCodeControl': "FOLLOW_INPUT"
                     }],
                     'Extension': "mp4"
                 }],
-                'OutputGroupSettings': {
+                'OutputGroupSettings':
+                {
                     'Type': "FILE_GROUP_SETTINGS",
-                    'FileGroupSettings': {
-                        'Destination': f"s3://twitch-stitch-main/clips/{media_id}/{media_type}"
+                    'FileGroupSettings':
+                    {
+                        'Destination': "s3://twitch-stitch-main/clips/c-zbFvt88cty9VhkpKqHVLDo/clip"
                     }
                 }
             }],
             'AdAvailOffset': 0,
             'Inputs': [{
-                'AudioSelectors': {
-                    'Audio Selector 1': {
+                'AudioSelectors':
+                {
+                    'Audio Selector 1':
+                    {
                         'Offset': 0,
                         'DefaultSelection': "DEFAULT",
-                        'ExternalAudioFileInput': f"s3://twitch-stitch-main/clips/{media_id}/playlist-audio.m3u8",
+                        'ExternalAudioFileInput': "s3://twitch-stitch-main/clips/c-zbFvt88cty9VhkpKqHVLDo/playlist-audio.m3u8",
                         'ProgramSelection': 1
                     }
                 },
-                'VideoSelector': {
+                'VideoSelector':
+                {
                     'ColorSpace': "FOLLOW"
                 },
                 'FilterEnable': "AUTO",
@@ -122,7 +131,7 @@ def create_media_export(media_type, media_id):
                 'DeblockFilter': "DISABLED",
                 'DenoiseFilter': "DISABLED",
                 'TimecodeSource': "EMBEDDED",
-                'FileInput': f"s3://twitch-stitch-main/clips/{media_id}/playlist-video.m3u8"
+                'FileInput': "s3://twitch-stitch-main/clips/c-zbFvt88cty9VhkpKqHVLDo/playlist-video.m3u8"
             }]
         }
     )
