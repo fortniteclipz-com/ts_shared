@@ -12,6 +12,7 @@ setup(
         "ts_logger==0.1",
         "ts_model==0.1",
         "boto3==1.7.75",
+        "botocore==1.10.84",
         "ffprobe3==0.1.2",
     ],
     dependency_links=[
