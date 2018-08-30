@@ -6,7 +6,7 @@ class Montage(dict):
 
         self.media_key = kwargs.get('media_key')
 
-        self._status = kwargs.get('_status_export', 0)
+        self._status = kwargs.get('_status', 0)
 
     def __getattr__(self, attr):
         return self.get(attr)
