@@ -9,30 +9,29 @@ logger = ts_logger.get(__name__)
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get('aws.mediaconvert.url'))
 bucket = ts_config.get('aws.s3.main.name')
 
-def _get_input_settings(montage_clip):
-    settings = {
-        'FilterEnable': "AUTO",
-        'PsiControl': "USE_PSI",
-        'FilterStrength': 0,
-        'DeblockFilter': "DISABLED",
-        'DenoiseFilter': "DISABLED",
-        'TimecodeSource': "ZEROBASED",
-        'VideoSelector': {
-            'ColorSpace': "FOLLOW"
-        },
-        'AudioSelectors': {
-            'Audio Selector 1': {
-                'Offset': 0,
-                'DefaultSelection': "DEFAULT",
-                'ProgramSelection': 1
-            }
-        },
-        'FileInput': f"s3://{bucket}/{montage_clip.media_key}",
-    }
-
-    return settings
-
 def create(montage, montage_clips):
+    def _get_input_settings(montage_clip):
+        settings = {
+            'FilterEnable': "AUTO",
+            'PsiControl': "USE_PSI",
+            'FilterStrength': 0,
+            'DeblockFilter': "DISABLED",
+            'DenoiseFilter': "DISABLED",
+            'TimecodeSource': "ZEROBASED",
+            'VideoSelector': {
+                'ColorSpace': "FOLLOW"
+            },
+            'AudioSelectors': {
+                'Audio Selector 1': {
+                    'Offset': 0,
+                    'DefaultSelection': "DEFAULT",
+                    'ProgramSelection': 1
+                }
+            },
+            'FileInput': f"s3://{bucket}/{montage_clip.media_key}",
+        }
+        return settings
+
     args = {
         'UserMetadata': {
           'montage_id': f"{montage.montage_id}",
@@ -130,8 +129,7 @@ def create(montage, montage_clips):
                     },
                     'Extension': "mp4"
                 }]
-            }],
-
+            }]
         }
     }
 

@@ -9,38 +9,42 @@ logger = ts_logger.get(__name__)
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get('aws.mediaconvert.url'))
 bucket = ts_config.get('aws.s3.main.name')
 
-def _get_input_settings(clip_segment):
-    settings = {
-        'FilterEnable': "AUTO",
-        'PsiControl': "USE_PSI",
-        'FilterStrength': 0,
-        'DeblockFilter': "DISABLED",
-        'DenoiseFilter': "DISABLED",
-        'TimecodeSource': "ZEROBASED",
-        'VideoSelector': {
-            'ColorSpace': "FOLLOW"
-        },
-        'AudioSelectors': {
-            'Audio Selector 1': {
-                'Offset': 0,
-                'DefaultSelection': "DEFAULT",
-                'ProgramSelection': 1
-            }
-        },
-        'FileInput': f"s3://{bucket}/{clip_segment.media_key}",
-    }
+def create(stream, clip, clip_segments):
+    def _get_timecode(_time):
+        seconds = _time // 1
+        leftover = _time - seconds
+        frames = str(int(stream.fps * leftover)).zfill(2)
+        return f"{time.strftime('%H:%M:%S', time.gmtime(_time))}:{frames}"
 
-    if clip_segment.time_in is not None or clip_segment.time_out is not None:
-        input_clippings = {}
-        if clip_segment.time_in:
-            input_clippings['StartTimecode'] = f"{time.strftime('%H:%M:%S', time.gmtime(clip_segment.time_in))}:00"
-        if clip_segment.time_out:
-            input_clippings['EndTimecode'] = f"{time.strftime('%H:%M:%S', time.gmtime(clip_segment.time_out))}:00"
-        settings['InputClippings'] = [input_clippings]
+    def _get_input_settings(clip_segment):
+        settings = {
+            'FilterEnable': "AUTO",
+            'PsiControl': "USE_PSI",
+            'FilterStrength': 0,
+            'DeblockFilter': "DISABLED",
+            'DenoiseFilter': "DISABLED",
+            'TimecodeSource': "ZEROBASED",
+            'VideoSelector': {
+                'ColorSpace': "FOLLOW"
+            },
+            'AudioSelectors': {
+                'Audio Selector 1': {
+                    'Offset': 0,
+                    'DefaultSelection': "DEFAULT",
+                    'ProgramSelection': 1
+                }
+            },
+            'FileInput': f"s3://{bucket}/{clip_segment.media_key}",
+        }
+        if clip_segment.time_in is not None or clip_segment.time_out is not None:
+            input_clippings = {}
+            if clip_segment.time_in:
+                input_clippings['StartTimecode'] = _get_timecode(clip_segment.time_in)
+            if clip_segment.time_out:
+                input_clippings['EndTimecode'] = _get_timecode(clip_segment.time_out)
+            settings['InputClippings'] = [input_clippings]
+        return settings
 
-    return settings
-
-def create(clip, clip_segments):
     args = {
         'UserMetadata': {
           'clip_id': f"{clip.clip_id}",
@@ -138,8 +142,7 @@ def create(clip, clip_segments):
                     },
                     'Extension': "mp4"
                 }]
-            }],
-
+            }]
         }
     }
 
