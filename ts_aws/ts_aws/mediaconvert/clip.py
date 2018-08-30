@@ -2,51 +2,51 @@ import ts_config
 import ts_logger
 
 import boto3
+import time
 
 logger = ts_logger.get(__name__)
 
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get("aws.mediaconvert.endpoint_url"))
 bucket = ts_config.get('aws.s3.main.name')
 
-def create(clip_segments):
-    pass
-
-
-
-
-
-
-
-
-def _get_input_settings(clip_id):
-    url_prefix = f"s3://{bucket}/clips/{clip_id}"
-    return {
-        'AudioSelectors': {
-            'Audio Selector 1': {
-                'Offset': 0,
-                'DefaultSelection': "DEFAULT",
-                'ExternalAudioFileInput': f"{url_prefix}/playlist-audio.m3u8",
-                'ProgramSelection': 1
-            }
-        },
-        'VideoSelector': {
-            'ColorSpace': "FOLLOW"
-        },
+def _get_input_settings(clip_segment):
+    settings = {
         'FilterEnable': "AUTO",
         'PsiControl': "USE_PSI",
         'FilterStrength': 0,
         'DeblockFilter': "DISABLED",
         'DenoiseFilter': "DISABLED",
-        'TimecodeSource': "EMBEDDED",
-        'FileInput': f"{url_prefix}/playlist-video.m3u8"
+        'TimecodeSource': "ZEROBASED",
+        'VideoSelector': {
+            'ColorSpace': "FOLLOW"
+        },
+        'AudioSelectors': {
+            'Audio Selector 1': {
+                'Offset': 0,
+                'DefaultSelection': "DEFAULT",
+                'ProgramSelection': 1
+            }
+        },
+        'FileInput': f"s3://{bucket}/{clip_segment.media_key}",
     }
 
-def create_media_export(media_type, media_id, clip_ids):
-    logger.info("create_media_export | start", media_type=media_type, media_id=media_id, clip_ids_length=len(clip_ids))
-    job_args = {
+    if clip_segment.time_in is not None or clip_segment.time_out is not None:
+        input_clippings = {}
+        if clip_segment.time_in:
+            input_clippings['StartTimecode'] = f"{time.strftime('%H:%M:%S', time.gmtime(clip_segment.time_in))}:00"
+        if clip_segment.time_out:
+            input_clippings['EndTimecode'] = f"{time.strftime('%H:%M:%S', time.gmtime(clip_segment.time_out))}:00"
+        settings['InputClippings'] = [input_clippings]
+
+    print("-------------")
+    print(clip_segment)
+    print(settings)
+    return settings
+
+def create(clip, clip_segments):
+    args = {
         'UserMetadata': {
-          'media_type': f"{media_type}",
-          'media_id': f"{media_id}"
+          'clip_id': f"{clip.clip_id}",
         },
         'Role': ts_config.get("aws.mediaconvert.role"),
         'Settings': {
@@ -54,17 +54,16 @@ def create_media_export(media_type, media_id, clip_ids):
                 'Source': "ZEROBASED"
             },
             'AdAvailOffset': 0,
+            'Inputs': list(map(_get_input_settings, clip_segments)),
             'OutputGroups': [{
                 'Name': "File Group",
+                'OutputGroupSettings': {
+                    'Type': "FILE_GROUP_SETTINGS",
+                    'FileGroupSettings': {
+                        'Destination': f"s3://{bucket}/clips/{clip.clip_id}/clip"
+                    }
+                },
                 'Outputs': [{
-                    'ContainerSettings': {
-                        'Container': "MP4",
-                        'Mp4Settings': {
-                            'CslgAtom': "INCLUDE",
-                            'FreeSpaceBox': "EXCLUDE",
-                            'MoovPlacement': "PROGRESSIVE_DOWNLOAD"
-                        }
-                    },
                     'VideoDescription': {
                         'ScalingBehavior': "DEFAULT",
                         'TimecodeInsertion': "DISABLED",
@@ -81,7 +80,6 @@ def create_media_export(media_type, media_id, clip_ids):
                                 'GopSize': 90,
                                 'Slices': 1,
                                 'GopBReference': "DISABLED",
-                                'MaxBitrate': 10000000,
                                 'SlowPal': "DISABLED",
                                 'SpatialAdaptiveQuantization': "ENABLED",
                                 'TemporalAdaptiveQuantization': "ENABLED",
@@ -89,9 +87,6 @@ def create_media_export(media_type, media_id, clip_ids):
                                 'EntropyEncoding': "CABAC",
                                 'FramerateControl': "INITIALIZE_FROM_SOURCE",
                                 'RateControlMode': "QVBR",
-                                'QvbrSettings': {
-                                    'QvbrQualityLevel': 7
-                                },
                                 'CodecProfile': "MAIN",
                                 'Telecine': "NONE",
                                 'MinIInterval': 0,
@@ -106,7 +101,11 @@ def create_media_export(media_type, media_id, clip_ids):
                                 'ParControl': "INITIALIZE_FROM_SOURCE",
                                 'NumberBFramesBetweenReferenceFrames': 2,
                                 'RepeatPps': "DISABLED",
-                                'DynamicSubGop': "STATIC"
+                                'DynamicSubGop': "STATIC",
+                                'QvbrSettings': {
+                                    'QvbrQualityLevel': 7
+                                },
+                                'MaxBitrate': 10000000
                             }
                         },
                         'AfdSignaling': "NONE",
@@ -116,7 +115,6 @@ def create_media_export(media_type, media_id, clip_ids):
                     },
                     'AudioDescriptions': [{
                         'AudioTypeControl': "FOLLOW_INPUT",
-                        'AudioSourceName': "Audio Selector 1",
                         'CodecSettings': {
                             'Codec': "AAC",
                             'AacSettings': {
@@ -132,19 +130,21 @@ def create_media_export(media_type, media_id, clip_ids):
                         },
                         'LanguageCodeControl': "FOLLOW_INPUT"
                     }],
+                    'ContainerSettings': {
+                        'Container': "MP4",
+                        'Mp4Settings': {
+                            'CslgAtom': "INCLUDE",
+                            'FreeSpaceBox': "EXCLUDE",
+                            'MoovPlacement': "PROGRESSIVE_DOWNLOAD"
+                        }
+                    },
                     'Extension': "mp4"
-                }],
-                'OutputGroupSettings': {
-                    'Type': "FILE_GROUP_SETTINGS",
-                    'FileGroupSettings': {
-                        'Destination': f"s3://{bucket}/{media_type}s/{media_id}/{media_type}"
-                    }
-                }
+                }]
             }],
-            'Inputs': list(map(_get_input_settings, clip_ids))
+
         }
     }
 
-    logger.info("create_media_export | input", job_args=job_args)
-    r = client.create_job(**job_args)
+    logger.info("create_media_export | args", _args=args)
+    r = client.create_job(**args)
     logger.info("create_media_export | success", response=r)
