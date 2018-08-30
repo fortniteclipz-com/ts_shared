@@ -42,17 +42,3 @@ def save_stream_segments(stream_segments):
                 Item=_replace_floats(ss)
             )
     logger.info("save_stream_segments | success")
-
-def get_stream_segments(stream_id):
-    logger.info("get_stream_segments | start", stream_id=stream_id)
-    r = table_stream_segments.query(
-        KeyConditionExpression="stream_id = :stream_id",
-        ExpressionAttributeValues=_replace_floats({
-            ':stream_id': stream_id,
-        }),
-        ReturnConsumedCapacity="TOTAL"
-    )
-    logger.info("get_stream_segments | success", response=r)
-    if len(r['Items']) == 0:
-        raise ts_model.Exception(ts_model.Exception.STREAM_SEGMENTS__NOT_EXIST)
-    return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))

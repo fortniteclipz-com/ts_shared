@@ -18,9 +18,6 @@ aws:
       name: ts-montages
     montage-clips:
       name: ts-montage-clips
-  mediaconvert:
-    endpoint_url: https://2atsycqh.mediaconvert.us-west-1.amazonaws.com
-    role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
 
   iam:
     role-statement:
@@ -35,15 +32,15 @@ aws:
           - dynamodb:DeleteItem
           - dynamodb:BatchGetItem
           - dynamodb:BatchWriteItem
-        Resource: arn:aws:dynamodb:${self:custom.config.aws.region}:${self:custom.config.aws.account-id}:*
+        Resource: arn:aws:dynamodb:us-west-1:589344262905:*
       - Effect: Allow
         Action:
           - iam:PassRole
-        Resource: arn:aws:iam::${self:custom.config.aws.account-id}:*
+        Resource: arn:aws:iam::589344262905:*
       - Effect: Allow
         Action:
           - mediaconvert:CreateJob
-        Resource: arn:aws:mediaconvert:${self:custom.config.aws.region}:${self:custom.config.aws.account-id}:*
+        Resource: arn:aws:mediaconvert:us-west-1:589344262905:*
       - Effect: Allow
         Action:
           - s3:PutObject
@@ -56,7 +53,13 @@ aws:
           - sqs:ReceiveMessage
           - sqs:DeleteMessage
           - sqs:ChangeMessageVisibility
-        Resource: arn:aws:sqs:${self:custom.config.aws.region}:${self:custom.config.aws.account-id}:*
+        Resource: arn:aws:sqs:us-west-1:589344262905:*
+
+  mediaconvert:
+    role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
+    url: https://2atsycqh.mediaconvert.us-west-1.amazonaws.com
+    clip: arn:aws:mediaconvert:us-west-1:589344262905:queues/Clip
+    montage: arn:aws:mediaconvert:us-west-1:589344262905:queues/Montage
 
   s3:
     main:

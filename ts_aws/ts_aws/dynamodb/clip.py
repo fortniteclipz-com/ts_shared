@@ -107,20 +107,3 @@ def get_clip_stream_segments(stream, clip):
     if len(r['Items']) == 0:
         raise ts_model.Exception(ts_model.Exception.CLIP__STREAM_SEGMENTS_NOT_EXIST)
     return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))
-
-def get_clips_clip_segments(clip_ids):
-    logger.info("get_clips_clip_segments | start", clip_ids=clip_ids)
-    clip_segments = []
-    for c_id in clip_ids:
-        r = table_clip_segments.query(
-            KeyConditionExpression="clip_id = :clip_id",
-            ExpressionAttributeValues=_replace_floats({
-                ':clip_id': c_id,
-            }),
-            ReturnConsumedCapacity="TOTAL"
-        )
-        logger.info("get_clips_clip_segments | success", clip_id=c_id, response=r)
-        if len(r['Items']) == 0:
-            raise ts_model.Exception(ts_model.Exception.CLIP__CLIP_SEGMENTS_NOT_EXIST)
-        clip_segments += list(map(lambda cs: ts_model.ClipSegment(**cs), _replace_decimals(r['Items'])))
-    return clip_segments

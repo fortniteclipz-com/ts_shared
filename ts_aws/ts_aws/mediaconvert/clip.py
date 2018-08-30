@@ -6,7 +6,7 @@ import time
 
 logger = ts_logger.get(__name__)
 
-client = boto3.client('mediaconvert', endpoint_url=ts_config.get('aws.mediaconvert.endpoint_url'))
+client = boto3.client('mediaconvert', endpoint_url=ts_config.get('aws.mediaconvert.url'))
 bucket = ts_config.get('aws.s3.main.name')
 
 def _get_input_settings(clip_segment):
@@ -45,6 +45,7 @@ def create(clip, clip_segments):
         'UserMetadata': {
           'clip_id': f"{clip.clip_id}",
         },
+        'Queue': ts_config.get('aws.mediaconvert.clip'),
         'Role': ts_config.get('aws.mediaconvert.role'),
         'Settings': {
             'TimecodeConfig': {
