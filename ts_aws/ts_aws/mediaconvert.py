@@ -8,6 +8,16 @@ logger = ts_logger.get(__name__)
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get("aws.mediaconvert.endpoint_url"))
 bucket = ts_config.get('aws.s3.main.name')
 
+def create(clip_segments):
+    pass
+
+
+
+
+
+
+
+
 def _get_input_settings(clip_id):
     url_prefix = f"s3://{bucket}/clips/{clip_id}"
     return {

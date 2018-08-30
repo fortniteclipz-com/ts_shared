@@ -3,8 +3,8 @@ class Stream(dict):
         super(Stream, self).__init__(**kwargs)
 
         self.stream_id = kwargs.get('stream_id')
-        self.time_offset = kwargs.get('time_offset')
-        self.url_playlist_raw = kwargs.get('url_playlist_raw')
+
+        self.playlist_url = kwargs.get('playlist_url')
 
         self._status = kwargs.get('_status', 0)
 

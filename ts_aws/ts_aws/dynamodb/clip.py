@@ -71,7 +71,7 @@ def get_clip_stream_segments(stream, clip):
         KeyConditionExpression="stream_id = :stream_id AND time_in <= :time_in",
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': clip.stream_id,
-            ':time_in': clip.time_in + stream.time_offset,
+            ':time_in': clip.time_in,
         }),
         ScanIndexForward=False,
         Limit=2,
@@ -97,7 +97,7 @@ def get_clip_stream_segments(stream, clip):
         KeyConditionExpression="stream_id = :stream_id AND time_in < :time_out",
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': clip.stream_id,
-            ':time_out': clip.time_out + stream.time_offset,
+            ':time_out': clip.time_out,
         }),
         ReturnConsumedCapacity="TOTAL",
         **exclusiveStartKey
