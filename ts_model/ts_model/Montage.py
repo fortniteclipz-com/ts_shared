@@ -4,7 +4,7 @@ class Montage(dict):
 
         self.montage_id = kwargs.get('montage_id')
 
-        self.key_media = kwargs.get('key_media')
+        self.media_key = kwargs.get('media_key')
 
         self._status = kwargs.get('_status_export', 0)
 

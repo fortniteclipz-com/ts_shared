@@ -8,7 +8,7 @@ class Clip(dict):
         self.time_in = kwargs.get('time_in')
         self.time_out = kwargs.get('time_out')
 
-        self.key_media = kwargs.get('key_media')
+        self.media_key = kwargs.get('key_media')
 
         self._status = kwargs.get('_status', 0)
 

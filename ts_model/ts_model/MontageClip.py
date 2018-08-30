@@ -4,7 +4,9 @@ class MontageClip(dict):
 
         self.montage_id = kwargs.get('montage_id')
         self.clip_id = kwargs.get('clip_id')
+
         self.clip_order = kwargs.get('clip_order')
+        self.media_key = kwargs.get('media_key')
 
     def __getattr__(self, attr):
         return self.get(attr)

@@ -9,7 +9,7 @@ logger = ts_logger.get(__name__)
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get('aws.mediaconvert.endpoint_url'))
 bucket = ts_config.get('aws.s3.main.name')
 
-def _get_input_settings(clip_segment):
+def _get_input_settings(montage_clip):
     settings = {
         'FilterEnable': "AUTO",
         'PsiControl': "USE_PSI",
@@ -27,23 +27,15 @@ def _get_input_settings(clip_segment):
                 'ProgramSelection': 1
             }
         },
-        'FileInput': f"s3://{bucket}/{clip_segment.media_key}",
+        'FileInput': f"s3://{bucket}/{montage_clip.media_key}",
     }
-
-    if clip_segment.time_in is not None or clip_segment.time_out is not None:
-        input_clippings = {}
-        if clip_segment.time_in:
-            input_clippings['StartTimecode'] = f"{time.strftime('%H:%M:%S', time.gmtime(clip_segment.time_in))}:00"
-        if clip_segment.time_out:
-            input_clippings['EndTimecode'] = f"{time.strftime('%H:%M:%S', time.gmtime(clip_segment.time_out))}:00"
-        settings['InputClippings'] = [input_clippings]
 
     return settings
 
-def create(clip, clip_segments):
+def create(montage, montage_clips):
     args = {
         'UserMetadata': {
-          'clip_id': f"{clip.clip_id}",
+          'montage_id': f"{montage.montage_id}",
         },
         'Role': ts_config.get('aws.mediaconvert.role'),
         'Settings': {
@@ -51,13 +43,13 @@ def create(clip, clip_segments):
                 'Source': "ZEROBASED"
             },
             'AdAvailOffset': 0,
-            'Inputs': list(map(_get_input_settings, clip_segments)),
+            'Inputs': list(map(_get_input_settings, montage_clips)),
             'OutputGroups': [{
                 'Name': "File Group",
                 'OutputGroupSettings': {
                     'Type': "FILE_GROUP_SETTINGS",
                     'FileGroupSettings': {
-                        'Destination': f"s3://{bucket}/clips/{clip.clip_id}/clip"
+                        'Destination': f"s3://{bucket}/montages/{montage.montage_id}/montage"
                     }
                 },
                 'Outputs': [{
