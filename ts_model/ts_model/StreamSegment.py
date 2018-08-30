@@ -6,7 +6,6 @@ class StreamSegment(dict):
         self.segment = kwargs.get('segment')
 
         self.padded = kwargs.get('padded')
-        self.time_duration = kwargs.get('time_duration')
         self.time_in = kwargs.get('time_in')
         self.time_out = kwargs.get('time_out')
         self.media_url = kwargs.get('media_url')
