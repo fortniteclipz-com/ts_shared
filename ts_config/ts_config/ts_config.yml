@@ -73,6 +73,8 @@ aws:
   sqs:
     clip:
       name: ts-clip
+    montage:
+      name: ts-montage
     stream-initialize:
       name: ts-stream-initialize
     stream-segment-download:
