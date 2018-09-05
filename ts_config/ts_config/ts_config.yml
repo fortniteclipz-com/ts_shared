@@ -75,7 +75,11 @@ aws:
       name: ts-clip
     montage:
       name: ts-montage
-    stream-initialize:
-      name: ts-stream-initialize
-    stream-segment-download:
-      name: ts-stream-segment-download
+    stream--analyze:
+      name: ts-stream--analyze
+    stream--initialize:
+      name: ts-stream--initialize
+    stream-segment--analyze:
+      name: ts-stream-segment--analyze
+    stream-segment--download:
+      name: ts-stream-segment--download
