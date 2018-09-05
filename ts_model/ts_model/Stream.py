@@ -7,7 +7,8 @@ class Stream(dict):
         self.playlist_url = kwargs.get('playlist_url')
         self.fps = kwargs.get('fps')
 
-        self._status = kwargs.get('_status', 0)
+        self._status_initialize = kwargs.get('_status', 0)
+        self._status_analyze = kwargs.get('_status_analyze', 0)
 
     def __getattr__(self, attr):
         return self.get(attr)
