@@ -17,7 +17,7 @@ def save_montage_clips(montage_clips):
     with table_montage_clips.batch_writer() as batch:
         for i, mc in enumerate(montage_clips):
             batch.put_item(
-                Item=_replace_floats(mc)
+                Item=_replace_floats(mc),
             )
     logger.info("save_montage_clips | success")
     return list(map(lambda mc: ts_model.MontageClip(**_replace_decimals(mc)), montage_clips))

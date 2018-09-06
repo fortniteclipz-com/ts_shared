@@ -16,7 +16,7 @@ def save_stream_segment(stream_segment):
     logger.info("save_stream_segment | start", stream_segment=stream_segment)
     r = table_stream_segments.put_item(
         Item=_replace_floats(stream_segment),
-        ReturnConsumedCapacity="TOTAL"
+        ReturnConsumedCapacity="TOTAL",
     )
     logger.info("save_stream_segment | success", response=r)
 
@@ -27,7 +27,7 @@ def get_stream_segment(stream_id, segment):
             'stream_id': stream_id,
             'segment': segment,
         },
-        ReturnConsumedCapacity="TOTAL"
+        ReturnConsumedCapacity="TOTAL",
     )
     logger.info("get_stream_segment | success", response=r)
     if 'Item' not in r:
@@ -39,20 +39,36 @@ def save_stream_segments(stream_segments):
     with table_stream_segments.batch_writer() as batch:
         for i, ss in enumerate(stream_segments):
             batch.put_item(
-                Item=_replace_floats(ss)
+                Item=_replace_floats(ss),
             )
     logger.info("save_stream_segments | success")
 
-def get_stream_segments(stream_id):
+def get_stream_segments(stream_id, exclusiveStartKey=None):
     logger.info("get_stream_segments | start", stream_id=stream_id)
+    stream_segments = []
+
+    if exclusiveStartKey is not None:
+        exclusiveStartKey = {
+            'ExclusiveStartKey': exclusiveStartKey,
+        }
+    else:
+        exclusiveStartKey = {}
+
     r = table_stream_segments.query(
         KeyConditionExpression="stream_id = :stream_id",
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': stream_id,
         }),
-        ReturnConsumedCapacity="TOTAL"
+        **exclusiveStartKey,
+        ReturnConsumedCapacity="TOTAL",
     )
     logger.info("get_stream_segments | success", response=r)
     if len(r['Items']) == 0:
         raise ts_model.Exception(ts_model.Exception.STREAM_SEGMENTS__NOT_EXIST)
-    return list(map(lambda mc: ts_model.MontageClip(**mc), _replace_decimals(r['Items'])))
+    stream_segments += list(map(lambda mc: ts_model.MontageClip(**mc), _replace_decimals(r['Items'])))
+
+    lastEvaluatedKey = r.get('LastEvaluatedKey')
+    if lastEvaluatedKey is not None:
+        stream_segments += get_stream_segments(stream_id, lastEvaluatedKey)
+
+    return stream_segments

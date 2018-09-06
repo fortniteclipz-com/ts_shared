@@ -17,7 +17,7 @@ def save_stream(stream):
     logger.info("save_stream | start", stream=stream)
     r = table_streams.put_item(
         Item=_replace_floats(stream),
-        ReturnConsumedCapacity="TOTAL"
+        ReturnConsumedCapacity="TOTAL",
     )
     logger.info("save_stream | success", response=r)
 
@@ -27,7 +27,7 @@ def get_stream(stream_id):
         Key={
             'stream_id': stream_id
         },
-        ReturnConsumedCapacity="TOTAL"
+        ReturnConsumedCapacity="TOTAL",
     )
     logger.info("get_stream | success", response=r)
     if 'Item' not in r:
