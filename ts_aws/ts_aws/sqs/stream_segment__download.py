@@ -22,7 +22,6 @@ def send_message(payload):
 
 def send_messages(payloads):
     logger.info("send_messages | start", payloads=payloads)
-    print(time.time())
     r = queue.send_messages(
         Entries=list(map(lambda p: {
             'Id': f"{p['stream_id']}-{p['segment']}",

@@ -22,3 +22,7 @@ def download_file(s3_key, filename):
     r = bucket_main.download_file(s3_key, filename)
     logger.info("download_file | success", r=r)
 
+def upload_file_thumbnails(filename, s3_key):
+    logger.info("upload_file | start", s3_key=s3_key, _filename=filename)
+    r = bucket_thumbnails.upload_file(filename, s3_key)
+    logger.info("upload_file | success", r=r)
