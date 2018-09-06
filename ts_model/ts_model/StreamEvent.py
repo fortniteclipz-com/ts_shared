@@ -1,6 +1,6 @@
 class StreamEvent(dict):
     def __init__(self, **kwargs):
-        super(Event, self).__init__(**kwargs)
+        super(StreamEvent, self).__init__(**kwargs)
 
         self.stream_id = kwargs.get('stream_id')
         self.event_id = kwargs.get('event_id')

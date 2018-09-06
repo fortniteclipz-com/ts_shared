@@ -5,7 +5,6 @@ import ts_model.Stream
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
-import traceback
 
 logger = ts_logger.get(__name__)
 

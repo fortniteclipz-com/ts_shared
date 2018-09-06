@@ -3,7 +3,6 @@ import ts_logger
 
 import boto3
 import json
-import time
 
 logger = ts_logger.get(__name__)
 
