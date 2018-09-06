@@ -8,6 +8,8 @@ aws:
   dynamodb:
     streams:
       name: ts-streams
+    stream-events:
+      name: ts-stream-events
     stream-segments:
       name: ts-stream-segments
     clips:
