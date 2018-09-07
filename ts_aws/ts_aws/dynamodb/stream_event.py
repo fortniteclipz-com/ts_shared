@@ -31,7 +31,7 @@ def get_stream_events(stream_id, exclusiveStartKey=None):
     else:
         exclusiveStartKey = {}
 
-    r = table_stream_segments.query(
+    r = table_stream_events.query(
         IndexName="stream_id-time-index",
         KeyConditionExpression="stream_id = :stream_id",
         ExpressionAttributeValues=_replace_floats({
