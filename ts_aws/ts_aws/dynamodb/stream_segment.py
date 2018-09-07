@@ -36,7 +36,7 @@ def get_stream_segment(stream_id, segment):
 def save_stream_segments(stream_segments):
     logger.info("save_stream_segments | start", stream_segments_length=len(stream_segments))
     with table_stream_segments.batch_writer() as batch:
-        for i, ss in enumerate(stream_segments):
+        for ss in stream_segments:
             batch.put_item(
                 Item=_replace_floats(ss),
             )
@@ -64,7 +64,7 @@ def get_stream_segments(stream_id, exclusiveStartKey=None):
     logger.info("get_stream_segments | success", response=r)
     if len(r['Items']) == 0:
         raise ts_model.Exception(ts_model.Exception.STREAM_SEGMENTS__NOT_EXIST)
-    stream_segments += list(map(lambda mc: ts_model.MontageClip(**mc), _replace_decimals(r['Items'])))
+    stream_segments += list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))
 
     lastEvaluatedKey = r.get('LastEvaluatedKey')
     if lastEvaluatedKey is not None:

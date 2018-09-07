@@ -14,12 +14,11 @@ table_montage_clips = resource.Table(table_montage_clips_name)
 def save_montage_clips(montage_clips):
     logger.info("save_montage_clips | start", montage_clips_length=len(montage_clips))
     with table_montage_clips.batch_writer() as batch:
-        for i, mc in enumerate(montage_clips):
+        for mc in montage_clips:
             batch.put_item(
                 Item=_replace_floats(mc),
             )
     logger.info("save_montage_clips | success")
-    return list(map(lambda mc: ts_model.MontageClip(**_replace_decimals(mc)), montage_clips))
 
 def get_montage_clips(montage_id):
     logger.info("get_montage_clips | start", montage_id=montage_id)
