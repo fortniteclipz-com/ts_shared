@@ -12,8 +12,10 @@ def init_ff_libs():
         cmds = [
             "mv /var/task/libs/ffprobe /tmp/",
             "mv /var/task/libs/ffmpeg /tmp/",
+            "mv /var/task/libs/tesseract /tmp/",
             "chmod 755 /tmp/ffprobe",
             "chmod 755 /tmp/ffmpeg",
+            "chmod 755 /tmp/tesseract",
         ]
         for cmd in cmds:
             p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
