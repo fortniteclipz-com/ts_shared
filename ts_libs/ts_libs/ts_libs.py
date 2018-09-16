@@ -12,7 +12,9 @@ def init():
         cmds = [
             "mv /var/task/libs/ffprobe /tmp/",
             "mv /var/task/libs/ffmpeg /tmp/",
-            "mv /var/task/libs/tesseract /tmp/",
+            "mv /var/task/libs/tesseract/lib /tmp/",
+            "mv /var/task/libs/tesseract/tessdata /tmp/",
+            "mv /var/task/libs/tesseract/tesseract /tmp/",
             "chmod 755 /tmp/ffprobe",
             "chmod 755 /tmp/ffmpeg",
             "chmod 755 /tmp/tesseract",
