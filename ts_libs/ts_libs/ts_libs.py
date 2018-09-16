@@ -10,11 +10,12 @@ def init():
     if 'LAMBDA_TASK_ROOT' in os.environ:
         os.environ['PATH'] = f"{os.environ['PATH']}:/tmp/"
         os.environ['LD_LIBRARY_PATH'] = "/tmp/lib"
+        os.environ['TESSDATA_PREFIX'] = "/tmp/tessdata"
         cmds = [
             "mv /var/task/libs/ffprobe /tmp/",
             "mv /var/task/libs/ffmpeg /tmp/",
             "mv /var/task/libs/tesseract/lib /tmp/",
-            # "mv /var/task/libs/tesseract/tessdata /tmp/",
+            "mv /var/task/libs/tesseract/tessdata /tmp/",
             "mv /var/task/libs/tesseract/tesseract /tmp/",
             "chmod 755 /tmp/ffprobe",
             "chmod 755 /tmp/ffmpeg",
