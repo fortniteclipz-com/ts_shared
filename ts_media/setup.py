@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ts_media',
+    name='ts_libs',
     version='0.1',
-    description='ts_media',
+    description='ts_libs',
     author='Ahuja',
     license='',
     packages=find_packages(),
