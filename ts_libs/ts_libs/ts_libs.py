@@ -13,12 +13,14 @@ def init():
         os.environ['TESSDATA_PREFIX'] = "/tmp/tessdata"
         cmds = [
             "mv /var/task/libs/ffprobe /tmp/",
+            "chmod 755 /tmp/ffprobe",
+
             "mv /var/task/libs/ffmpeg /tmp/",
+            "chmod 755 /tmp/ffmpeg",
+
             "mv /var/task/libs/tesseract/lib /tmp/",
             "mv /var/task/libs/tesseract/tessdata /tmp/",
             "mv /var/task/libs/tesseract/tesseract /tmp/",
-            "chmod 755 /tmp/ffprobe",
-            "chmod 755 /tmp/ffmpeg",
             "chmod 755 /tmp/tesseract",
         ]
         for cmd in cmds:
