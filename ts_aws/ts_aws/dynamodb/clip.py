@@ -83,7 +83,7 @@ def get_clip_stream_segments(stream, clip):
         exclusiveStartKey = {
             'ExclusiveStartKey': _replace_floats({
                 'stream_id': last_css.stream_id,
-                'time_in': last_css.time_in,
+                'stream_time_in': last_css.stream_time_in,
                 'segment': last_css.segment,
             })
         }
@@ -92,11 +92,11 @@ def get_clip_stream_segments(stream, clip):
 
     logger.info("get_clip_stream_segments | start duo", stream=stream, clip=clip, exclusiveStartKey=exclusiveStartKey)
     r = table_stream_segments.query(
-        IndexName="stream_id-time_in-index",
-        KeyConditionExpression="stream_id = :stream_id AND time_in < :time_out",
+        IndexName="stream_id-stream_time_in-index",
+        KeyConditionExpression="stream_id = :stream_id AND stream_time_in < :stream_time_out",
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': clip.stream_id,
-            ':time_out': clip.time_out,
+            ':stream_time_out': clip.time_out,
         }),
         ReturnConsumedCapacity="TOTAL",
         **exclusiveStartKey,

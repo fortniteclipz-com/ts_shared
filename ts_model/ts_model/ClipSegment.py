@@ -5,8 +5,8 @@ class ClipSegment(dict):
         self.clip_id = kwargs.get('clip_id')
         self.segment = kwargs.get('segment')
 
-        self.time_in = kwargs.get('time_in')
-        self.time_out = kwargs.get('time_out')
+        self.segment_time_in = kwargs.get('segment_time_in')
+        self.segment_time_out = kwargs.get('segment_time_out')
         self.stream_id = kwargs.get('stream_id')
         self.media_key = kwargs.get('media_key')
 
