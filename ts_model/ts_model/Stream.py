@@ -6,6 +6,8 @@ class Stream(dict):
 
         self.playlist_url = kwargs.get('playlist_url')
         self.fps = kwargs.get('fps')
+        self.width = kwargs.get('width')
+        self.height = kwargs.get('height')
 
         self._status_initialize = kwargs.get('_status_initialize', 0)
         self._status_analyze = kwargs.get('_status_analyze', 0)
