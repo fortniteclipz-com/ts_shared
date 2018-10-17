@@ -66,11 +66,11 @@ def get_all_clips(limit):
 def get_clip_stream_segments(stream, clip):
     logger.info("get_clip_stream_segments | start uno", stream=stream, clip=clip)
     r = table_stream_segments.query(
-        IndexName="stream_id-time_in-index",
-        KeyConditionExpression="stream_id = :stream_id AND time_in <= :time_in",
+        IndexName="stream_id-stream_time_in-index",
+        KeyConditionExpression="stream_id = :stream_id AND stream_time_in <= :stream_time_in",
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': clip.stream_id,
-            ':time_in': clip.time_in,
+            ':stream_time_in': clip.time_in,
         }),
         ScanIndexForward=False,
         Limit=2,
