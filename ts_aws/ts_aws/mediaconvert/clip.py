@@ -36,12 +36,12 @@ def create(stream, clip, clip_segments):
             },
             'FileInput': f"s3://{bucket}/{clip_segment.media_key}",
         }
-        if clip_segment.time_in is not None or clip_segment.time_out is not None:
+        if clip_segment.segment_time_in is not None or clip_segment.segment_time_out is not None:
             input_clippings = {}
-            if clip_segment.time_in:
-                input_clippings['StartTimecode'] = _get_timecode(clip_segment.time_in)
-            if clip_segment.time_out:
-                input_clippings['EndTimecode'] = _get_timecode(clip_segment.time_out)
+            if clip_segment.segment_time_in:
+                input_clippings['StartTimecode'] = _get_timecode(clip_segment.segment_time_in)
+            if clip_segment.segment_time_out:
+                input_clippings['EndTimecode'] = _get_timecode(clip_segment.segment_time_out)
             settings['InputClippings'] = [input_clippings]
         return settings
 
