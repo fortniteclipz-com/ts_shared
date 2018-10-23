@@ -3,6 +3,7 @@ class Montage(dict):
         super(Montage, self).__init__(**kwargs)
 
         self.montage_id = kwargs.get('montage_id')
+        self.duration = kwargs.get('duration')
         self.clip_ids = kwargs.get('clip_ids')
 
         self.media_key = kwargs.get('media_key')
