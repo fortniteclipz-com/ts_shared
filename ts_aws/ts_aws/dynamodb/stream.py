@@ -32,3 +32,12 @@ def get_stream(stream_id):
     if 'Item' not in r:
         raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
     return ts_model.Stream(**_replace_decimals(r['Item']))
+
+def get_all_streams(limit):
+    logger.info("get_all_streams | start", limit=limit)
+    r = table_streams.scan(
+        Limit=limit,
+        ReturnConsumedCapacity="TOTAL",
+    )
+    logger.info("get_all_streams | success", response=r)
+    return list(map(lambda c: ts_model.Stream(**c), _replace_decimals(r['Items'])))
