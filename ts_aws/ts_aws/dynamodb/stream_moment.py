@@ -42,7 +42,7 @@ def get_stream_moments(stream_id, exclusiveStartKey=None):
     )
     logger.info("get_stream_moments | success", response=r)
     if len(r['Items']) == 0:
-        raise ts_model.Exception(ts_model.Exception.STREAM_SEGMENTS__NOT_EXIST)
+        raise ts_model.Exception(ts_model.Exception.STREAM_MOMENTS__NOT_EXIST)
     stream_segments += list(map(lambda mc: ts_model.StreamMoment(**mc), _replace_decimals(r['Items'])))
 
     lastEvaluatedKey = r.get('LastEvaluatedKey')
