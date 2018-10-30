@@ -3,7 +3,7 @@ log:
 
 aws:
   account-id: 589344262905
-  region: us-west-1
+  region: us-west-2
 
   dynamodb:
     streams:
@@ -34,7 +34,7 @@ aws:
           - dynamodb:DeleteItem
           - dynamodb:BatchGetItem
           - dynamodb:BatchWriteItem
-        Resource: arn:aws:dynamodb:us-west-1:589344262905:*
+        Resource: arn:aws:dynamodb:us-west-2:589344262905:*
       - Effect: Allow
         Action:
           - iam:PassRole
@@ -42,7 +42,7 @@ aws:
       - Effect: Allow
         Action:
           - mediaconvert:CreateJob
-        Resource: arn:aws:mediaconvert:us-west-1:589344262905:*
+        Resource: arn:aws:mediaconvert:us-west-2:589344262905:*
       - Effect: Allow
         Action:
           - s3:PutObject
@@ -55,13 +55,13 @@ aws:
           - sqs:ReceiveMessage
           - sqs:DeleteMessage
           - sqs:ChangeMessageVisibility
-        Resource: arn:aws:sqs:us-west-1:589344262905:*
+        Resource: arn:aws:sqs:us-west-2:589344262905:*
 
   mediaconvert:
     role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
-    url: https://2atsycqh.mediaconvert.us-west-1.amazonaws.com
-    clip: arn:aws:mediaconvert:us-west-1:589344262905:queues/Clip
-    montage: arn:aws:mediaconvert:us-west-1:589344262905:queues/Montage
+    url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
+    clip: arn:aws:mediaconvert:us-west-2:589344262905:queues/Clip
+    montage: arn:aws:mediaconvert:us-west-2:589344262905:queues/Montage
 
   s3:
     main:
