@@ -65,12 +65,8 @@ aws:
 
   s3:
     main:
-      name: twitch-stitch-main
+      name: twitch-stitch-media
       region: us-west-1
-    exported:
-      name: twitch-stitch-exported
-    thumbnails:
-      name: twitch-stitch-thumbnails
 
   sqs:
     clip:
