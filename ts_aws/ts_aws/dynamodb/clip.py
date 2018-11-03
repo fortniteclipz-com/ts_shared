@@ -10,13 +10,14 @@ import boto3
 
 logger = ts_logger.get(__name__)
 
+stage = ts_config.get('stage')
 resource = boto3.resource('dynamodb')
 table_clips_name = ts_config.get('dynamodb.tables.clips.name')
-table_clips = resource.Table(table_clips_name)
+table_clips = resource.Table(f"{table_clips_name}-{stage}")
 table_stream_segments_name = ts_config.get('dynamodb.tables.stream-segments.name')
-table_stream_segments = resource.Table(table_stream_segments_name)
+table_stream_segments = resource.Table(f"{table_stream_segments_name}-{stage}")
 table_clip_segments_name = ts_config.get('dynamodb.tables.clip-segments.name')
-table_clip_segments = resource.Table(table_clip_segments_name)
+table_clip_segments = resource.Table(f"{table_clip_segments_name}-{stage}")
 
 def save_clip(clip):
     logger.info("save_clip | start", clip=clip)

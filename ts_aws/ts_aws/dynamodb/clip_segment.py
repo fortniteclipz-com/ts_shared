@@ -7,9 +7,10 @@ import boto3
 
 logger = ts_logger.get(__name__)
 
+stage = ts_config.get('stage')
 resource = boto3.resource('dynamodb')
 table_clip_segments_name = ts_config.get('dynamodb.tables.clip-segments.name')
-table_clip_segments = resource.Table(table_clip_segments_name)
+table_clip_segments = resource.Table(f"{table_clip_segments_name}-{stage}")
 
 def save_clip_segments(clip_segments):
     logger.info("save_clip_segments | start", clip_segments_length=len(clip_segments))

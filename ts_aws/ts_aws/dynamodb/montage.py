@@ -8,9 +8,10 @@ import boto3
 
 logger = ts_logger.get(__name__)
 
+stage = ts_config.get('stage')
 resource = boto3.resource('dynamodb')
 table_montages_name = ts_config.get('dynamodb.tables.montages.name')
-table_montages = resource.Table(table_montages_name)
+table_montages = resource.Table(f"{table_montages_name}-{stage}")
 
 def save_montage(montage):
     logger.info("save_montage | start", montage=montage)

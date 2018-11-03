@@ -7,9 +7,10 @@ import boto3
 
 logger = ts_logger.get(__name__)
 
+stage = ts_config.get('stage')
 resource = boto3.resource('dynamodb')
 table_stream_moments_name = ts_config.get('dynamodb.tables.stream-moments.name')
-table_stream_moments = resource.Table(table_stream_moments_name)
+table_stream_moments = resource.Table(f"{table_stream_moments_name}-{stage}")
 
 def save_stream_moments(stream_moments):
     logger.info("save_stream_moments | start", stream_moments_length=len(stream_moments))
