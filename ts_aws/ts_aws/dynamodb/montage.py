@@ -9,7 +9,7 @@ import boto3
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('dynamodb')
-table_montages_name = ts_config.get('aws.dynamodb.montages.name')
+table_montages_name = ts_config.get('aws.dynamodb.tables.montages.name')
 table_montages = resource.Table(table_montages_name)
 
 def save_montage(montage):

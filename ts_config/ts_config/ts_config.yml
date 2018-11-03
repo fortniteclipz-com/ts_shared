@@ -5,21 +5,25 @@ aws:
   account-id: 589344262905
   region: us-west-2
 
+  cognito:
+    arn: arn:aws:cognito-idp:us-west-2:589344262905:userpool/us-west-2_6iB7Ex6GC
+
   dynamodb:
-    streams:
-      name: ts-streams
-    stream-moments:
-      name: ts-stream-moments
-    stream-segments:
-      name: ts-stream-segments
-    clips:
-      name: ts-clips
-    clip-segments:
-      name: ts-clip-segments
-    montages:
-      name: ts-montages
-    montage-clips:
-      name: ts-montage-clips
+    tables:
+      streams:
+        name: ts-streams
+      stream-moments:
+        name: ts-stream-moments
+      stream-segments:
+        name: ts-stream-segments
+      clips:
+        name: ts-clips
+      clip-segments:
+        name: ts-clip-segments
+      montages:
+        name: ts-montages
+      montage-clips:
+        name: ts-montage-clips
 
   iam:
     role-statement:
@@ -60,24 +64,29 @@ aws:
   mediaconvert:
     role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
     url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
-    clip: arn:aws:mediaconvert:us-west-2:589344262905:queues/Clip
-    montage: arn:aws:mediaconvert:us-west-2:589344262905:queues/Montage
+    queues:
+      clip:
+        arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Clip
+      montage:
+        arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Montage
 
   s3:
-    main:
-      name: twitch-stitch-media
-      region: us-west-1
+    buckets:
+      media:
+        name: twitch-stitch-media
+        region: us-west-1
 
   sqs:
-    clip:
-      name: ts-clip
-    montage:
-      name: ts-montage
-    stream--analyze:
-      name: ts-stream--analyze
-    stream--initialize:
-      name: ts-stream--initialize
-    stream-segment--analyze:
-      name: ts-stream-segment--analyze
-    stream-segment--download:
-      name: ts-stream-segment--download
+    queues:
+      clip:
+        name: ts-clip
+      montage:
+        name: ts-montage
+      stream--analyze:
+        name: ts-stream--analyze
+      stream--initialize:
+        name: ts-stream--initialize
+      stream-segment--analyze:
+        name: ts-stream-segment--analyze
+      stream-segment--download:
+        name: ts-stream-segment--download

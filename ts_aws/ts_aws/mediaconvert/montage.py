@@ -7,7 +7,7 @@ import time
 logger = ts_logger.get(__name__)
 
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get('aws.mediaconvert.url'))
-bucket = ts_config.get('aws.s3.main.name')
+bucket = ts_config.get('aws.s3.buckets.media.name')
 
 def create(montage, montage_clips):
     def _get_input_settings(montage_clip):
@@ -36,7 +36,7 @@ def create(montage, montage_clips):
         'UserMetadata': {
           'montage_id': f"{montage.montage_id}",
         },
-        'Queue': ts_config.get('aws.mediaconvert.montage'),
+        'Queue': ts_config.get('aws.mediaconvert.queues.montage.arn'),
         'Role': ts_config.get('aws.mediaconvert.role'),
         'Settings': {
             'TimecodeConfig': {

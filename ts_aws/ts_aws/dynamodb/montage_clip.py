@@ -8,7 +8,7 @@ import boto3
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('dynamodb')
-table_montage_clips_name = ts_config.get('aws.dynamodb.montage-clips.name')
+table_montage_clips_name = ts_config.get('aws.dynamodb.tables.montage-clips.name')
 table_montage_clips = resource.Table(table_montage_clips_name)
 
 def save_montage_clips(montage_clips):

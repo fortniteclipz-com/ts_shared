@@ -9,7 +9,7 @@ logger = ts_logger.get(__name__)
 client = boto3.client('sqs')
 resource = boto3.resource('sqs')
 
-queue_url = client.get_queue_url(QueueName=ts_config.get('aws.sqs.stream-segment--download.name'))['QueueUrl']
+queue_url = client.get_queue_url(QueueName=ts_config.get('aws.sqs.queues.stream-segment--download.name'))['QueueUrl']
 queue = resource.Queue(queue_url)
 
 def send_message(payload):
