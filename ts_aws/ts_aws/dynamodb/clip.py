@@ -11,11 +11,11 @@ import boto3
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('dynamodb')
-table_clips_name = ts_config.get('aws.dynamodb.tables.clips.name')
+table_clips_name = ts_config.get('dynamodb.tables.clips.name')
 table_clips = resource.Table(table_clips_name)
-table_stream_segments_name = ts_config.get('aws.dynamodb.tables.stream-segments.name')
+table_stream_segments_name = ts_config.get('dynamodb.tables.stream-segments.name')
 table_stream_segments = resource.Table(table_stream_segments_name)
-table_clip_segments_name = ts_config.get('aws.dynamodb.tables.clip-segments.name')
+table_clip_segments_name = ts_config.get('dynamodb.tables.clip-segments.name')
 table_clip_segments = resource.Table(table_clip_segments_name)
 
 def save_clip(clip):

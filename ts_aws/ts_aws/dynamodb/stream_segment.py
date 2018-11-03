@@ -8,7 +8,7 @@ import boto3
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('dynamodb')
-table_stream_segments_name = ts_config.get('aws.dynamodb.tables.stream-segments.name')
+table_stream_segments_name = ts_config.get('dynamodb.tables.stream-segments.name')
 table_stream_segments = resource.Table(table_stream_segments_name)
 
 def save_stream_segment(stream_segment):

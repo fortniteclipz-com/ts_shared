@@ -8,7 +8,7 @@ import boto3
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('dynamodb')
-table_clip_segments_name = ts_config.get('aws.dynamodb.tables.clip-segments.name')
+table_clip_segments_name = ts_config.get('dynamodb.tables.clip-segments.name')
 table_clip_segments = resource.Table(table_clip_segments_name)
 
 def save_clip_segments(clip_segments):

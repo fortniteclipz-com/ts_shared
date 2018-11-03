@@ -1,92 +1,90 @@
-log:
-  level: INFO
+account-id: 589344262905
+log-level: INFO
+region: us-west-2
+stage: dev
 
-aws:
-  account-id: 589344262905
-  region: us-west-2
+cognito:
+  arn: arn:aws:cognito-idp:us-west-2:589344262905:userpool/us-west-2_6iB7Ex6GC
 
-  cognito:
-    arn: arn:aws:cognito-idp:us-west-2:589344262905:userpool/us-west-2_6iB7Ex6GC
+dynamodb:
+  tables:
+    streams:
+      name: ts-streams
+    stream-moments:
+      name: ts-stream-moments
+    stream-segments:
+      name: ts-stream-segments
+    clips:
+      name: ts-clips
+    clip-segments:
+      name: ts-clip-segments
+    montages:
+      name: ts-montages
+    montage-clips:
+      name: ts-montage-clips
 
-  dynamodb:
-    tables:
-      streams:
-        name: ts-streams
-      stream-moments:
-        name: ts-stream-moments
-      stream-segments:
-        name: ts-stream-segments
-      clips:
-        name: ts-clips
-      clip-segments:
-        name: ts-clip-segments
-      montages:
-        name: ts-montages
-      montage-clips:
-        name: ts-montage-clips
+iam:
+  role-statement:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchGetItem
+        - dynamodb:BatchWriteItem
+      Resource: arn:aws:dynamodb:us-west-2:589344262905:*
+    - Effect: Allow
+      Action:
+        - iam:PassRole
+      Resource: arn:aws:iam::589344262905:*
+    - Effect: Allow
+      Action:
+        - mediaconvert:CreateJob
+      Resource: arn:aws:mediaconvert:us-west-2:589344262905:*
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::*
+    - Effect: Allow
+      Action:
+        - sqs:GetQueueUrl
+        - sqs:SendMessage
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:ChangeMessageVisibility
+      Resource: arn:aws:sqs:us-west-2:589344262905:*
 
-  iam:
-    role-statement:
-      - Effect: Allow
-        Action:
-          - dynamodb:DescribeTable
-          - dynamodb:Query
-          - dynamodb:Scan
-          - dynamodb:GetItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          - dynamodb:DeleteItem
-          - dynamodb:BatchGetItem
-          - dynamodb:BatchWriteItem
-        Resource: arn:aws:dynamodb:us-west-2:589344262905:*
-      - Effect: Allow
-        Action:
-          - iam:PassRole
-        Resource: arn:aws:iam::589344262905:*
-      - Effect: Allow
-        Action:
-          - mediaconvert:CreateJob
-        Resource: arn:aws:mediaconvert:us-west-2:589344262905:*
-      - Effect: Allow
-        Action:
-          - s3:PutObject
-          - s3:GetObject
-        Resource: arn:aws:s3:::*
-      - Effect: Allow
-        Action:
-          - sqs:GetQueueUrl
-          - sqs:SendMessage
-          - sqs:ReceiveMessage
-          - sqs:DeleteMessage
-          - sqs:ChangeMessageVisibility
-        Resource: arn:aws:sqs:us-west-2:589344262905:*
+mediaconvert:
+  role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
+  url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
+  queues:
+    clip:
+      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Clip
+    montage:
+      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Montage
 
-  mediaconvert:
-    role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
-    url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
-    queues:
-      clip:
-        arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Clip
-      montage:
-        arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Montage
+s3:
+  buckets:
+    media:
+      name: twitch-stitch-media
+      region: us-west-1
 
-  s3:
-    buckets:
-      media:
-        name: twitch-stitch-media
-        region: us-west-1
-
-  sqs:
-    queues:
-      clip:
-        name: ts-clip
-      montage:
-        name: ts-montage
-      stream--analyze:
-        name: ts-stream--analyze
-      stream--initialize:
-        name: ts-stream--initialize
-      stream-segment--analyze:
-        name: ts-stream-segment--analyze
-      stream-segment--download:
-        name: ts-stream-segment--download
+sqs:
+  queues:
+    clip:
+      name: ts-clip
+    montage:
+      name: ts-montage
+    stream--analyze:
+      name: ts-stream--analyze
+    stream--initialize:
+      name: ts-stream--initialize
+    stream-segment--analyze:
+      name: ts-stream-segment--analyze
+    stream-segment--download:
+      name: ts-stream-segment--download

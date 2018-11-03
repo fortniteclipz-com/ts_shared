@@ -9,7 +9,7 @@ import boto3
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('dynamodb')
-table_streams_name = ts_config.get('aws.dynamodb.tables.streams.name')
+table_streams_name = ts_config.get('dynamodb.tables.streams.name')
 table_streams = resource.Table(table_streams_name)
 
 def save_stream(stream):
