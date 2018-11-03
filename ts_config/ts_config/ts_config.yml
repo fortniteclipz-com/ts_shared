@@ -64,9 +64,9 @@ mediaconvert:
   url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
   queues:
     clip:
-      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/clip-dev
+      arn-prefix: arn:aws:mediaconvert:us-west-2:589344262905:queues/clip
     montage:
-      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/montage-dev
+      arn-prefix: arn:aws:mediaconvert:us-west-2:589344262905:queues/montage
 
 s3:
   buckets:

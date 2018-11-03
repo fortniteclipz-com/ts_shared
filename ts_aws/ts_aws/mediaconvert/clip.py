@@ -7,7 +7,7 @@ import time
 logger = ts_logger.get(__name__)
 
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get('mediaconvert.url'))
-bucket = ts_config.get('s3.buckets.media.name')
+bucket = f"{ts_config.get('s3.buckets.media.name')}-{ts_config.get('stage')}"
 
 def create(stream, clip, clip_segments):
     def _get_timecode(_time):
@@ -49,7 +49,7 @@ def create(stream, clip, clip_segments):
         'UserMetadata': {
           'clip_id': f"{clip.clip_id}",
         },
-        'Queue': ts_config.get('mediaconvert.queues.clip.arn'),
+        'Queue': f"{ts_config.get('mediaconvert.queues.clip.arn-prefix')}-{ts_config.get('stage')}",
         'Role': ts_config.get('mediaconvert.role'),
         'Settings': {
             'TimecodeConfig': {
