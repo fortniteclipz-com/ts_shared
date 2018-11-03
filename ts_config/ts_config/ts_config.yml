@@ -64,15 +64,14 @@ mediaconvert:
   url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
   queues:
     clip:
-      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Clip
+      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/clip-dev
     montage:
-      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/Montage
+      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/montage-dev
 
 s3:
   buckets:
     media:
       name: twitch-stitch-media
-      region: us-west-1
 
 sqs:
   queues:
