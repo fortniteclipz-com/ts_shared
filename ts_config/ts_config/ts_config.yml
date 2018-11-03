@@ -4,7 +4,7 @@ region: us-west-2
 stage: dev
 
 cognito:
-  arn: arn:aws:cognito-idp:us-west-2:589344262905:userpool/us-west-2_6iB7Ex6GC
+  arn: arn:aws:cognito-idp:us-west-2:589344262905:userpool/us-west-2_Prk8YM9Vy
 
 dynamodb:
   tables:
