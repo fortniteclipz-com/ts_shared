@@ -11,7 +11,7 @@ import sys
 
 # os.makedirs(os.path.dirname('./tmp/'), exist_ok=True)
 daiquiri.setup(
-    level=ts_config.get('log.level'),
+    level=ts_config.get('log-level'),
     outputs=[
         daiquiri.output.Stream(
             sys.stdout,
