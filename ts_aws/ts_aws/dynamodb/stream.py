@@ -10,8 +10,8 @@ logger = ts_logger.get(__name__)
 
 stage = ts_config.get('stage')
 resource = boto3.resource('dynamodb')
-table_streams_name = ts_config.get('dynamodb.tables.streams.name')
-table_streams = resource.Table(f"{table_streams_name}-{stage}")
+table_streams_name = f"{ts_config.get('dynamodb.tables.streams.name')}-{stage}"
+table_streams = resource.Table(table_streams_name)
 
 def save_stream(stream):
     logger.info("save_stream | start", stream=stream)

@@ -9,8 +9,8 @@ logger = ts_logger.get(__name__)
 
 stage = ts_config.get('stage')
 resource = boto3.resource('dynamodb')
-table_stream_segments_name = ts_config.get('dynamodb.tables.stream-segments.name')
-table_stream_segments = resource.Table(f"{table_stream_segments_name}-{stage}")
+table_stream_segments_name = f"{ts_config.get('dynamodb.tables.stream-segments.name')}-{stage}"
+table_stream_segments = resource.Table(table_stream_segments_name)
 
 def save_stream_segment(stream_segment):
     logger.info("save_stream_segment | start", stream_segment=stream_segment)

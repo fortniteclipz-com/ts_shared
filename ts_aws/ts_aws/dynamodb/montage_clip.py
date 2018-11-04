@@ -9,8 +9,8 @@ logger = ts_logger.get(__name__)
 
 stage = ts_config.get('stage')
 resource = boto3.resource('dynamodb')
-table_montage_clips_name = ts_config.get('dynamodb.tables.montage-clips.name')
-table_montage_clips = resource.Table(f"{table_montage_clips_name}-{stage}")
+table_montage_clips_name = f"{ts_config.get('dynamodb.tables.montage-clips.name')}-{stage}"
+table_montage_clips = resource.Table(table_montage_clips_name)
 
 def save_montage_clips(montage_clips):
     logger.info("save_montage_clips | start", montage_clips_length=len(montage_clips))
