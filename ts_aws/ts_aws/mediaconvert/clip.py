@@ -13,7 +13,7 @@ def create(stream, clip, clip_segments):
     def _get_timecode(_time):
         seconds = _time // 1
         leftover = _time - seconds
-        frames = str(int(stream.fps * leftover)).zfill(2)
+        frames = str(int(stream.fps_numerator / stream.fps_denominator * leftover)).zfill(2)
         return f"{time.strftime('%H:%M:%S', time.gmtime(_time))}:{frames}"
 
     def _get_input_settings(clip_segment):
