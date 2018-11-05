@@ -3,9 +3,6 @@ log-level: INFO
 region: us-west-2
 stage: dev
 
-cognito:
-  arn: arn:aws:cognito-idp:us-west-2:589344262905:userpool/us-west-2_SeAkMOMPt
-
 dynamodb:
   tables:
     clips:
