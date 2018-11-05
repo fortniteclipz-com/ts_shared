@@ -8,12 +8,6 @@ cognito:
 
 dynamodb:
   tables:
-    streams:
-      name: ts-streams
-    stream-moments:
-      name: ts-stream-moments
-    stream-segments:
-      name: ts-stream-segments
     clips:
       name: ts-clips
     clip-segments:
@@ -22,6 +16,16 @@ dynamodb:
       name: ts-montages
     montage-clips:
       name: ts-montage-clips
+    streams:
+      name: ts-streams
+    stream-moments:
+      name: ts-stream-moments
+    stream-segments:
+      name: ts-stream-segments
+    user-montages:
+      name: ts-user-montages
+    user-streams:
+      name: ts-user-streams
 
 iam:
   role-statement:
