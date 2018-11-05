@@ -19,6 +19,8 @@ dynamodb:
       name: ts-stream-moments
     stream-segments:
       name: ts-stream-segments
+    user-clips:
+      name: ts-user-clips
     user-montages:
       name: ts-user-montages
     user-streams:
