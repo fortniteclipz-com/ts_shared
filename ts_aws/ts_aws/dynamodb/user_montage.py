@@ -1,6 +1,5 @@
 import ts_config
 import ts_logger
-import ts_model.UserClip
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
