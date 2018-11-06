@@ -72,3 +72,47 @@ def get_stream_segments(stream_id, exclusiveStartKey=None):
         stream_segments += get_stream_segments(stream_id, lastEvaluatedKey)
 
     return stream_segments
+
+def get_clip_stream_segments(clip):
+    logger.info("get_clip_stream_segments | start uno", clip=clip)
+    r = table_stream_segments.query(
+        IndexName="stream_id-stream_time_in-index",
+        KeyConditionExpression="stream_id = :stream_id AND stream_time_in <= :stream_time_in",
+        ExpressionAttributeValues=_replace_floats({
+            ':stream_id': clip.stream_id,
+            ':stream_time_in': clip.time_in,
+        }),
+        ScanIndexForward=False,
+        Limit=2,
+        ReturnConsumedCapacity="TOTAL",
+    )
+    logger.info("get_clip_stream_segments | success uno", response=r)
+
+    if len(r['Items']) == 2:
+        last_css = ts_model.StreamSegment(**_replace_decimals(r['Items'][1]))
+        exclusiveStartKey = {
+            'ExclusiveStartKey': _replace_floats({
+                'stream_id': last_css.stream_id,
+                'stream_time_in': last_css.stream_time_in,
+                'segment': last_css.segment,
+            })
+        }
+    else:
+        exclusiveStartKey = {}
+
+    logger.info("get_clip_stream_segments | start duo", clip=clip, exclusiveStartKey=exclusiveStartKey)
+    r = table_stream_segments.query(
+        IndexName="stream_id-stream_time_in-index",
+        KeyConditionExpression="stream_id = :stream_id AND stream_time_in < :stream_time_out",
+        ExpressionAttributeValues=_replace_floats({
+            ':stream_id': clip.stream_id,
+            ':stream_time_out': clip.time_out,
+        }),
+        ReturnConsumedCapacity="TOTAL",
+        **exclusiveStartKey,
+    )
+    logger.info("get_clip_stream_segments | success duo", response=r)
+
+    if len(r['Items']) == 0:
+        raise ts_model.Exception(ts_model.Exception.CLIP_STREAM_SEGMENTS__NOT_EXIST)
+    return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))
