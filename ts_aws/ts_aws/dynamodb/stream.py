@@ -16,7 +16,7 @@ table_streams = resource.Table(table_streams_name)
 
 def save_stream(stream):
     logger.info("save_stream | start", stream=stream)
-    stream._last_modified = datetime.utcnow().isoformat()
+    stream._last_modified = datetime.datetime.utcnow().isoformat()
     r = table_streams.put_item(
         Item=_replace_floats(stream),
         ReturnConsumedCapacity="TOTAL",
