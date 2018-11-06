@@ -5,6 +5,7 @@ import ts_model.Stream
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
+import datetime
 
 logger = ts_logger.get(__name__)
 
@@ -15,6 +16,7 @@ table_streams = resource.Table(table_streams_name)
 
 def save_stream(stream):
     logger.info("save_stream | start", stream=stream)
+    stream._last_modified = datetime.utcnow().isoformat()
     r = table_streams.put_item(
         Item=_replace_floats(stream),
         ReturnConsumedCapacity="TOTAL",

@@ -23,8 +23,6 @@ dynamodb:
       name: ts-user-clips
     user-montages:
       name: ts-user-montages
-    user-streams:
-      name: ts-user-streams
 
 iam:
   role-statement:

@@ -14,6 +14,7 @@ class Stream(dict):
 
         self._status_initialize = kwargs.get('_status_initialize', 0)
         self._status_analyze = kwargs.get('_status_analyze', 0)
+        self._last_modified = kwargs.get('_last_modified')
 
     def __getattr__(self, attr):
         return self.get(attr)

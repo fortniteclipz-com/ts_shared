@@ -40,6 +40,15 @@ def get_clip(clip_id):
         raise ts_model.Exception(ts_model.Exception.CLIP__NOT_EXIST)
     return ts_model.Clip(**_replace_decimals(r['Item']))
 
+def save_clips(clips):
+    logger.info("save_clips | start", clips_length=len(clips))
+    with table_clips.batch_writer() as batch:
+        for c in clips:
+            batch.put_item(
+                Item=_replace_floats(ss),
+            )
+    logger.info("save_clips | success")
+
 def get_clips(clip_ids):
     logger.info("get_clips | start", clip_ids=clip_ids)
     r = resource.batch_get_item(
