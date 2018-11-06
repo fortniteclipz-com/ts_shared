@@ -60,7 +60,7 @@ def get_clips(clip_ids):
     logger.info("get_clips | success", response=r)
     if len(r['Responses'][table_clips_name]) == 0:
             raise ts_model.Exception(ts_model.Exception.CLIPS__NOT_EXIST)
-    return list(map(lambda cs: ts_model.Clip(**cs), _replace_decimals(r['Responses'][table_clips_name])))
+    return list(map(lambda c: ts_model.Clip(**c), _replace_decimals(r['Responses'][table_clips_name])))
 
 def get_all_clips(limit):
     logger.info("get_all_clips | start", limit=limit)

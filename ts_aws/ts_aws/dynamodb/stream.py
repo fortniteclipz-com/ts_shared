@@ -44,4 +44,4 @@ def get_recent_streams():
         ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_recent_streams | success", response=r)
-    return list(map(lambda c: ts_model.Stream(**c), _replace_decimals(r['Items'])))
+    return list(map(lambda s: ts_model.Stream(**s), _replace_decimals(r['Items'])))

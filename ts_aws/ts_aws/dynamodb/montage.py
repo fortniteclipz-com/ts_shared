@@ -33,23 +33,18 @@ def get_montage(montage_id):
         raise ts_model.Exception(ts_model.Exception.MONTAGE__NOT_EXIST)
     return ts_model.Montage(**_replace_decimals(r['Item']))
 
-def get_recent_montages():
-    logger.info("get_recent_montages | start")
-    r = table_montages.scan(
-        IndexName='created-index',
-        Limit=25,
+def get_montages(montage_ids):
+    logger.info("get_montages | start", montage_ids=montage_ids)
+    r = resource.batch_get_item(
+        RequestItems={
+            table_montages_name: {
+                'Keys': list(map(lambda m_id: {'montage_id': m_id}, montage_ids))
+            }
+        },
         ReturnConsumedCapacity='TOTAL',
     )
-    logger.info("get_recent_montages | success", response=r)
-    return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))
+    logger.info("get_montages | success", response=r)
+    if len(r['Responses'][table_montages_name]) == 0:
+            raise ts_model.Exception(ts_model.Exception.MONTAGES__NOT_EXIST)
+    return list(map(lambda m: ts_model.Montage(**m), _replace_decimals(r['Responses'][table_montages_name])))
 
-
-def get_user_recent_montages():
-    logger.info("get_all_montages | start")
-    r = table_montages.scan(
-        IndexName='user_id-created-index',
-        Limit=25,
-        ReturnConsumedCapacity='TOTAL',
-    )
-    logger.info("get_all_montages | success", response=r)
-    return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))

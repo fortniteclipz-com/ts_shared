@@ -15,15 +15,15 @@ table_stream_moments = resource.Table(table_stream_moments_name)
 def save_stream_moments(stream_moments):
     logger.info("save_stream_moments | start", stream_moments_length=len(stream_moments))
     with table_stream_moments.batch_writer() as batch:
-        for ss in stream_moments:
+        for sm in stream_moments:
             batch.put_item(
-                Item=_replace_floats(ss),
+                Item=_replace_floats(sm),
             )
     logger.info("save_stream_moments | success")
 
 def get_stream_moments(stream_id, exclusiveStartKey=None):
     logger.info("get_stream_moments | start", stream_id=stream_id)
-    stream_segments = []
+    stream_moments = []
 
     if exclusiveStartKey is not None:
         exclusiveStartKey = {
@@ -44,10 +44,10 @@ def get_stream_moments(stream_id, exclusiveStartKey=None):
     logger.info("get_stream_moments | success", response=r)
     if len(r['Items']) == 0:
         raise ts_model.Exception(ts_model.Exception.STREAM_MOMENTS__NOT_EXIST)
-    stream_segments += list(map(lambda mc: ts_model.StreamMoment(**mc), _replace_decimals(r['Items'])))
+    stream_moments += list(map(lambda sm: ts_model.StreamMoment(**sm), _replace_decimals(r['Items'])))
 
     lastEvaluatedKey = r.get('LastEvaluatedKey')
     if lastEvaluatedKey is not None:
-        stream_segments += get_stream_moments(stream_id, lastEvaluatedKey)
+        stream_moments += get_stream_moments(stream_id, lastEvaluatedKey)
 
-    return stream_segments
+    return stream_moments
