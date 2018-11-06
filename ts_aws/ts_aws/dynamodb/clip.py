@@ -43,7 +43,7 @@ def save_clips(clips):
     with table_clips.batch_writer() as batch:
         for c in clips:
             batch.put_item(
-                Item=_replace_floats(ss),
+                Item=_replace_floats(c),
             )
     logger.info("save_clips | success")
 

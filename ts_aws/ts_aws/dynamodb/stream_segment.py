@@ -114,5 +114,5 @@ def get_clip_stream_segments(clip):
     logger.info("get_clip_stream_segments | success duo", response=r)
 
     if len(r['Items']) == 0:
-        raise ts_model.Exception(ts_model.Exception.CLIP_STREAM_SEGMENTS__NOT_EXIST)
+        raise ts_model.Exception(ts_model.Exception.CLIP__STREAM_SEGMENTS__NOT_EXIST)
     return list(map(lambda ss: ts_model.StreamSegment(**ss), _replace_decimals(r['Items'])))

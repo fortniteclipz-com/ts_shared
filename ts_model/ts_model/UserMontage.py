@@ -1,6 +1,6 @@
 class UserMontage(dict):
     def __init__(self, **kwargs):
-        super(ClipSegment, self).__init__(**kwargs)
+        super(UserMontage, self).__init__(**kwargs)
 
         self.user_id = kwargs.get('user_id')
         self.montage_id = kwargs.get('montage_id')
