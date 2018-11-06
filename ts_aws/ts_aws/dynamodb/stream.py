@@ -19,7 +19,7 @@ def save_stream(stream):
     stream._last_modified = datetime.datetime.utcnow().isoformat()
     r = table_streams.put_item(
         Item=_replace_floats(stream),
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("save_stream | success", response=r)
 
@@ -29,18 +29,19 @@ def get_stream(stream_id):
         Key={
             'stream_id': stream_id
         },
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_stream | success", response=r)
     if 'Item' not in r:
         raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
     return ts_model.Stream(**_replace_decimals(r['Item']))
 
-def get_all_streams(limit):
-    logger.info("get_all_streams | start", limit=limit)
+def get_recent_streams():
+    logger.info("get_recent_streams | start")
     r = table_streams.scan(
-        Limit=limit,
-        ReturnConsumedCapacity="TOTAL",
+        IndexName='_last_modified-index',
+        Limit=15,
+        ReturnConsumedCapacity='TOTAL',
     )
-    logger.info("get_all_streams | success", response=r)
+    logger.info("get_recent_streams | success", response=r)
     return list(map(lambda c: ts_model.Stream(**c), _replace_decimals(r['Items'])))

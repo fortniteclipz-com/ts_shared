@@ -33,13 +33,13 @@ def get_stream_moments(stream_id, exclusiveStartKey=None):
         exclusiveStartKey = {}
 
     r = table_stream_moments.query(
-        IndexName="stream_id-time-index",
-        KeyConditionExpression="stream_id = :stream_id",
+        IndexName='stream_id-time-index',
+        KeyConditionExpression='stream_id = :stream_id',
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': stream_id,
         }),
         **exclusiveStartKey,
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_stream_moments | success", response=r)
     if len(r['Items']) == 0:

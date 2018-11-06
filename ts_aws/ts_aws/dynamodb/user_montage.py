@@ -15,6 +15,6 @@ def save_user_montage(user_montage):
     logger.info("save_user_montage | start", user_montage=user_montage)
     r = table_user_montages.put_item(
         Item=_replace_floats(user_montage),
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("save_user_montage | success", response=r)

@@ -17,7 +17,7 @@ def save_montage(montage):
     logger.info("save_montage | start", montage=montage)
     r = table_montages.put_item(
         Item=_replace_floats(montage),
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     _replace_decimals(montage)
     logger.info("save_montage | success", response=r)
@@ -26,18 +26,30 @@ def get_montage(montage_id):
     logger.info("get_montage | start", montage_id=montage_id)
     r = table_montages.get_item(
         Key={'montage_id': montage_id},
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_montage | success", response=r)
     if 'Item' not in r:
         raise ts_model.Exception(ts_model.Exception.MONTAGE__NOT_EXIST)
     return ts_model.Montage(**_replace_decimals(r['Item']))
 
-def get_all_montages(limit):
-    logger.info("get_all_montages | start", limit=limit)
+def get_recent_montages():
+    logger.info("get_recent_montages | start")
     r = table_montages.scan(
-        Limit=limit,
-        ReturnConsumedCapacity="TOTAL",
+        IndexName='created-index',
+        Limit=25,
+        ReturnConsumedCapacity='TOTAL',
+    )
+    logger.info("get_recent_montages | success", response=r)
+    return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))
+
+
+def get_user_recent_montages():
+    logger.info("get_all_montages | start")
+    r = table_montages.scan(
+        IndexName='user_id-created-index',
+        Limit=25,
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_all_montages | success", response=r)
     return list(map(lambda c: ts_model.Montage(**c), _replace_decimals(r['Items'])))

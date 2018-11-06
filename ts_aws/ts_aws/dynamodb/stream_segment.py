@@ -16,7 +16,7 @@ def save_stream_segment(stream_segment):
     logger.info("save_stream_segment | start", stream_segment=stream_segment)
     r = table_stream_segments.put_item(
         Item=_replace_floats(stream_segment),
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("save_stream_segment | success", response=r)
 
@@ -27,7 +27,7 @@ def get_stream_segment(stream_id, segment):
             'stream_id': stream_id,
             'segment': segment,
         },
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_stream_segment | success", response=r)
     if 'Item' not in r:
@@ -55,12 +55,12 @@ def get_stream_segments(stream_id, exclusiveStartKey=None):
         exclusiveStartKey = {}
 
     r = table_stream_segments.query(
-        KeyConditionExpression="stream_id = :stream_id",
+        KeyConditionExpression='stream_id = :stream_id',
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': stream_id,
         }),
         **exclusiveStartKey,
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_stream_segments | success", response=r)
     if len(r['Items']) == 0:
@@ -76,15 +76,15 @@ def get_stream_segments(stream_id, exclusiveStartKey=None):
 def get_clip_stream_segments(clip):
     logger.info("get_clip_stream_segments | start uno", clip=clip)
     r = table_stream_segments.query(
-        IndexName="stream_id-stream_time_in-index",
-        KeyConditionExpression="stream_id = :stream_id AND stream_time_in <= :stream_time_in",
+        IndexName='stream_id-stream_time_in-index',
+        KeyConditionExpression='stream_id = :stream_id AND stream_time_in <= :stream_time_in',
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': clip.stream_id,
             ':stream_time_in': clip.time_in,
         }),
         ScanIndexForward=False,
         Limit=2,
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_clip_stream_segments | success uno", response=r)
 
@@ -102,13 +102,13 @@ def get_clip_stream_segments(clip):
 
     logger.info("get_clip_stream_segments | start duo", clip=clip, exclusiveStartKey=exclusiveStartKey)
     r = table_stream_segments.query(
-        IndexName="stream_id-stream_time_in-index",
-        KeyConditionExpression="stream_id = :stream_id AND stream_time_in < :stream_time_out",
+        IndexName='stream_id-stream_time_in-index',
+        KeyConditionExpression='stream_id = :stream_id AND stream_time_in < :stream_time_out',
         ExpressionAttributeValues=_replace_floats({
             ':stream_id': clip.stream_id,
             ':stream_time_out': clip.time_out,
         }),
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
         **exclusiveStartKey,
     )
     logger.info("get_clip_stream_segments | success duo", response=r)

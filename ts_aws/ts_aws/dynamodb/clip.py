@@ -21,7 +21,7 @@ def save_clip(clip):
     logger.info("save_clip | start", clip=clip)
     r = table_clips.put_item(
         Item=_replace_floats(clip),
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("save_clip | success", response=r)
 
@@ -31,7 +31,7 @@ def get_clip(clip_id):
         Key={
             'clip_id': clip_id
         },
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_clip | success", response=r)
     if 'Item' not in r:
@@ -55,7 +55,7 @@ def get_clips(clip_ids):
                 'Keys': list(map(lambda c_id: {'clip_id': c_id}, clip_ids))
             }
         },
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_clips | success", response=r)
     if len(r['Responses'][table_clips_name]) == 0:
@@ -66,7 +66,7 @@ def get_all_clips(limit):
     logger.info("get_all_clips | start", limit=limit)
     r = table_clips.scan(
         Limit=limit,
-        ReturnConsumedCapacity="TOTAL",
+        ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_all_clips | success", response=r)
     return list(map(lambda c: ts_model.Clip(**c), _replace_decimals(r['Items'])))
