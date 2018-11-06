@@ -9,8 +9,8 @@ logger = ts_logger.get(__name__)
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get('mediaconvert.url'))
 bucket = f"{ts_config.get('s3.buckets.media.name')}-{ts_config.get('stage')}"
 
-def create(montage, montage_clips):
-    def _get_input_settings(montage_clip):
+def create(montage, clips):
+    def _get_input_settings(clip):
         settings = {
             'FilterEnable': "AUTO",
             'PsiControl': "USE_PSI",
@@ -28,7 +28,7 @@ def create(montage, montage_clips):
                     'ProgramSelection': 1
                 }
             },
-            'FileInput': f"s3://{bucket}/{montage_clip.media_key}",
+            'FileInput': f"s3://{bucket}/{clip.media_key}",
         }
         return settings
 
@@ -43,7 +43,7 @@ def create(montage, montage_clips):
                 'Source': "ZEROBASED"
             },
             'AdAvailOffset': 0,
-            'Inputs': list(map(_get_input_settings, montage_clips)),
+            'Inputs': list(map(_get_input_settings, clips)),
             'OutputGroups': [{
                 'Name': "File Group",
                 'OutputGroupSettings': {
