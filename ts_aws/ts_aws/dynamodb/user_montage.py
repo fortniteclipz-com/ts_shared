@@ -38,6 +38,7 @@ def get_user_montages(user_id):
         ExpressionAttributeValues=_replace_floats({
             ':user_id': user_id,
         }),
+        ScanIndexForward=False,
         Limit=25,
         ReturnConsumedCapacity='TOTAL',
     )
