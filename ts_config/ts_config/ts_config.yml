@@ -13,6 +13,8 @@ dynamodb:
       name: ts-montages
     montage-clips:
       name: ts-montage-clips
+    recents:
+      name: ts-recents
     streams:
       name: ts-streams
     stream-moments:
@@ -21,8 +23,6 @@ dynamodb:
       name: ts-stream-segments
     user-clips:
       name: ts-user-clips
-    user-montages:
-      name: ts-user-montages
 
 iam:
   role-statement:

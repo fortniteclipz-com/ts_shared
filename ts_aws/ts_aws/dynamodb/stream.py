@@ -5,7 +5,6 @@ import ts_model.Stream
 from ts_aws.dynamodb import _replace_decimals, _replace_floats
 
 import boto3
-import datetime
 
 logger = ts_logger.get(__name__)
 
@@ -16,7 +15,6 @@ table_streams = resource.Table(table_streams_name)
 
 def save_stream(stream):
     logger.info("save_stream | start", stream=stream)
-    stream._last_modified = datetime.datetime.utcnow().isoformat()
     r = table_streams.put_item(
         Item=_replace_floats(stream),
         ReturnConsumedCapacity='TOTAL',
@@ -35,13 +33,3 @@ def get_stream(stream_id):
     if 'Item' not in r:
         raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
     return ts_model.Stream(**_replace_decimals(r['Item']))
-
-def get_recent_streams():
-    logger.info("get_recent_streams | start")
-    r = table_streams.scan(
-        IndexName='_last_modified-index',
-        Limit=15,
-        ReturnConsumedCapacity='TOTAL',
-    )
-    logger.info("get_recent_streams | success", response=r)
-    return list(map(lambda s: ts_model.Stream(**s), _replace_decimals(r['Items'])))

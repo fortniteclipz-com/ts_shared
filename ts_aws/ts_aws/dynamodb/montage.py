@@ -48,3 +48,5 @@ def get_montages(montage_ids):
             raise ts_model.Exception(ts_model.Exception.MONTAGES__NOT_EXIST)
     return list(map(lambda m: ts_model.Montage(**m), _replace_decimals(r['Responses'][table_montages_name])))
 
+def get_user_montages():
+    pass
