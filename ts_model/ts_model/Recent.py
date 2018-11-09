@@ -1,6 +1,6 @@
-class Recents(dict):
+class Recent(dict):
     def __init__(self, **kwargs):
-        super(Recents, self).__init__(**kwargs)
+        super(Recent, self).__init__(**kwargs)
 
         self.media = kwargs.get('media')
         self.media_ids = kwargs.get('media_ids')

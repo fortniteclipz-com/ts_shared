@@ -29,7 +29,7 @@ def get_clip(clip_id):
     logger.info("get_clip | start", clip_id=clip_id)
     r = table_clips.get_item(
         Key={
-            'clip_id': clip_id
+            'clip_id': clip_id,
         },
         ReturnConsumedCapacity='TOTAL',
     )
@@ -52,7 +52,7 @@ def get_clips(clip_ids):
     r = resource.batch_get_item(
         RequestItems={
             table_clips_name: {
-                'Keys': list(map(lambda c_id: {'clip_id': c_id}, clip_ids))
+                'Keys': list(map(lambda c_id: {'clip_id': c_id}, clip_ids)),
             }
         },
         ReturnConsumedCapacity='TOTAL',

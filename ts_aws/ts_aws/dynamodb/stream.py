@@ -25,7 +25,7 @@ def get_stream(stream_id):
     logger.info("get_stream | start", stream_id=stream_id)
     r = table_streams.get_item(
         Key={
-            'stream_id': stream_id
+            'stream_id': stream_id,
         },
         ReturnConsumedCapacity='TOTAL',
     )

@@ -25,7 +25,9 @@ def save_montage(montage):
 def get_montage(montage_id):
     logger.info("get_montage | start", montage_id=montage_id)
     r = table_montages.get_item(
-        Key={'montage_id': montage_id},
+        Key={
+            'montage_id': montage_id,
+        },
         ReturnConsumedCapacity='TOTAL',
     )
     logger.info("get_montage | success", response=r)
@@ -38,7 +40,7 @@ def get_montages(montage_ids):
     r = resource.batch_get_item(
         RequestItems={
             table_montages_name: {
-                'Keys': list(map(lambda m_id: {'montage_id': m_id}, montage_ids))
+                'Keys': list(map(lambda m_id: {'montage_id': m_id}, montage_ids)),
             }
         },
         ReturnConsumedCapacity='TOTAL',
