@@ -48,7 +48,7 @@ def get_montage():
     return recent_montage
 
 def save_stream(stream):
-    recent_stream = get_stream(stream)
+    recent_stream = get_stream()
 
     if stream.stream_id in recent_stream.media_ids:
         recent_stream.media_ids.remove(stream.stream_id)
