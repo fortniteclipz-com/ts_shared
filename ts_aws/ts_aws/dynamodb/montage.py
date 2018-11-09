@@ -50,5 +50,17 @@ def get_montages(montage_ids):
             raise ts_model.Exception(ts_model.Exception.MONTAGES__NOT_EXIST)
     return list(map(lambda m: ts_model.Montage(**m), _replace_decimals(r['Responses'][table_montages_name])))
 
-def get_user_montages():
-    pass
+def get_user_montages(user_id):
+    logger.info("get_user_montages | start", user_id=user_id)
+    r = table_montages.query(
+        IndexName='user_id-created-index',
+        KeyConditionExpression='user_id = :user_id',
+        ExpressionAttributeValues=_replace_floats({
+            ':user_id': user_id,
+        }),
+        ScanIndexForward=False,
+        Limit=25,
+        ReturnConsumedCapacity='TOTAL',
+    )
+    logger.info("get_user_montages | success", response=r)
+    return list(map(lambda m: ts_model.Montage(**m), _replace_decimals(r['Items'])))
