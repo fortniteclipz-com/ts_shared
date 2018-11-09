@@ -33,3 +33,18 @@ def get_stream(stream_id):
     if 'Item' not in r:
         raise ts_model.Exception(ts_model.Exception.STREAM__NOT_EXIST)
     return ts_model.Stream(**_replace_decimals(r['Item']))
+
+def get_streams(stream_ids):
+    logger.info("get_streams | start", stream_ids=stream_ids)
+    r = resource.batch_get_item(
+        RequestItems={
+            table_streams_name: {
+                'Keys': list(map(lambda s_id: {'stream_id': s_id}, stream_ids)),
+            }
+        },
+        ReturnConsumedCapacity='TOTAL',
+    )
+    logger.info("get_streams | success", response=r)
+    if len(r['Responses'][table_streams_name]) == 0:
+            raise ts_model.Exception(ts_model.Exception.MONTAGES__NOT_EXIST)
+    return list(map(lambda s: ts_model.Stream(**s), _replace_decimals(r['Responses'][table_streams_name])))
