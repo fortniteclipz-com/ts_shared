@@ -19,6 +19,7 @@ def save_montage(montage):
     if montage.montage_id in recent_montage.media_ids:
         recent_montage.media_ids.remove(montage.montage_id)
     recent_montage.media_ids.insert(0, montage.montage_id)
+    recent_montage.media_ids = recent_montage.media_ids[0:25]
 
     logger.info("save_montage | start", montage=montage, recent_montage=recent_montage)
     r = table_recents.put_item(
@@ -53,6 +54,7 @@ def save_stream(stream):
     if stream.stream_id in recent_stream.media_ids:
         recent_stream.media_ids.remove(stream.stream_id)
     recent_stream.media_ids.insert(0, stream.stream_id)
+    recent_stream.media_ids = recent_stream.media_ids[0:15]
 
     logger.info("save_stream | start", stream=stream, recent_stream=recent_stream)
     r = table_recents.put_item(

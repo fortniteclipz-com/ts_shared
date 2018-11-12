@@ -3,7 +3,8 @@ class Montage(dict):
         super(Montage, self).__init__(**kwargs)
 
         self.montage_id = kwargs.get('montage_id')
-        self.stream_user = kwargs.get('stream_user')
+        self.user_id = kwargs.get('user_id')
+        self.streamer = kwargs.get('streamer')
         self.stream_id = kwargs.get('stream_id')
         self.duration = kwargs.get('duration')
         self.clip_ids = kwargs.get('clip_ids')
