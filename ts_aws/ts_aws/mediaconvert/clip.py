@@ -49,7 +49,7 @@ def create(stream, clip, clip_segments):
         'UserMetadata': {
           'clip_id': f"{clip.clip_id}",
         },
-        'Queue': f"{ts_config.get('mediaconvert.queues.clip.arn-prefix')}-{ts_config.get('stage')}",
+        'Queue': f"{ts_config.get('mediaconvert.queues.clip.arn')}-{ts_config.get('stage')}",
         'Role': ts_config.get('mediaconvert.role'),
         'Settings': {
             'TimecodeConfig': {

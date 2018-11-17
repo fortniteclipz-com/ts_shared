@@ -3,6 +3,24 @@ log-level: INFO
 region: us-west-2
 stage: dev
 
+rds:
+  username: twitch-stitch
+  password: 3XU8E61jvCFC
+  db: twitch-stitch
+  tables:
+    clips:
+      name: ts-clips
+    montages:
+      name: ts-montages
+    recents:
+      name: ts-recents
+    streams:
+      name: ts-streams
+    stream-moments:
+      name: ts-stream-moments
+    stream-segments:
+      name: ts-stream-segments
+
 dynamodb:
   tables:
     clips:
@@ -59,9 +77,9 @@ mediaconvert:
   url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
   queues:
     clip:
-      arn-prefix: arn:aws:mediaconvert:us-west-2:589344262905:queues/clip
+      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/clip
     montage:
-      arn-prefix: arn:aws:mediaconvert:us-west-2:589344262905:queues/montage
+      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/montage
 
 s3:
   buckets:
