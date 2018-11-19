@@ -7,7 +7,9 @@ setup(
     author='Ahuja',
     license='',
     packages=find_packages(),
-    install_requires=[],
+    install_requires=[
+        'SQLAlchemy==1.2.10',
+    ],
     dependency_links=[],
     zip_safe=False
 )

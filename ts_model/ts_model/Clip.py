@@ -3,14 +3,13 @@ class Clip(dict):
         super(Clip, self).__init__(**kwargs)
 
         self.clip_id = kwargs.get('clip_id')
-
         self.stream_id = kwargs.get('stream_id')
         self.time_in = kwargs.get('time_in')
         self.time_out = kwargs.get('time_out')
-
         self.media_key = kwargs.get('media_key')
 
         self._status = kwargs.get('_status', 0)
+        self._created = kwargs.get('_created')
 
     def __getattr__(self, attr):
         return self.get(attr)
