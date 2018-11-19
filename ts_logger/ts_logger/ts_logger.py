@@ -6,10 +6,9 @@ import daiquiri
 import logging
 import sys
 
-# format_str = '%(asctime)%(levelname)%(name)%(message)'
-# formatter = pythonjsonlogger.jsonlogger.JsonFormatter(format_str)
+# formatter = pythonjsonlogger.jsonlogger.JsonFormatter('%(asctime)%(levelname)%(name)%(message)')
 
-# os.makedirs(os.path.dirname('./tmp/'), exist_ok=True)
+# os.makedirs(os.path.dirname('/tmp/ts_logs/'), exist_ok=True)
 daiquiri.setup(
     level=ts_config.get('log-level'),
     outputs=[
@@ -22,12 +21,12 @@ daiquiri.setup(
                     "%(name)s | %(message)s%(color_stop)s %(extras)s"
                 ),
             )
-        )
-        # daiquiri.output.File('./tmp/debug.log', formatter=formatter, level=logging.DEBUG),
-        # daiquiri.output.File('./tmp/info.log', formatter=formatter, level=logging.INFO),
-        # daiquiri.output.File('./tmp/errors.log', formatter=formatter, level=logging.ERROR)
+        ),
+        # daiquiri.output.File('/tmp/ts_logs/ts_debug.log.json', formatter=formatter, level=logging.DEBUG),
+        # daiquiri.output.File('/tmp/ts_logs/ts_info.log.json', formatter=formatter, level=logging.INFO),
+        # daiquiri.output.File('/tmp/ts_logs/ts_errors.log.json', formatter=formatter, level=logging.ERROR),
     ],
-    capture_warnings=False
+    capture_warnings=False,
 )
 
 class get:
