@@ -22,6 +22,7 @@ setup(
         'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_config-0.1&subdirectory=ts_config',
         'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_logger-0.1&subdirectory=ts_logger',
         'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_model-0.1&subdirectory=ts_model',
+        'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_model2-0.1&subdirectory=ts_model2',
     ],
     zip_safe=False
 )
