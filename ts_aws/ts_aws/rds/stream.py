@@ -1,7 +1,6 @@
 import ts_aws.rds
 import ts_logger
 import ts_model.Exception
-import ts_model2.Stream
 
 logger = ts_logger.get(__name__)
 

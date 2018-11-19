@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class Stream(dict, Base):
+class Stream(Base):
     __tablename__ = 'streams'
     stream_id = sa.Column('stream_id', sa.String(250), primary_key=True)
     streamer = sa.Column('streamer', sa.String(250))
@@ -19,8 +19,4 @@ class Stream(dict, Base):
     _status_analyze = sa.Column('_status_analyze', sa.Integer)
     _created = sa.Column('_created', sa.DateTime)
 
-    def __getattr__(self, attr):
-        return self.get(attr)
 
-    def __setattr__(self, key, value):
-        self.__setitem__(key, value)
