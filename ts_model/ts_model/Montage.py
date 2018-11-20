@@ -11,7 +11,7 @@ class Montage(dict, Base):
     duration = sa.Column('duration', sa.Float)
     media_key = sa.Column('media_key', sa.String(250))
     _status = sa.Column('_status', sa.Integer)
-    _created = sa.Column('_created', sa.DateTime)
+    _date_created = sa.Column('_date_created', sa.DateTime)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -22,4 +22,4 @@ class Montage(dict, Base):
         self.duration = kwargs.get('duration')
         self.media_key = kwargs.get('media_key')
         self._status = kwargs.get('_status')
-        self._created = kwargs.get('_created')
+        self._date_created = kwargs.get('_date_created')

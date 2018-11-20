@@ -15,7 +15,7 @@ class Stream(dict, Base):
     game = sa.Column('game', sa.String(250))
     _status_initialize = sa.Column('_status_initialize', sa.Integer)
     _status_analyze = sa.Column('_status_analyze', sa.Integer)
-    _created = sa.Column('_created', sa.DateTime)
+    _date_created = sa.Column('_date_created', sa.DateTime)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -30,4 +30,4 @@ class Stream(dict, Base):
         self.game = kwargs.get('game')
         self._status_initialize = kwargs.get('_status_initialize')
         self._status_analyze = kwargs.get('_status_analyze')
-        self._created = kwargs.get('_created')
+        self._date_created = kwargs.get('_date_created')

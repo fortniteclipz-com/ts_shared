@@ -12,3 +12,11 @@ def save_stream(stream):
     session.close()
     return stream
     logger.info("save_stream | success", stream=stream)
+
+def get_stream(stream_id):
+    logger.info("get_stream | start", stream_id=stream_id)
+    logger.info("get_stream | success", stream_id=stream_id)
+
+def get_streams(stream_id):
+    logger.info("get_streams | start", stream_id=stream_id)
+    logger.info("get_streams | success", stream_id=stream_id)
