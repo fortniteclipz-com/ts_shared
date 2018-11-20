@@ -11,7 +11,6 @@ setup(
         'ts_config==0.1',
         'ts_logger==0.1',
         'ts_model==0.1',
-        'ts_model2==0.1',
         'boto3==1.7.75',
         'botocore==1.10.84',
         'ffprobe3==0.1.2',
@@ -22,7 +21,6 @@ setup(
         'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_config-0.1&subdirectory=ts_config',
         'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_logger-0.1&subdirectory=ts_logger',
         'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_model-0.1&subdirectory=ts_model',
-        'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_model2-0.1&subdirectory=ts_model2',
     ],
     zip_safe=False
 )

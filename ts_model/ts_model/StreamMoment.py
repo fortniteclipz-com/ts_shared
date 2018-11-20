@@ -1,17 +1,23 @@
-class StreamMoment(dict):
+import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+class StreamMoment(dict, Base):
+    __tablename__ = 'stream_moments'
+    stream_moment_id = sa.Column('stream_moment_id', sa.Integer, primary_key=True, autoincrement=True)
+    stream_id = sa.Column('stream_id', sa.String(250))
+    segment = sa.Column('segment', sa.Integer)
+    moment_id = sa.Column('moment_id', sa.String(250))
+    time = sa.Column('time', sa.Float)
+    tag = sa.Column('tag', sa.String(250))
+    game = sa.Column('game', sa.String(250))
+
     def __init__(self, **kwargs):
-        super(StreamMoment, self).__init__(**kwargs)
-
-        self.stream_moment_id = kwargs.get('stream_moment_id')
-        self.stream_id = kwargs.get('stream_id')
-        self.segment = kwargs.get('segment')
-        self.moment_id = kwargs.get('moment_id')
-        self.time = kwargs.get('time')
-        self.tag = kwargs.get('tag')
-        self.game = kwargs.get('game')
-
-    def __getattr__(self, attr):
-        return self.get(attr)
-
-    def __setattr__(self, key, value):
-        self.__setitem__(key, value)
+        super().__init__(**kwargs)
+        stream_moment_id = kwargs.get('stream_moment_id')
+        stream_id = kwargs.get('stream_id')
+        segment = kwargs.get('segment')
+        moment_id = kwargs.get('moment_id')
+        time = kwargs.get('time')
+        tag = kwargs.get('tag')
+        game = kwargs.get('game')
