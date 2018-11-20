@@ -22,7 +22,7 @@ def save_stream_moments(stream_moments):
     logger.info("save_stream_moments | success")
 
 def get_stream_moments(stream_id, exclusiveStartKey=None):
-    logger.info("get_stream_moments | start", stream_id=stream_id)
+    logger.info("get_stream_moments | start", stream_id=stream_id, exclusiveStartKey=exclusiveStartKey)
     stream_moments = []
 
     if exclusiveStartKey is not None:
