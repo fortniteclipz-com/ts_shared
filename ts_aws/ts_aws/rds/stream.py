@@ -11,7 +11,6 @@ def save_stream(stream):
     session.merge(stream)
     session.commit()
     session.close()
-    return stream
     logger.info("save_stream | success", stream=stream)
 
 def get_stream(stream_id):

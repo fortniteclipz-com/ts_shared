@@ -1,4 +1,4 @@
-import ts_config
+import ts_aws.rds
 import ts_logger
 import ts_model.Exception
 import ts_model.Montage
@@ -11,7 +11,6 @@ def save_montage(montage):
     session.merge(montage)
     session.commit()
     session.close()
-    return montage
     logger.info("save_montage | success", montage=montage)
 
 def get_montage(montage_id):

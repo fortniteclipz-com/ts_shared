@@ -1,4 +1,4 @@
-import ts_config
+import ts_aws.rds
 import ts_logger
 import ts_model.Exception
 import ts_model.StreamSegment

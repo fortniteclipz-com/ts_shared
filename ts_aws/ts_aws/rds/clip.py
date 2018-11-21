@@ -1,4 +1,4 @@
-import ts_config
+import ts_aws.rds
 import ts_logger
 import ts_model.Clip
 import ts_model.Exception
@@ -11,7 +11,6 @@ def save_clip(clip):
     session.merge(clip)
     session.commit()
     session.close()
-    return clip
     logger.info("save_clip | success", clip=clip)
 
 def get_clip(clip_id):
@@ -26,6 +25,10 @@ def get_clip(clip_id):
 
 def save_clips(clips):
     logger.info("save_clips | start", clips_length=len(clips))
+    session = ts_aws.rds.get_session()
+    session.bulk_save_objects(clips)
+    session.commit()
+    session.close()
     logger.info("save_clips | success")
 
 def get_clips(clip_ids):
