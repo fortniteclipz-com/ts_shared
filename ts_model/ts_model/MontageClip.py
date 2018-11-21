@@ -1,8 +1,8 @@
-import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base
+import ts_model
 
-Base = declarative_base()
-class MontageClip(dict, Base):
+import sqlalchemy as sa
+
+class MontageClip(dict, ts_model.Base):
     __tablename__ = 'montage_clips'
     montage_clip_id = sa.Column('montage_clip_id', sa.Integer, primary_key=True, autoincrement=True)
     montage_id = sa.Column('montage_id', sa.String(255), sa.ForeignKey('montages.montage_id'))

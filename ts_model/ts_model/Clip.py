@@ -1,9 +1,9 @@
+import ts_model
+
 import datetime
 import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-class Clip(dict, Base):
+class Clip(dict, ts_model.Base):
     __tablename__ = 'clips'
     clip_id = sa.Column('clip_id', sa.String(255), primary_key=True)
     user_id = sa.Column('user_id', sa.String(255))

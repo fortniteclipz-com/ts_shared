@@ -1,10 +1,9 @@
+import ts_model
+
 import datetime
 import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
 
-Base = declarative_base()
-class Stream(dict, Base):
+class Stream(dict, ts_model.Base):
     __tablename__ = 'streams'
     stream_id = sa.Column('stream_id', sa.String(255), primary_key=True)
     streamer = sa.Column('streamer', sa.String(255))

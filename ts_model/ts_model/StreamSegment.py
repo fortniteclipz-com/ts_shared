@@ -1,8 +1,9 @@
+import ts_model
+
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-class StreamSegment(dict, Base):
+class StreamSegment(dict, ts_model.Base):
     __tablename__ = 'stream_segments'
     stream_segment_id = sa.Column('stream_segment_id', sa.Integer, primary_key=True, autoincrement=True)
     stream_id = sa.Column('stream_id', sa.String(255), sa.ForeignKey('streams.stream_id'))

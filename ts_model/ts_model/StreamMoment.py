@@ -1,8 +1,8 @@
-import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base
+import ts_model
 
-Base = declarative_base()
-class StreamMoment(dict, Base):
+import sqlalchemy as sa
+
+class StreamMoment(dict, ts_model.Base):
     __tablename__ = 'stream_moments'
     stream_moment_id = sa.Column('stream_moment_id', sa.Integer, primary_key=True, autoincrement=True)
     stream_id = sa.Column('stream_id', sa.String(255), sa.ForeignKey('streams.stream_id'))
