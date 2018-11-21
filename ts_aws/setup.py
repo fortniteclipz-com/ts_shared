@@ -13,7 +13,6 @@ setup(
         'ts_model==0.1',
         'boto3==1.7.75',
         'botocore==1.10.84',
-        'ffprobe3==0.1.2',
         "PyMySQL==0.9.2",
         "SQLAlchemy==1.2.10",
     ],

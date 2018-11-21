@@ -1,3 +1,4 @@
+import datetime
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -28,6 +29,6 @@ class Stream(dict, Base):
         self.fps_numerator = kwargs.get('fps_numerator')
         self.fps_denominator = kwargs.get('fps_denominator')
         self.game = kwargs.get('game')
-        self._status_initialize = kwargs.get('_status_initialize')
-        self._status_analyze = kwargs.get('_status_analyze')
-        self._date_created = kwargs.get('_date_created')
+        self._status_initialize = kwargs.get('_status_initialize', 0)
+        self._status_analyze = kwargs.get('_status_analyze', 0)
+        self._date_created = kwargs.get('_date_created', datetime.datetime.utcnow())

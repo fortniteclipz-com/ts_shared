@@ -23,5 +23,5 @@ class StreamSegment(dict, Base):
         self.stream_time_out = kwargs.get('stream_time_out')
         self.media_url = kwargs.get('media_url')
         self.media_key = kwargs.get('media_key')
-        self._status_download = kwargs.get('_status_download')
-        self._status_analyze = kwargs.get('_status_analyze')
+        self._status_download = kwargs.get('_status_download', 0)
+        self._status_analyze = kwargs.get('_status_analyze', 0)

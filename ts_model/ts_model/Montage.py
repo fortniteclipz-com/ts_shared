@@ -1,3 +1,4 @@
+import datetime
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -21,5 +22,5 @@ class Montage(dict, Base):
         self.streamer = kwargs.get('streamer')
         self.duration = kwargs.get('duration')
         self.media_key = kwargs.get('media_key')
-        self._status = kwargs.get('_status')
-        self._date_created = kwargs.get('_date_created')
+        self._status = kwargs.get('_status', 0)
+        self._date_created = kwargs.get('_date_created', datetime.datetime.utcnow())
