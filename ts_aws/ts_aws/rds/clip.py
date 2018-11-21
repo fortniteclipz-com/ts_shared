@@ -1,19 +1,28 @@
 import ts_config
 import ts_logger
 import ts_model.Clip
-import ts_model.ClipSegment
 import ts_model.Exception
-import ts_model.StreamSegment
 
 logger = ts_logger.get(__name__)
 
 def save_clip(clip):
     logger.info("save_clip | start", clip=clip)
-    logger.info("save_clip | success")
+    session = ts_aws.rds.get_session()
+    session.merge(clip)
+    session.commit()
+    session.close()
+    return clip
+    logger.info("save_clip | success", clip=clip)
 
 def get_clip(clip_id):
     logger.info("get_clip | start", clip_id=clip_id)
-    logger.info("get_clip | success")
+    session = ts_aws.rds.get_session()
+    clip = session.query(ts_model.Clip).filter_by(clip_id = clip_id).first()
+    session.close()
+    logger.info("get_clip | success", clip=clip)
+    if clip is None:
+        raise ts_model.Exception(ts_model.Exception.CLIP__NOT_EXIST)
+    return clip
 
 def save_clips(clips):
     logger.info("save_clips | start", clips_length=len(clips))

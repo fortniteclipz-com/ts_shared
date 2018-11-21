@@ -7,11 +7,22 @@ logger = ts_logger.get(__name__)
 
 def save_montage(montage):
     logger.info("save_montage | start", montage=montage)
-    logger.info("save_montage | success")
+    session = ts_aws.rds.get_session()
+    session.merge(montage)
+    session.commit()
+    session.close()
+    return montage
+    logger.info("save_montage | success", montage=montage)
 
 def get_montage(montage_id):
     logger.info("get_montage | start", montage_id=montage_id)
-    logger.info("get_montage | success")
+    session = ts_aws.rds.get_session()
+    montage = session.query(ts_model.Montage).filter_by(montage_id = montage_id).first()
+    session.close()
+    logger.info("get_montage | success", montage=montage)
+    if montage is None:
+        raise ts_model.Exception(ts_model.Exception.MONTAGE__NOT_EXIST)
+    return montage
 
 def get_montages(montage_ids):
     logger.info("get_montages | start", montage_ids=montage_ids)

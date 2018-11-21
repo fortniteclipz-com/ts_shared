@@ -1,6 +1,5 @@
 import ts_config
 import ts_logger
-import ts_model.StreamMoment
 
 logger = ts_logger.get(__name__)
 

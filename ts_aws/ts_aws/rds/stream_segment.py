@@ -1,16 +1,28 @@
 import ts_config
 import ts_logger
+import ts_model.Exception
 import ts_model.StreamSegment
 
 logger = ts_logger.get(__name__)
 
 def save_stream_segment(stream_segment):
     logger.info("save_stream_segment | start", stream_segment=stream_segment)
-    logger.info("save_stream_segment | success")
+    session = ts_aws.rds.get_session()
+    session.merge(stream_segment)
+    session.commit()
+    session.close()
+    return stream_segment
+    logger.info("save_stream_segment | success", stream_segment=stream_segment)
 
-def get_stream_segment(stream_id, segment):
-    logger.info("get_stream_segment | start", stream_id=stream_id, segment=segment)
-    logger.info("get_stream_segment | success")
+def get_stream_segment(stream_segment_id):
+    logger.info("get_stream_segment | start", stream_segment_id=stream_segment_id)
+    session = ts_aws.rds.get_session()
+    stream_segment = session.query(ts_model.StreamSegment).filter_by(stream_segment_id = stream_segment_id).first()
+    session.close()
+    logger.info("get_stream_segment | success", stream_segment=stream_segment)
+    if stream_segment is None:
+        raise ts_model.Exception(ts_model.Exception.STREAM_SEGMENT__NOT_EXIST)
+    return stream_segment
 
 def save_stream_segments(stream_segments):
     logger.info("save_stream_segments | start", stream_segments_length=len(stream_segments))
