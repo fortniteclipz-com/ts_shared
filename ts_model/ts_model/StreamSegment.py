@@ -1,9 +1,8 @@
 import ts_model
 
 import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base
 
-class StreamSegment(dict, ts_model.Base):
+class StreamSegment(ts_model.Base, ts_model.BaseMixin):
     __tablename__ = 'stream_segments'
     stream_segment_id = sa.Column('stream_segment_id', sa.Integer, primary_key=True, autoincrement=True)
     stream_id = sa.Column('stream_id', sa.String(255), sa.ForeignKey('streams.stream_id'))
@@ -16,7 +15,7 @@ class StreamSegment(dict, ts_model.Base):
     _status_analyze = sa.Column('_status_analyze', sa.Integer)
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        ts_model.Base.__init__(self, **kwargs)
         self.stream_segment_id = kwargs.get('stream_segment_id')
         self.stream_id = kwargs.get('stream_id')
         self.segment = kwargs.get('segment')

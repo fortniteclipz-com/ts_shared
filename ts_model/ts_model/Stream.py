@@ -3,7 +3,7 @@ import ts_model
 import datetime
 import sqlalchemy as sa
 
-class Stream(dict, ts_model.Base):
+class Stream(ts_model.Base, ts_model.BaseMixin):
     __tablename__ = 'streams'
     stream_id = sa.Column('stream_id', sa.String(255), primary_key=True)
     streamer = sa.Column('streamer', sa.String(255))
@@ -19,7 +19,7 @@ class Stream(dict, ts_model.Base):
     _date_created = sa.Column('_date_created', sa.DateTime)
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        ts_model.Base.__init__(self, **kwargs)
         self.stream_id = kwargs.get('stream_id')
         self.streamer = kwargs.get('streamer')
         self.playlist_url = kwargs.get('playlist_url')

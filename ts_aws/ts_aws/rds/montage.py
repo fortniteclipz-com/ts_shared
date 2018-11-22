@@ -16,7 +16,7 @@ def save_montage(montage):
 def get_montage(montage_id):
     logger.info("get_montage | start", montage_id=montage_id)
     session = ts_aws.rds.get_session()
-    montage = session.query(ts_model.Montage).filter_by(montage_id = montage_id).first()
+    montage = session.query(ts_model.Montage).filter_by(montage_id=montage_id).first()
     session.close()
     logger.info("get_montage | success", montage=montage)
     if montage is None:

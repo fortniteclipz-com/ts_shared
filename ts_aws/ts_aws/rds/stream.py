@@ -16,7 +16,7 @@ def save_stream(stream):
 def get_stream(stream_id):
     logger.info("get_stream | start", stream_id=stream_id)
     session = ts_aws.rds.get_session()
-    stream = session.query(ts_model.Stream).filter_by(stream_id = stream_id).first()
+    stream = session.query(ts_model.Stream).filter_by(stream_id=stream_id).first()
     session.close()
     logger.info("get_stream | success", stream=stream)
     if stream is None:

@@ -16,7 +16,7 @@ def save_clip(clip):
 def get_clip(clip_id):
     logger.info("get_clip | start", clip_id=clip_id)
     session = ts_aws.rds.get_session()
-    clip = session.query(ts_model.Clip).filter_by(clip_id = clip_id).first()
+    clip = session.query(ts_model.Clip).filter_by(clip_id=clip_id).first()
     session.close()
     logger.info("get_clip | success", clip=clip)
     if clip is None:
