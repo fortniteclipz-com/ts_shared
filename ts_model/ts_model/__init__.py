@@ -1,3 +1,4 @@
+import datetime
 import os
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
@@ -11,6 +12,8 @@ class BaseMixin(dict):
             return Base.__getattr__(self, attr)
 
     def __setattr__(self, key, value):
+        if isinstance(value, datetime.datetime):
+            value = value.isoformat()
         if key in [column.key for column in self.__table__.columns]:
             self.__setitem__(key, value)
         Base.__setattr__(self, key, value)
@@ -18,7 +21,10 @@ class BaseMixin(dict):
     @sa.orm.reconstructor
     def reconstruct(self):
         for column in [column.key for column in self.__table__.columns]:
-            self.__setitem__(column, Base.__getattribute__(self, column))
+            value = Base.__getattribute__(self, column)
+            if isinstance(value, datetime.datetime):
+                value = value.isoformat()
+            self.__setitem__(column, value)
 
 class DictMixin(dict):
     def __getattr__(self, attr):
