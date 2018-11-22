@@ -34,8 +34,19 @@ def save_stream_segments(stream_segments):
 
 def get_stream_segments(stream_id):
     logger.info("get_stream_segments | start", stream_id=stream_id)
+    print("FIX")
     logger.info("get_stream_segments | success", stream_segments_length=len(stream_segments))
 
 def get_clip_stream_segments(clip):
     logger.info("get_clip_stream_segments | start", clip=clip)
-    logger.info("get_clip_stream_segments | success", clip_stream_segments_length=len(clip_stream_segments))
+    session = ts_aws.rds.get_session()
+    stream_segments = session.query(ts_model.StreamSegment).filter(
+        ts_model.StreamSegment.stream_id == clip.stream_id,
+        ts_model.StreamSegment.stream_time_out >= clip.time_in,
+        ts_model.StreamSegment.stream_time_in < clip.time_out
+    ).all()
+    session.close()
+    logger.info("get_clip_stream_segments | success", stream_segments_length=len(stream_segments))
+    if len(stream_segments) == 0:
+        raise ts_model.Exception(ts_model.Exception.CLIP__STREAM_SEGMENTS__NOT_EXIST)
+    return stream_segments
