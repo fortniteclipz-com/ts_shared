@@ -34,7 +34,7 @@ def save_stream_segments(stream_segments):
 
 def get_stream_segments(stream_id):
     logger.info("get_stream_segments | start", stream_id=stream_id)
-    print("FIX")
+    raise "FIX"
     logger.info("get_stream_segments | success", stream_segments_length=len(stream_segments))
 
 def get_clip_stream_segments(clip):
@@ -44,7 +44,7 @@ def get_clip_stream_segments(clip):
         ts_model.StreamSegment.stream_id == clip.stream_id,
         ts_model.StreamSegment.stream_time_out >= clip.time_in,
         ts_model.StreamSegment.stream_time_in < clip.time_out
-    ).all()
+    ).order_by(ts_model.StreamSegment.segment).all()
     session.close()
     logger.info("get_clip_stream_segments | success", stream_segments_length=len(stream_segments))
     if len(stream_segments) == 0:
