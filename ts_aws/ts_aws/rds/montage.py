@@ -23,10 +23,10 @@ def get_montage(montage_id):
         raise ts_model.Exception(ts_model.Exception.MONTAGE__NOT_EXIST)
     return montage
 
-def get_montages(montage_ids):
-    logger.info("get_montages | start", montage_ids=montage_ids)
+def get_recent_montages():
+    logger.info("get_montages | start")
     logger.info("get_montages | success")
 
-def get_user_montages(user_id):
+def get_user_recent_montages(user_id):
     logger.info("get_user_montages | start", user_id=user_id)
     logger.info("get_user_montages | success")
