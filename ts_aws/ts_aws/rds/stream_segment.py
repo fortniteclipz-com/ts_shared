@@ -33,7 +33,7 @@ def save_stream_segments(stream_segments):
     session.bulk_save_objects(stream_segments)
     session.commit()
     session.close()
-    logger.info("save_stream_segments | success")
+    logger.info("save_stream_segments | success", stream_segments_length=len(stream_segments))
 
 def get_stream_segments(stream):
     logger.info("get_stream_segments | start", stream=stream)

@@ -30,8 +30,4 @@ def save_clips(clips):
     session.bulk_save_objects(clips)
     session.commit()
     session.close()
-    logger.info("save_clips | success")
-
-def get_all_clips(limit):
-    logger.info("get_all_clips | start", limit=limit)
-    logger.info("get_all_clips | success")
+    logger.info("save_clips | success", clips_length=len(clips))

@@ -11,7 +11,7 @@ def save_montage_clips(montage_clips):
     session.bulk_save_objects(montage_clips)
     session.commit()
     session.close()
-    logger.info("save_montage_clips | success")
+    logger.info("save_montage_clips | success", montage_clips_length=len(montage_clips))
 
 def get_montage_clips(montage):
     logger.info("get_montage_clips | start", montage=montage)
@@ -23,7 +23,7 @@ def get_montage_clips(montage):
         .order_by(ts_model.MontageClip.clip_order) \
         .all()
     session.close()
-    logger.info("get_montage_clips | success", montage_clips=montage_clips)
+    logger.info("get_montage_clips | success", montage_clips_length=len(montage_clips))
     if len(montage_clips) == 0:
         raise ts_model.Exception(ts_model.Exception.MONTAGE_CLIPS__NOT_EXIST)
     return montage_clips
