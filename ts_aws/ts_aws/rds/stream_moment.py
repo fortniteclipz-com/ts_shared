@@ -20,6 +20,4 @@ def get_stream_moments(stream):
     .filter_by(stream_id=stream.stream_id) \
     .all()
     logger.info("get_stream_moments | success", stream_moments_length=len(stream_moments))
-    if len(stream_moments) == 0:
-        raise ts_model.Exception(ts_model.Exception.STREAM_MOMENTS__NOT_EXIST)
     return stream_moments
