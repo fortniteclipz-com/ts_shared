@@ -7,7 +7,7 @@ class Clip(ts_model.Base, ts_model.BaseMixin):
     __tablename__ = 'clips'
     clip_id = sa.Column('clip_id', sa.String(255), primary_key=True)
     user_id = sa.Column('user_id', sa.String(255))
-    stream_id = sa.Column('stream_id', sa.String(255), sa.ForeignKey('streams.stream_id'))
+    stream_id = sa.Column('stream_id', sa.String(255))
     time_in = sa.Column('time_in', sa.Float)
     time_out = sa.Column('time_out', sa.Float)
     media_key = sa.Column('media_key', sa.String(255))

@@ -7,7 +7,7 @@ class Montage(ts_model.Base, ts_model.BaseMixin):
     __tablename__ = 'montages'
     montage_id = sa.Column('montage_id', sa.String(255), primary_key=True)
     user_id = sa.Column('user_id', sa.String(255))
-    stream_id = sa.Column('stream_id', sa.String(255), sa.ForeignKey('streams.stream_id'))
+    stream_id = sa.Column('stream_id', sa.String(255))
     streamer = sa.Column('streamer', sa.String(255))
     duration = sa.Column('duration', sa.Float)
     media_key = sa.Column('media_key', sa.String(255))
