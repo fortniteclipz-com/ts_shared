@@ -2,11 +2,20 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 import ts_config
+import ts_logger
 
+logger = ts_logger.get(__name__)
 engine = None
+
 def get_engine():
     global engine
-    connection_url = "mysql+pymysql://twitchstitch:3XU8E61jvCFC@twitch-stitch-test.ctpn1m9y40sj.us-west-2.rds.amazonaws.com/twitchstitch"
+    username = ts_config.get('rds.username')
+    password = ts_config.get('rds.password')
+    stage = ts_config.get('stage')
+    host = ts_config.get('rds.host')
+    db = ts_config.get('rds.db')
+    connection_url = f"mysql+pymysql://{username}:{password}@twitch-stitch-{stage}.{host}/{db}"
+    logger.info("connection_url", connection_url=connection_url)
     if engine is None:
         engine = create_engine(connection_url)
     return engine
