@@ -8,19 +8,6 @@ rds:
   username: twitchstitch
   password: 3XU8E61jvCFC
   host: ctpn1m9y40sj.us-west-2.rds.amazonaws.com
-  tables:
-    clips:
-      name: ts-clips
-    montages:
-      name: ts-montages
-    recents:
-      name: ts-recents
-    streams:
-      name: ts-streams
-    stream-moments:
-      name: ts-stream-moments
-    stream-segments:
-      name: ts-stream-segments
 
 iam:
   role-statement:
