@@ -2,6 +2,8 @@ import ts_aws.rds
 import ts_logger
 import ts_model.StreamMoment
 
+import sqlalchemy.dialects
+
 logger = ts_logger.get(__name__)
 
 def save_stream_moments(stream_moments):
@@ -15,9 +17,11 @@ def save_stream_moments(stream_moments):
 def get_stream_moments(stream):
     logger.info("get_stream_moments | start", stream=stream)
     session = ts_aws.rds.get_session()
-    stream_moments = session \
-    .query(ts_model.StreamMoment) \
-    .filter_by(stream_id=stream.stream_id) \
-    .all()
+    query = session \
+        .query(ts_model.StreamMoment) \
+        .filter_by(stream_id=stream.stream_id)
+    logger.info("get_stream_moments | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+    stream_moments = query.all()
+    session.close()
     logger.info("get_stream_moments | success", stream_moments_length=len(stream_moments))
     return stream_moments

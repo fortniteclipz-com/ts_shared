@@ -3,6 +3,8 @@ import ts_logger
 import ts_model.Exception
 import ts_model.Montage
 
+import sqlalchemy.dialects
+
 logger = ts_logger.get(__name__)
 
 def save_montage(montage):
@@ -16,10 +18,11 @@ def save_montage(montage):
 def get_montage(montage_id):
     logger.info("get_montage | start", montage_id=montage_id)
     session = ts_aws.rds.get_session()
-    montage = session \
-    .query(ts_model.Montage) \
-    .filter_by(montage_id=montage_id) \
-    .first()
+    query = session \
+        .query(ts_model.Montage) \
+        .filter_by(montage_id=montage_id)
+    logger.info("get_montage | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+    montage = query.first()
     session.close()
     logger.info("get_montage | success", montage=montage)
     if montage is None:
@@ -29,22 +32,26 @@ def get_montage(montage_id):
 def get_montages():
     logger.info("get_montages | start")
     session = ts_aws.rds.get_session()
-    montages = session \
-    .query(ts_model.Montage) \
-    .order_by(ts_model.Montage._date_created) \
-    .limit(25) \
-    .all()
+    query = session \
+        .query(ts_model.Montage) \
+        .order_by(ts_model.Montage._date_created) \
+        .limit(25)
+    logger.info("get_montages | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+    montages = query.all()
+    session.close()
     logger.info("get_montages | success", montages_length=len(montages))
     return montages
 
 def get_user_montages(user_id):
     logger.info("get_user_montages | start", user_id=user_id)
     session = ts_aws.rds.get_session()
-    montages = session \
-    .query(ts_model.Montage) \
-    .filter_by(user_id=user_id) \
-    .order_by(ts_model.Montage._date_created) \
-    .limit(25) \
-    .all()
+    query = session \
+        .query(ts_model.Montage) \
+        .filter_by(user_id=user_id) \
+        .order_by(ts_model.Montage._date_created) \
+        .limit(25)
+    logger.info("get_user_montages | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+    montages = query.all()
+    session.close()
     logger.info("get_user_montages | success", montages_length=len(montages))
     return montages
