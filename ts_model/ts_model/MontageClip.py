@@ -4,9 +4,8 @@ import sqlalchemy as sa
 
 class MontageClip(ts_model.Base, ts_model.BaseMixin):
     __tablename__ = 'montage_clips'
-    montage_clip_id = sa.Column('montage_clip_id', sa.Integer, primary_key=True, autoincrement=True)
-    montage_id = sa.Column('montage_id', sa.String(255))
-    clip_id = sa.Column('clip_id', sa.String(255))
+    montage_id = sa.Column('montage_id', sa.String(255), primary_key=True)
+    clip_id = sa.Column('clip_id', sa.String(255), primary_key=True)
     clip_order = sa.Column('clip_order', sa.Integer)
 
     def __init__(self, **kwargs):

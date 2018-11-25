@@ -4,9 +4,8 @@ import sqlalchemy as sa
 
 class StreamSegment(ts_model.Base, ts_model.BaseMixin):
     __tablename__ = 'stream_segments'
-    stream_segment_id = sa.Column('stream_segment_id', sa.Integer, primary_key=True, autoincrement=True)
-    stream_id = sa.Column('stream_id', sa.String(255))
-    segment = sa.Column('segment', sa.Integer)
+    stream_id = sa.Column('stream_id', sa.String(255), primary_key=True)
+    segment = sa.Column('segment', sa.Integer, primary_key=True)
     stream_time_in = sa.Column('stream_time_in', sa.Float)
     stream_time_out = sa.Column('stream_time_out', sa.Float)
     media_url = sa.Column('media_url', sa.String(255))

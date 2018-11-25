@@ -4,10 +4,9 @@ import sqlalchemy as sa
 
 class StreamMoment(ts_model.Base, ts_model.BaseMixin):
     __tablename__ = 'stream_moments'
-    stream_moment_id = sa.Column('stream_moment_id', sa.Integer, primary_key=True, autoincrement=True)
-    stream_id = sa.Column('stream_id', sa.String(255))
+    stream_id = sa.Column('stream_id', sa.String(255), primary_key=True)
     segment = sa.Column('segment', sa.Integer)
-    time = sa.Column('time', sa.Float)
+    time = sa.Column('time', sa.Float, primary_key=True)
     tag = sa.Column('tag', sa.String(255))
 
     def __init__(self, **kwargs):
