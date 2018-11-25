@@ -3,6 +3,8 @@ import ts_logger
 import ts_model.Exception
 import ts_model.StreamSegment
 
+import sqlalchemy.dialects
+
 logger = ts_logger.get(__name__)
 
 def save_stream_segment(stream_segment):
@@ -57,14 +59,14 @@ def get_clip_stream_segments(clip):
         .query(ts_model.StreamSegment) \
         .filter(
             ts_model.StreamSegment.stream_id == clip.stream_id,
+            ts_model.StreamSegment.stream_time_in < clip.time_out,
             ts_model.StreamSegment.stream_time_out >= clip.time_in,
-            ts_model.StreamSegment.stream_time_in < clip.time_out
         ) \
         .order_by(ts_model.StreamSegment.segment)
     logger.info("get_clip_stream_segments | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
     stream_segments = query.all()
     session.close()
-    logger.info("get_clip_stream_segments | success", stream_segments_length=len(stream_segments))
+    logger.info("get_clip_stream_segments | success", stream_segments=stream_segments)
     if len(stream_segments) == 0:
         raise ts_model.Exception(ts_model.Exception.CLIP_STREAM_SEGMENTS__NOT_EXIST)
     return stream_segments
