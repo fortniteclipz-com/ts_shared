@@ -19,7 +19,8 @@ def get_stream_moments(stream):
     session = ts_aws.rds.get_session()
     query = session \
         .query(ts_model.StreamMoment) \
-        .filter_by(stream_id=stream.stream_id)
+        .filter_by(stream_id=stream.stream_id) \
+        .order_by(ts_model.StreamMoment.time)
     logger.info("get_stream_moments | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
     stream_moments = query.all()
     session.close()
