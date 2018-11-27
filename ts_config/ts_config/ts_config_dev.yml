@@ -1,0 +1,78 @@
+account-id: 589344262905
+log-level: INFO
+region: us-east-1
+stage: dev
+
+cognito:
+  pool-id: us-east-1_BaQUjvUy8
+
+rds:
+  db: twitchstitch
+  username: twitchstitch
+  password: u4zSe2UafzM0
+  host: cxyteuivirsv.us-east-1.rds.amazonaws.com
+
+iam:
+  role-statement:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchGetItem
+        - dynamodb:BatchWriteItem
+      Resource: arn:aws:dynamodb:us-east-1:589344262905:*
+    - Effect: Allow
+      Action:
+        - iam:PassRole
+      Resource: arn:aws:iam::589344262905:*
+    - Effect: Allow
+      Action:
+        - mediaconvert:CreateJob
+      Resource: arn:aws:mediaconvert:us-east-1:589344262905:*
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::*
+    - Effect: Allow
+      Action:
+        - sqs:GetQueueUrl
+        - sqs:SendMessage
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:ChangeMessageVisibility
+      Resource: arn:aws:sqs:us-east-1:589344262905:*
+
+mediaconvert:
+  role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
+  url: https://lursjjny.mediaconvert.us-east-1.amazonaws.com
+  queues:
+    clip:
+      arn: arn:aws:mediaconvert:us-east-1:589344262905:queues/clip
+    montage:
+      arn: arn:aws:mediaconvert:us-east-1:589344262905:queues/montage
+
+s3:
+  buckets:
+    media:
+      name: twitch-stitch-media
+
+sqs:
+  queues:
+    clip:
+      name: ts-clip
+    montage:
+      name: ts-montage
+    stream--analyze:
+      name: ts-stream--analyze
+    stream--initialize:
+      name: ts-stream--initialize
+    stream-segment--analyze:
+      name: ts-stream-segment--analyze
+    stream-segment--download:
+      name: ts-stream-segment--download
