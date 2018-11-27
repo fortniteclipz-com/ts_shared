@@ -9,7 +9,8 @@ setup(
     packages=find_packages(),
     package_data={
         'ts_config': [
-            'ts_config.yml',
+            'ts_config_dev.yml',
+            'ts_config_prod.yml',
         ]
     },
     install_requires=[
