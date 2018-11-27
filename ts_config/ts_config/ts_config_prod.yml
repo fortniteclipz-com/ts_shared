@@ -4,7 +4,7 @@ region: us-west-2
 stage: prod
 
 cognito:
-  pool-id: us-west-2_bPZtQtQVv
+  pool-id: us-west-2_eowfgVCk9
 
 rds:
   db: twitchstitch
