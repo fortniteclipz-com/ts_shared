@@ -11,6 +11,7 @@ rds:
   username: twitchstitch
   password: 21HzJVvwLvsi
   host: ctpn1m9y40sj.us-west-2.rds.amazonaws.com
+  class: db.t2.large
 
 iam:
   role-statement:
