@@ -4,13 +4,13 @@ region: us-east-2
 stage: dev
 
 cognito:
-  pool-id: us-east-2_Hg3i3V7Gd
+  pool-id: us-east-2_fyMog88g5
 
 rds:
   db: twitchstitch
   username: twitchstitch
   password: u4zSe2UafzM0
-  host: cxyteuivirsv.us-east-2.rds.amazonaws.com
+  host: cf5c9fucgqvd.us-east-2.rds.amazonaws.com
   class: db.t2.medium
 
 iam:
@@ -51,7 +51,7 @@ iam:
 
 mediaconvert:
   role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
-  url: https://lursjjny.mediaconvert.us-east-2.amazonaws.com
+  url: https://kl6yojlz.mediaconvert.us-east-2.amazonaws.com
   queues:
     clip:
       arn: arn:aws:mediaconvert:us-east-2:589344262905:queues/clip
