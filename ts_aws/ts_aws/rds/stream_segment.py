@@ -3,8 +3,6 @@ import ts_logger
 import ts_model.Exception
 import ts_model.StreamSegment
 
-import sqlalchemy.dialects
-
 logger = ts_logger.get(__name__)
 
 def save_stream_segment(stream_segment):
@@ -21,8 +19,9 @@ def get_stream_segment(stream, segment):
     session = ts_aws.rds.get_session()
     query = session \
         .query(ts_model.StreamSegment) \
-        .filter_by(stream_id=stream.stream_id, segment=segment)
-    logger.info("get_stream_segment | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+        .filter_by(stream_id=stream.stream_id, segment=segment) \
+        .limit(1)
+    logger.info("get_stream_segment | query", query=ts_aws.rds.print_query(query))
     stream_segment = query.first()
     session.close()
     logger.info("get_stream_segment | success", stream_segment=stream_segment)
@@ -45,7 +44,7 @@ def get_stream_segments(stream):
         .query(ts_model.StreamSegment) \
         .filter_by(stream_id=stream.stream_id)
     stream_segments = query.all()
-    logger.info("get_stream_segments | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+    logger.info("get_stream_segments | query", query=ts_aws.rds.print_query(query))
     session.close()
     logger.info("get_stream_segments | success", stream_segments_length=len(stream_segments))
     if stream_segments is None:
@@ -63,7 +62,7 @@ def get_clip_stream_segments(clip):
             ts_model.StreamSegment.stream_time_out >= clip.time_in,
         ) \
         .order_by(ts_model.StreamSegment.segment)
-    logger.info("get_clip_stream_segments | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+    logger.info("get_clip_stream_segments | query", query=ts_aws.rds.print_query(query))
     stream_segments = query.all()
     session.close()
     logger.info("get_clip_stream_segments | success", stream_segments=stream_segments)

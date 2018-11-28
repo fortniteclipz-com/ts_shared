@@ -3,8 +3,6 @@ import ts_logger
 import ts_model.Exception
 import ts_model.MontageClip
 
-import sqlalchemy.dialects
-
 logger = ts_logger.get(__name__)
 
 def save_montage_clips(montage_clips):
@@ -23,7 +21,7 @@ def get_montage_clips(montage):
         .join(ts_model.MontageClip, ts_model.MontageClip.clip_id == ts_model.Clip.clip_id) \
         .filter_by(montage_id=montage.montage_id) \
         .order_by(ts_model.MontageClip.clip_order)
-    logger.info("get_montage_clips | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+    logger.info("get_montage_clips | query", query=ts_aws.rds.print_query(query))
     montage_clips = query.all()
     session.close()
     logger.info("get_montage_clips | success", montage_clips_length=len(montage_clips))

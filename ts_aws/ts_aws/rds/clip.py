@@ -3,8 +3,6 @@ import ts_logger
 import ts_model.Clip
 import ts_model.Exception
 
-import sqlalchemy.dialects
-
 logger = ts_logger.get(__name__)
 
 def save_clip(clip):
@@ -20,8 +18,9 @@ def get_clip(clip_id):
     session = ts_aws.rds.get_session()
     query = session \
         .query(ts_model.Clip) \
-        .filter_by(clip_id=clip_id)
-    logger.info("get_clip | query", query=query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True}))
+        .filter_by(clip_id=clip_id) \
+        .limit(1)
+    logger.info("get_clip | query", query=ts_aws.rds.print_query(query))
     clip = query.first()
     session.close()
     logger.info("get_clip | success", clip=clip)

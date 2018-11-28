@@ -1,3 +1,4 @@
+import sqlalchemy.dialects
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -24,3 +25,6 @@ def get_session():
     engine = get_engine()
     session = sessionmaker(bind = engine)
     return session()
+
+def print_query(query):
+    return str(query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True})).replace('\n', ' ').replace('\r', '')
