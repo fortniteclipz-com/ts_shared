@@ -5,6 +5,12 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 class BaseMixin(dict):
+    def __init__(self, **kwargs):
+        Base.__init__(self, **kwargs)
+        for column in [column.key for column in self.__table__.columns]:
+            default = getattr(self.__table__.columns.__getattr__(column).default, 'arg', None)
+            self.__setattr__(column, kwargs.get(column, default))
+
     def __getattr__(self, attr):
         if attr in [column.key for column in self.__table__.columns]:
             return self.__getitem__(attr)
