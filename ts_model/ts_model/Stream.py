@@ -16,4 +16,4 @@ class Stream(ts_model.BaseMixin, ts_model.Base):
     game = sa.Column('game', sa.String(255))
     _status_initialize = sa.Column('_status_initialize', sa.Integer, default=0)
     _status_analyze = sa.Column('_status_analyze', sa.Integer, default=0)
-    _date_created = sa.Column('_date_created', sa.DateTime, default=datetime.datetime.utcnow())
+    _date_created = sa.Column('_date_created', sa.DateTime, default=datetime.datetime.utcnow)

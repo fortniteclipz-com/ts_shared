@@ -13,4 +13,4 @@ class Montage(ts_model.BaseMixin, ts_model.Base):
     clips = sa.Column('clips', sa.Integer)
     media_key = sa.Column('media_key', sa.String(255))
     _status = sa.Column('_status', sa.Integer, default=0)
-    _date_created = sa.Column('_date_created', sa.DateTime, default=datetime.datetime.utcnow())
+    _date_created = sa.Column('_date_created', sa.DateTime, default=datetime.datetime.utcnow)

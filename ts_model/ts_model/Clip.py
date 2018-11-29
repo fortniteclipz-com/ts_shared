@@ -12,7 +12,7 @@ class Clip(ts_model.Base, ts_model.BaseMixin):
     time_out = sa.Column('time_out', sa.Float)
     media_key = sa.Column('media_key', sa.String(255))
     _status = sa.Column('_status', sa.Integer, default=0)
-    _date_created = sa.Column('_date_created', sa.DateTime, default=datetime.datetime.utcnow())
+    _date_created = sa.Column('_date_created', sa.DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, **kwargs):
         ts_model.Base.__init__(self, **kwargs)

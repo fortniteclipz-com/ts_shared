@@ -9,6 +9,7 @@ class BaseMixin(dict):
         Base.__init__(self, **kwargs)
         for column in [column.key for column in self.__table__.columns]:
             default = getattr(self.__table__.columns.__getattr__(column).default, 'arg', None)
+            default = default(self) if callable(default) else default
             self.__setattr__(column, kwargs.get(column, default))
 
     def __getattr__(self, attr):
