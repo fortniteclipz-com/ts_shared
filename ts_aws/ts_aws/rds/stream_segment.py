@@ -19,7 +19,10 @@ def get_stream_segment(stream, segment):
     session = ts_aws.rds.get_session()
     query = session \
         .query(ts_model.StreamSegment) \
-        .filter_by(stream_id=stream.stream_id, segment=segment) \
+        .filter_by(
+            stream_id=stream.stream_id,
+            segment=segment
+        ) \
         .limit(1)
     logger.info("get_stream_segment | query", query=ts_aws.rds.print_query(query))
     stream_segment = query.first()
