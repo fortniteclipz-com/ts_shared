@@ -4,7 +4,7 @@ class Status(enum.IntEnum):
     ERROR = -1
     NONE = 0
     WORKING = 1
-    READY = 2
+    DONE = 2
     def __get__(self, instance, owner):
         return self.value
     def __repr__(self):
