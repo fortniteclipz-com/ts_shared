@@ -40,5 +40,5 @@ exceptions = [
     "STREAM_SEGMENTS__STATUS_DOWNLOAD_NOT_DONE",
 ]
 
-for exception in exceptions:
-    setattr(Exception, exception, exception)
+for e in exceptions:
+    setattr(Exception, e, e)

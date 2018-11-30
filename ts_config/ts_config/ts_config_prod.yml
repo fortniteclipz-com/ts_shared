@@ -3,12 +3,8 @@ log-level: INFO
 region: us-west-2
 stage: prod
 
-api-gateway:
-  url: https://kt1zau9yaf.execute-api.us-east-2.amazonaws.com/dev
-
 cognito:
   pool-id: us-west-2_eowfgVCk9
-  app-client-id: 5hl94c8i06g1cvmd5l52n6neal
 
 rds:
   db: twitchstitch
