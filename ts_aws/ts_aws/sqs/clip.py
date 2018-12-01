@@ -20,6 +20,16 @@ def send_message(payload):
     )
     logger.info("send_message | success", response=r)
 
+def send_messages(payloads):
+    logger.info("send_messages | start", payloads=payloads)
+    r = queue.send_messages(
+        Entries=list(map(lambda p: {
+            'Id': p['clip_id'],
+            'MessageBody': json.dumps(p),
+        }, payloads))
+    )
+    logger.info("send_messages | success", response=r)
+
 def change_visibility(receipt_handle):
     if receipt_handle is not None:
         logger.info("change_visibility | start", receipt_handle=receipt_handle)
