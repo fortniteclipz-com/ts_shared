@@ -10,8 +10,8 @@ def save_stream_segment(stream_segment):
     with ts_aws.rds.get_session() as session:
         session.merge(stream_segment)
         session.commit()
-    return stream_segment
     logger.info("save_stream_segment | success", stream_segment=stream_segment)
+    return stream_segment
 
 def get_stream_segment(stream, segment):
     logger.info("get_stream_segment | start", stream=stream, segment=segment)
