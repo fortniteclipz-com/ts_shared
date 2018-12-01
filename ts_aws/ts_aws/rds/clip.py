@@ -44,7 +44,7 @@ def get_montage_clips(montage):
             .query(ts_model.Clip) \
             .join(ts_model.MontageClip, ts_model.MontageClip.clip_id == ts_model.Clip.clip_id) \
             .filter_by(montage_id=montage.montage_id) \
-            .order_by(ts_model.MontageClip.clip_order)
+            .order_by(ts_model.MontageClip.clip_order.asc())
         logger.info("get_montage_clips | query", query=ts_aws.rds.print_query(query))
         montage_clips = query.all()
     logger.info("get_montage_clips | success", montage_clips_length=len(montage_clips))

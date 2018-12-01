@@ -17,7 +17,7 @@ def get_stream_moments(stream):
         query = session \
             .query(ts_model.StreamMoment) \
             .filter_by(stream_id=stream.stream_id) \
-            .order_by(ts_model.StreamMoment.time)
+            .order_by(ts_model.StreamMoment.time.asc())
         logger.info("get_stream_moments | query", query=ts_aws.rds.print_query(query))
         stream_moments = query.all()
     logger.info("get_stream_moments | success", stream_moments_length=len(stream_moments))

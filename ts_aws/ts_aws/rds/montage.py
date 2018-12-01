@@ -31,7 +31,7 @@ def get_montages():
     with ts_aws.rds.get_session() as session:
         query = session \
             .query(ts_model.Montage) \
-            .order_by(ts_model.Montage._date_created) \
+            .order_by(ts_model.Montage._date_created.desc()) \
             .limit(25)
         logger.info("get_montages | query", query=ts_aws.rds.print_query(query))
         montages = query.all()
@@ -44,7 +44,7 @@ def get_user_montages(user_id):
         query = session \
             .query(ts_model.Montage) \
             .filter_by(user_id=user_id) \
-            .order_by(ts_model.Montage._date_created) \
+            .order_by(ts_model.Montage._date_created.desc()) \
             .limit(25)
         logger.info("get_user_montages | query", query=ts_aws.rds.print_query(query))
         montages = query.all()

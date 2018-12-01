@@ -33,7 +33,7 @@ def get_streams():
         query = session \
             .query(ts_model.Stream) \
             .filter_by(_status_analyze=ts_model.Status.DONE) \
-            .order_by(ts_model.Stream._date_created) \
+            .order_by(ts_model.Stream._date_created.desc()) \
             .limit(15)
         logger.info("get_streams | query", query=ts_aws.rds.print_query(query))
         streams = query.all()

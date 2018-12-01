@@ -64,7 +64,7 @@ def get_clip_stream_segments(clip):
                 ts_model.StreamSegment.stream_time_in < clip.time_out,
                 ts_model.StreamSegment.stream_time_out >= clip.time_in,
             ) \
-            .order_by(ts_model.StreamSegment.segment)
+            .order_by(ts_model.StreamSegment.segment.asc())
         logger.info("get_clip_stream_segments | query", query=ts_aws.rds.print_query(query))
         stream_segments = query.all()
     logger.info("get_clip_stream_segments | success", stream_segments=stream_segments)
