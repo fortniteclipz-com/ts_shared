@@ -1,4 +1,5 @@
 import sqlalchemy.dialects
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -21,10 +22,13 @@ def get_engine():
         engine = create_engine(connection_url)
     return engine
 
+@contextmanager
 def get_session():
     engine = get_engine()
-    session = sessionmaker(bind = engine)
-    return session()
+    Session = sessionmaker(bind = engine)
+    session = Session()
+    yield session
+    session.close()
 
 def print_query(query):
     return str(query.statement.compile(dialect=sqlalchemy.dialects.mysql.dialect(), compile_kwargs={'literal_binds': True})).replace('\n', ' ').replace('\r', '')
