@@ -30,10 +30,13 @@ def get_clip(clip_id):
 
 def save_clips(clips):
     logger.info("save_clips | start", clips_length=len(clips))
-    session = ts_aws.rds.get_session()
-    session.bulk_save_objects(clips)
-    session.commit()
-    session.close()
+    columns = [column.key for column in ts_model.Clip.__table__.columns]
+    values = ', '.join(list(map(lambda ss: str(tuple([('NULL' if ss[column.key] is None else ss[column.key]) for column in ts_model.Clip.__table__.columns])), stream_segments)))
+    query = f"REPLACE INTO {ts_model.Clip.__tablename__} ({', '.join(columns)}) VALUES {values};"
+    logger.info("save_stream_segments | query", query=query)
+    engine = ts_aws.rds.get_engine()
+    with engine.connect() as c:
+        c.execute(query)
     logger.info("save_clips | success", clips_length=len(clips))
 
 def get_montage_clips(montage):

@@ -34,10 +34,13 @@ def get_stream_segment(stream, segment):
 
 def save_stream_segments(stream_segments):
     logger.info("save_stream_segments | start", stream_segments_length=len(stream_segments))
-    session = ts_aws.rds.get_session()
-    session.bulk_save_objects(stream_segments)
-    session.commit()
-    session.close()
+    columns = [column.key for column in ts_model.StreamSegment.__table__.columns]
+    values = ', '.join(list(map(lambda ss: str(tuple([('NULL' if ss[column.key] is None else ss[column.key]) for column in ts_model.StreamSegment.__table__.columns])), stream_segments)))
+    query = f"REPLACE INTO {ts_model.StreamSegment.__tablename__} ({', '.join(columns)}) VALUES {values};"
+    logger.info("save_stream_segments | query", query=query)
+    engine = ts_aws.rds.get_engine()
+    with engine.connect() as c:
+        c.execute(query)
     logger.info("save_stream_segments | success", stream_segments_length=len(stream_segments))
 
 def get_stream_segments(stream):
