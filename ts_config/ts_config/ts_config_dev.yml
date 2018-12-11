@@ -4,7 +4,7 @@ region: us-east-2
 stage: dev
 
 cognito:
-  pool-id: us-east-2_Axx0S6WLX
+  pool-id: us-east-2_N2uwzTRn4
 
 rds:
   db: twitchstitch
