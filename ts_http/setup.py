@@ -12,7 +12,7 @@ setup(
     	'requests==2.19.1',
     ],
     dependency_links=[
-        'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_logger-0.1&subdirectory=ts_logger',
+        'ts_logger @ git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_logger-0.1&subdirectory=ts_logger',
     ],
     zip_safe=False
 )
