@@ -8,11 +8,8 @@ setup(
     license='',
     packages=find_packages(),
     install_requires=[
-        'ts_logger==0.1',
-    	'requests==2.19.1',
-    ],
-    dependency_links=[
         'ts_logger @ git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_logger-0.1&subdirectory=ts_logger',
+    	'requests==2.19.1',
     ],
     zip_safe=False
 )
