@@ -8,6 +8,5 @@ setup(
     license='',
     packages=find_packages(),
     install_requires=[],
-    dependency_links=[],
     zip_safe=False
 )
