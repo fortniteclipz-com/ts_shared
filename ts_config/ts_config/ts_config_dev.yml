@@ -3,15 +3,11 @@ log-level: INFO
 region: us-east-2
 stage: dev
 
-cognito:
-  pool-id: us-east-2_N2uwzTRn4
-
 rds:
   db: twitchstitch
   username: twitchstitch
   password: u4zSe2UafzM0
   host: cluster-cf5c9fucgqvd.us-east-2.rds.amazonaws.com
-  class: db.r4.large
 
 iam:
   role-statement:
