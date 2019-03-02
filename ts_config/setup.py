@@ -16,5 +16,6 @@ setup(
     install_requires=[
         'PyYAML==3.13',
     ],
+    dependency_links=[],
     zip_safe=False
 )
