@@ -13,8 +13,12 @@ iam:
   role-statement:
     - Effect: Allow
       Action:
-        - mediaconvert:CreateJob
-      Resource: arn:aws:mediaconvert:us-east-2:589344262905:*
+        - sqs:GetQueueUrl
+        - sqs:SendMessage
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:ChangeMessageVisibility
+      Resource: arn:aws:sqs:us-east-2:589344262905:*
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -22,12 +26,12 @@ iam:
       Resource: arn:aws:s3:::*
     - Effect: Allow
       Action:
-        - sqs:GetQueueUrl
-        - sqs:SendMessage
-        - sqs:ReceiveMessage
-        - sqs:DeleteMessage
-        - sqs:ChangeMessageVisibility
-      Resource: arn:aws:sqs:us-east-2:589344262905:*
+        - mediaconvert:CreateJob
+      Resource: arn:aws:mediaconvert:us-east-2:589344262905:*
+    - Effect: Allow
+      Action:
+        - iam:PassRole
+      Resource: arn:aws:iam::589344262905:*
 
 mediaconvert:
   role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
