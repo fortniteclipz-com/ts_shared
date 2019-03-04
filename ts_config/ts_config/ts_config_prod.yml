@@ -3,43 +3,14 @@ log-level: INFO
 region: us-west-2
 stage: prod
 
-cognito:
-  pool-id: us-west-2_0qakh8atg
-
 rds:
   db: twitchstitch
   username: twitchstitch
   password: 21HzJVvwLvsi
   host: ctpn1m9y40sj.us-west-2.rds.amazonaws.com
-  class: db.r4.large
 
 iam:
   role-statement:
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-        - dynamodb:BatchGetItem
-        - dynamodb:BatchWriteItem
-      Resource: arn:aws:dynamodb:us-west-2:589344262905:*
-    - Effect: Allow
-      Action:
-        - iam:PassRole
-      Resource: arn:aws:iam::589344262905:*
-    - Effect: Allow
-      Action:
-        - mediaconvert:CreateJob
-      Resource: arn:aws:mediaconvert:us-west-2:589344262905:*
-    - Effect: Allow
-      Action:
-        - s3:PutObject
-        - s3:GetObject
-      Resource: arn:aws:s3:::*
     - Effect: Allow
       Action:
         - sqs:GetQueueUrl
@@ -47,7 +18,20 @@ iam:
         - sqs:ReceiveMessage
         - sqs:DeleteMessage
         - sqs:ChangeMessageVisibility
-      Resource: arn:aws:sqs:us-west-2:589344262905:*
+      Resource: arn:aws:sqs:us-east-2:589344262905:*
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::*
+    - Effect: Allow
+      Action:
+        - mediaconvert:CreateJob
+      Resource: arn:aws:mediaconvert:us-east-2:589344262905:*
+    - Effect: Allow
+      Action:
+        - iam:PassRole
+      Resource: arn:aws:iam::589344262905:*
 
 mediaconvert:
   role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
