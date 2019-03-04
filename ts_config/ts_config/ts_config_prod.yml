@@ -18,7 +18,7 @@ iam:
         - sqs:ReceiveMessage
         - sqs:DeleteMessage
         - sqs:ChangeMessageVisibility
-      Resource: arn:aws:sqs:us-east-2:589344262905:*
+      Resource: arn:aws:sqs:us-west-2:589344262905:*
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -27,7 +27,7 @@ iam:
     - Effect: Allow
       Action:
         - mediaconvert:CreateJob
-      Resource: arn:aws:mediaconvert:us-east-2:589344262905:*
+      Resource: arn:aws:mediaconvert:us-west-2:589344262905:*
     - Effect: Allow
       Action:
         - iam:PassRole
