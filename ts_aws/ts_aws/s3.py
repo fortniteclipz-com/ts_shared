@@ -7,7 +7,7 @@ import os
 logger = ts_logger.get(__name__)
 
 resource = boto3.resource('s3')
-bucket = resource.Bucket(f"{ts_config.get('s3.buckets.media.name')}-{ts_config.get('stage')}")
+bucket = resource.Bucket(f"{ts_config.get('s3.buckets.media.name')}")
 
 def upload_file(filename, s3_key):
     logger.info("upload_file | start", s3_key=s3_key, _filename=filename)

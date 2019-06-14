@@ -7,7 +7,7 @@ import time
 logger = ts_logger.get(__name__)
 
 client = boto3.client('mediaconvert', endpoint_url=ts_config.get('mediaconvert.url'))
-bucket = f"{ts_config.get('s3.buckets.media.name')}-{ts_config.get('stage')}"
+bucket = f"{ts_config.get('s3.buckets.media.name')}"
 
 def create(montage, clips):
     def _get_input_settings(clip):

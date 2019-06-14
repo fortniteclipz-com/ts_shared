@@ -1,4 +1,4 @@
-account-id: 589344262905
+account-id: 923755341410
 log-level: INFO
 region: us-west-2
 stage: prod
@@ -18,7 +18,7 @@ iam:
         - sqs:ReceiveMessage
         - sqs:DeleteMessage
         - sqs:ChangeMessageVisibility
-      Resource: arn:aws:sqs:us-west-2:589344262905:*
+      Resource: arn:aws:sqs:us-west-2:923755341410:*
     - Effect: Allow
       Action:
         - s3:PutObject
@@ -27,25 +27,25 @@ iam:
     - Effect: Allow
       Action:
         - mediaconvert:CreateJob
-      Resource: arn:aws:mediaconvert:us-west-2:589344262905:*
+      Resource: arn:aws:mediaconvert:us-west-2:923755341410:*
     - Effect: Allow
       Action:
         - iam:PassRole
-      Resource: arn:aws:iam::589344262905:*
+      Resource: arn:aws:iam::923755341410:*
 
 mediaconvert:
-  role: arn:aws:iam::589344262905:role/ServiceRoleForMediaConvert
-  url: https://fpvgyxjw.mediaconvert.us-west-2.amazonaws.com
+  role: arn:aws:iam::923755341410:role/ServiceRoleForMediaConvert
+  url: https://zlxmu0qla.mediaconvert.us-west-2.amazonaws.com
   queues:
     clip:
-      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/clip
+      arn: arn:aws:mediaconvert:us-west-2:923755341410:queues/clip-prod
     montage:
-      arn: arn:aws:mediaconvert:us-west-2:589344262905:queues/montage
+      arn: arn:aws:mediaconvert:us-west-2:923755341410:queues/montage-prod
 
 s3:
   buckets:
     media:
-      name: twitch-stitch-media
+      name: ts-media-prod
 
 sqs:
   queues:
