@@ -17,7 +17,7 @@ def get_engine():
         stage = ts_config.get('stage')
         host = ts_config.get('rds.host')
         db = ts_config.get('rds.db')
-        connection_url = f"mysql+pymysql://{username}:{password}@twitch-stitch-{stage}.{host}/{db}"
+        connection_url = f"mysql+pymysql://{username}:{password}@ts-{stage}.{host}/{db}"
         logger.info("connection_url", connection_url=connection_url)
         engine = create_engine(connection_url)
     return engine
