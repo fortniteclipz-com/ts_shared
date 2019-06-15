@@ -7,7 +7,7 @@ rds:
   db: twitchstitch
   username: twitchstitch
   password: 21HzJVvwLvsi
-  host: ctpn1m9y40sj.us-west-2.rds.amazonaws.com
+  host: ts-prod.c3ffqlddkpmv.us-west-2.rds.amazonaws.com
 
 iam:
   role-statement:
