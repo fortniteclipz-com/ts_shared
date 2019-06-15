@@ -35,7 +35,7 @@ iam:
 
 mediaconvert:
   role: arn:aws:iam::923755341410:role/ServiceRoleForMediaConvert
-  url: https://yzs4jzuwa.mediaconvert.us-east-2.amazonaws.com
+  url: https://5uowyzvia.mediaconvert.us-east-1.amazonaws.com
   queues:
     clip:
       arn: arn:aws:mediaconvert:us-east-1:923755341410:queues/clip-dev
