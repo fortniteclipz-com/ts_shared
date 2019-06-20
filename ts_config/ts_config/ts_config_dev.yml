@@ -50,14 +50,14 @@ s3:
 sqs:
   queues:
     clip:
-      name: ts-clip
+      name: ts-clip---dev
     montage:
-      name: ts-montage
+      name: ts-montage---dev
     stream--analyze:
-      name: ts-stream--analyze
+      name: ts-stream--analyze---dev
     stream--initialize:
-      name: ts-stream--initialize
+      name: ts-stream--initialize---dev
     stream-segment--analyze:
-      name: ts-stream-segment--analyze
+      name: ts-stream-segment--analyze---dev
     stream-segment--download:
-      name: ts-stream-segment--download
+      name: ts-stream-segment--download---dev

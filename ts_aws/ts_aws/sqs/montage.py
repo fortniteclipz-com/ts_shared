@@ -9,7 +9,7 @@ logger = ts_logger.get(__name__)
 client = boto3.client('sqs')
 resource = boto3.resource('sqs')
 
-queue_name = f"{ts_config.get('sqs.queues.montage.name')}-{ts_config.get('stage')}"
+queue_name = f"{ts_config.get('sqs.queues.montage.name')}"
 queue_url = client.get_queue_url(QueueName=queue_name)['QueueUrl']
 queue = resource.Queue(queue_url)
 
