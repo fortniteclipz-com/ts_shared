@@ -36,9 +36,9 @@ iam:
 lambda:
   layers:
     tesseract:
-      arn: arn:aws:lambda:us-west-2:923755341410:layer:ts-layers-prod-layer--ffmpeg:8
+      arn: arn:aws:lambda:us-west-2:923755341410:layer:ts-layers-prod-layer--ffmpeg:9
     ffmpeg:
-      arn: arn:aws:lambda:us-west-2:923755341410:layer:ts-layers-prod-layer--tesseract:8
+      arn: arn:aws:lambda:us-west-2:923755341410:layer:ts-layers-prod-layer--tesseract:9
 
 mediaconvert:
   role: arn:aws:iam::923755341410:role/ServiceRoleForMediaConvert
