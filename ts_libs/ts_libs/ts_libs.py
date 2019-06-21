@@ -26,5 +26,5 @@ def init():
     #     for cmd in cmds:
     #         p = subprocess.call(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
-    logger.info("init | info", path=os.environ['PATH'], tmpdir=os.listdir("/tmp"), optdir=os.listdir("/opt"))
+    logger.info("init | info", environ=os.environ, path=os.environ['PATH'], tmpdir=os.listdir("/tmp"), optdir=os.listdir("/opt"))
     logger.info("init | success")
