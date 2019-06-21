@@ -11,7 +11,7 @@ setup(
         'ts_logger',
     ],
     dependency_links=[
-        'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_logger-0.1&subdirectory=ts_logger',
+        'git+ssh://git@github.com/fortniteclipz/ts_shared.git@master#egg=ts_logger-0.1&subdirectory=ts_logger',
     ],
     zip_safe=False
 )

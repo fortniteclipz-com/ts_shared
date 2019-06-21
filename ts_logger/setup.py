@@ -13,7 +13,7 @@ setup(
         # 'python-json-logger==0.1.9',
     ],
     dependency_links=[
-        'git+ssh://git@github.com/sachinahj/ts_shared.git@master#egg=ts_config-0.1&subdirectory=ts_config',
+        'git+ssh://git@github.com/fortniteclipz/ts_shared.git@master#egg=ts_config-0.1&subdirectory=ts_config',
     ],
     zip_safe=False
 )
