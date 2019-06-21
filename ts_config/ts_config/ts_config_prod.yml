@@ -33,6 +33,13 @@ iam:
         - iam:PassRole
       Resource: arn:aws:iam::923755341410:*
 
+lambda:
+  layers:
+    tesseract:
+      arn: arn:aws:lambda:us-west-2:923755341410:layer:ts-layers-prod-layer--ffmpeg:7
+    ffmpeg:
+      arn: arn:aws:lambda:us-west-2:923755341410:layer:ts-layers-prod-layer--tesseract:7
+
 mediaconvert:
   role: arn:aws:iam::923755341410:role/ServiceRoleForMediaConvert
   url: https://zlxmu0qla.mediaconvert.us-west-2.amazonaws.com
